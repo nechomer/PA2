@@ -1,0 +1,33 @@
+
+  [3] +-- Declaration of class: Main
+  [5]     +-- Declaration of field: name
+  [5]         +-- Primitive data type: string
+  [7]     +-- Declaration of virtual method: init
+  [7]         +-- Primitive data type: void
+  [8]         +-- Assignment statement
+  [8]             +-- Reference to variable: name
+  [8]             +-- string: ''gcd''
+ [12]     +-- Declaration of virtual method: gcd
+ [12]         +-- Primitive data type: int
+ [12]         +-- Parameter: a
+ [12]             +-- Primitive data type: int
+ [12]         +-- Parameter: b
+ [12]             +-- Primitive data type: int
+ [13]         +-- While statement
+ [13]             +-- Binary operation: greater than (>)
+ [13]                 +-- Reference to variable: b
+ [13]                 +-- int: 0
+ [13]             +-- Block of statements
+ [14]                 +-- Assignment statement
+ [14]                     +-- Reference to variable: c
+ [14]                     +-- Binary operation: modulo (%)
+ [14]                         +-- Reference to variable: a
+ [14]                         +-- Reference to variable: b
+ [15]                 +-- Assignment statement
+ [15]                     +-- Reference to variable: a
+ [15]                     +-- Reference to variable: b
+ [15]                 +-- Assignment statement
+ [15]                     +-- Reference to variable: b
+ [15]                     +-- Reference to variable: c
+ [17]         +-- Return statement, with return value
+ [17]             +-- Reference to variable: a

@@ -1,0 +1,53 @@
+
+  [2] +-- Declaration of class: Fibonacci
+  [4]     +-- Declaration of virtual method: fib
+  [4]         +-- Primitive data type: void
+  [4]         +-- Parameter: n
+  [4]             +-- Primitive data type: int
+  [5]         +-- Declaration of local variable: arr
+  [5]             +-- Primitive data type: 1-dimensional array of int
+  [6]         +-- Assignment statement
+  [6]             +-- Reference to variable: arr
+  [6]             +-- Array allocation
+  [6]                 +-- Primitive data type: int
+  [6]                 +-- Binary operation: add (+)
+  [6]                     +-- Reference to variable: n
+  [6]                     +-- int: 1
+  [7]         +-- Assignment statement
+  [7]             +-- Reference to array
+  [7]                 +-- Reference to variable: arr
+  [7]                 +-- int: 0
+  [7]             +-- int: 0
+  [8]         +-- Assignment statement
+  [8]             +-- Reference to array
+  [8]                 +-- Reference to variable: arr
+  [8]                 +-- int: 1
+  [8]             +-- int: 1
+ [10]         +-- Declaration of local variable: i, with initial value
+ [10]                 +-- Primitive data type: int
+ [10]                 +-- int: 2
+ [11]         +-- While statement
+ [11]             +-- Binary operation: less than or equal to (<=)
+ [11]                 +-- Reference to variable: i
+ [11]                 +-- Reference to variable: n
+ [11]             +-- Block of statements
+ [12]                 +-- Assignment statement
+ [12]                     +-- Reference to array
+ [12]                         +-- Reference to variable: arr
+ [12]                         +-- Reference to variable: i
+ [12]                     +-- Binary operation: add (+)
+ [12]                         +-- Reference to array
+ [12]                             +-- Reference to variable: arr
+ [12]                             +-- Binary operation: subtract (-)
+ [12]                                 +-- Reference to variable: i
+ [12]                                 +-- int: 1
+ [12]                         +-- Reference to array
+ [12]                             +-- Reference to variable: arr
+ [12]                             +-- Binary operation: subtract (-)
+ [12]                                 +-- Reference to variable: i
+ [12]                                 +-- int: 2
+ [13]                 +-- Assignment statement
+ [13]                     +-- Reference to variable: i
+ [13]                     +-- Binary operation: add (+)
+ [13]                         +-- Reference to variable: i
+ [13]                         +-- int: 1
