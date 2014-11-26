@@ -34,11 +34,12 @@ scan with {:
 :};
 
 /*********** Symbol list - terminals ***********/
-terminal LBRACE, RBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN, SEMI;
+terminal LBRACE, RBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN, SEMI, COMA;
 terminal CLASS;
-terminal static;
-terminal void;
-terminal java.lang.String IDENTIFIER; // name
+terminal STATIC;
+terminal VOID;
+terminal OTHER_SYMBOL; /****Debug****/
+terminal java.lang.String IDENTIFIER; 
 
 terminal java.lang.Number INTEGER_LITERAL;
 terminal java.lang.Boolean BOOLEAN_LITERAL;
@@ -69,7 +70,7 @@ method_list ::= stmethod:sm
 	| method_list:ml stmethod:sm
 	{: ml.addMethod(sm); RESULT = ml; :};
 
-stmethod ::= static type:t METHOD_ID:mi LPAREN formal_list:fl RPAREN SEMI
+stmethod ::= STATIC type:t METHOD_ID:mi LPAREN formal_list:fl RPAREN SEMI
 {:RESULT = new StaticMethod(t,mi,fl,null) :};
 
 formal_list ::= formal:f
