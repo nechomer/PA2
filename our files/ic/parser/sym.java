@@ -8,30 +8,31 @@ package ic.parser;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
+  public static final int METHOD_ID = 20;
   public static final int CLASS = 18;
   public static final int RBRACE = 3;
   public static final int RPAREN = 5;
   public static final int SEMI = 6;
-  public static final int BOOLEAN_LITERAL = 21;
+  public static final int BOOLEAN_LITERAL = 22;
   public static final int OTHER_SYMBOL = 11;
   public static final int IDENTIFIER = 17;
   public static final int LPAREN = 4;
   public static final int LBRACKET = 9;
   public static final int LBRACE = 2;
   public static final int RBRACKET = 10;
-  public static final int INTERGER = 14;
   public static final int STATIC = 12;
-  public static final int STRING_LITERAL = 22;
+  public static final int STRING_LITERAL = 23;
   public static final int BOOLEAN = 16;
   public static final int STRING = 15;
   public static final int COMA = 7;
   public static final int EOF = 0;
   public static final int error = 1;
   public static final int DOT = 8;
-  public static final int INTEGER_LITERAL = 20;
+  public static final int INTEGER_LITERAL = 21;
+  public static final int INTEGER = 14;
   public static final int CLASS_ID = 19;
   public static final int VOID = 13;
-  public static final int NULL_LITERAL = 23;
+  public static final int NULL_LITERAL = 24;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -47,12 +48,13 @@ public class sym {
   "OTHER_SYMBOL",
   "STATIC",
   "VOID",
-  "INTERGER",
+  "INTEGER",
   "STRING",
   "BOOLEAN",
   "IDENTIFIER",
   "CLASS",
   "CLASS_ID",
+  "METHOD_ID",
   "INTEGER_LITERAL",
   "BOOLEAN_LITERAL",
   "STRING_LITERAL",

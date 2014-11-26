@@ -38,10 +38,11 @@ terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMI, COMA, DOT;
 terminal LBRACKET, RBRACKET; /****array_type****/
 terminal OTHER_SYMBOL; /****Debug****/
 terminal STATIC;
-terminal VOID, INTERGER, STRING, BOOLEAN;
+terminal VOID, INTEGER, STRING, BOOLEAN;
 terminal java.lang.String IDENTIFIER; /****var_name****/
 terminal CLASS;
 terminal java.lang.String CLASS_ID; /****class_name****/
+terminal java.lang.String METHOD_ID;
 
 terminal java.lang.Number INTEGER_LITERAL;
 terminal java.lang.Boolean BOOLEAN_LITERAL;
@@ -51,10 +52,9 @@ terminal NULL_LITERAL;
 /*********** Symbol list - non-terminals) ***********/
 non terminal  ICClass icclass;
 non terminal  StaticMethod stmethod;
-non terminal  MethodList method_list;
-non terminal  String METHOD_ID;
+non terminal  MethodBlock method_block;
 non terminal  Formal formal;
-non terminal  FormalList formal_list;
+non terminal  FormalBlock formal_block;
 non terminal  Type type;
 
 
@@ -63,20 +63,20 @@ non terminal  Type type;
 
 /*********** The grammar ***********/
 
-icclass ::= CLASS CLASS_ID:ci LBRACE method_list:ml RBRACE
+icclass ::= CLASS CLASS_ID:ci LBRACE method_block:ml RBRACE
 {:RESULT = new ICClass(getLine(), ci, null, ml):};
 
-method_list ::= stmethod:sm
-	{: RESULT = new MethodList(sm); :}
-	| method_list:ml stmethod:sm
+method_block ::= stmethod:sm
+	{: RESULT = new MethodBlock(sm); :}
+	| method_block:ml stmethod:sm
 	{: ml.addMethod(sm); RESULT = ml; :};
 
-stmethod ::= STATIC type:t METHOD_ID:mi LPAREN formal_list:fl RPAREN SEMI
+stmethod ::= STATIC type:t METHOD_ID:mi LPAREN formal_block:fl RPAREN SEMI
 {:RESULT = new StaticMethod(t,mi,fl,null) :};
 
-formal_list ::= formal:f
-	{: RESULT = new FormalList(f); :}
-	| formal_list:fl formal:f
+formal_block ::= formal:f
+	{: RESULT = new FormalBlock(f); :}
+	| formal_block:fl formal:f
 	{: fl.addFormal(f); RESULT = fl; :};
 
 formal  ::= type:t IDENTIFIER:i
