@@ -1,3 +1,72 @@
-package IC.Parser;
+package ic.parser;
 
-import IC.AST.*;
+import ic.ast.*;
+
+parser code  {:
+	/** Causes the parsr to print every token it reads.
+	 * This is useful for debugging.
+	 */
+	public boolean printTokens;
+	
+	private Lexer lexer;
+
+	public Parser(Lexer lexer) {
+		super(lexer);
+		this.lexer = lexer;
+	}
+	
+	public int getLine() {
+		return lexer.getLineNumber();
+	}
+	
+	public void syntax_error(Symbol s) {
+		Token tok = (Token) s;
+		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+	}
+:}
+
+// This is just for debugging
+scan with {:
+	Token t = lexer.next_token();
+	if (printTokens)
+		System.out.println(t.getLine() + ":" + t);
+	return t; 
+:};
+
+/*********** Symbol list - terminals ***********/
+terminal LBRACE, RBRACE, LBRACKET, LBRACKET LPAREN, RPAREN, SEMI;
+terminal class, static;
+terminal void, string, int, boolean;
+
+/*********** Symbol list - non-terminals) ***********/
+non terminal  ICClass icclass;
+non terminal  String CLASS_ID;
+non terminal  StaticMethod stmethod;
+non terminal  MethodList method_list;
+non terminal  String METHOD_ID;
+non terminal  Field field;
+non terminal  FieldList field_list;
+non terminal  Formal formal;
+non terminal  FormalList formal_list;
+non terminal  Type type;
+
+
+/*********** Precedence declarations ***********/
+
+
+/*********** The grammar ***********/
+
+icclass ::= class CLASS_ID:ci LBRACE methodlist:ml RBRACE SEMI
+{:ml = new List<Method>; RESULT = new ICClass(line, ci, null, ml):};
+
+methodlist ::=  
+
+stmethod ::= static type METHOD_ID LPAREN formallist RPAREN SEMI
+{: :}
+
+formallist ::=  field:f
+	{: RESULT = new FieldList(f); :}
+	| formallist:fl field:f
+	{: fl.addField(f); RESULT = fl; :}
+
+type ::= 
