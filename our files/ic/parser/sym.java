@@ -8,23 +8,25 @@ package ic.parser;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int LBRACE = 2;
-  public static final int NULL_LITERAL = 16;
-  public static final int BOOLEAN_LITERAL = 14;
-  public static final int static = 10;
-  public static final int SEMI = 8;
-  public static final int STRING_LITERAL = 15;
-  public static final int void = 11;
-  public static final int EOF = 0;
-  public static final int RBRACKET = 5;
-  public static final int error = 1;
-  public static final int RPAREN = 7;
-  public static final int IDENTIFIER = 12;
-  public static final int LBRACKET = 4;
-  public static final int LPAREN = 6;
+  public static final int CLASS = 10;
   public static final int RBRACE = 3;
-  public static final int INTEGER_LITERAL = 13;
-  public static final int CLASS = 9;
+  public static final int RPAREN = 7;
+  public static final int SEMI = 8;
+  public static final int OTHER_SYMBOL = 13;
+  public static final int BOOLEAN_LITERAL = 16;
+  public static final int IDENTIFIER = 14;
+  public static final int LPAREN = 6;
+  public static final int LBRACKET = 4;
+  public static final int LBRACE = 2;
+  public static final int RBRACKET = 5;
+  public static final int STATIC = 11;
+  public static final int STRING_LITERAL = 17;
+  public static final int COMA = 9;
+  public static final int EOF = 0;
+  public static final int error = 1;
+  public static final int INTEGER_LITERAL = 15;
+  public static final int VOID = 12;
+  public static final int NULL_LITERAL = 18;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -35,9 +37,11 @@ public class sym {
   "LPAREN",
   "RPAREN",
   "SEMI",
+  "COMA",
   "CLASS",
-  "static",
-  "void",
+  "STATIC",
+  "VOID",
+  "OTHER_SYMBOL",
   "IDENTIFIER",
   "INTEGER_LITERAL",
   "BOOLEAN_LITERAL",
