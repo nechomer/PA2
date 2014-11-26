@@ -148,15 +148,15 @@ comaStracture = ","
 {thisKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {newKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {lengthKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{trueKeyword}					{ return token(sym.BOOLEAN_LITERAL, Boolean.valueOf(yytext()), false); }
-{falseKeyword}					{ return token(sym.BOOLEAN_LITERAL, Boolean.valueOf(yytext()), false); }
+{trueKeyword}					{ return token(sym.BOOLEAN_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
+{falseKeyword}					{ return token(sym.BOOLEAN_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
 {nullKeyword}					{ return token(sym.NULL_LITERAL, yytext(), false); }
 
 
 /* identifiers */
 
 "_" {IdentifierCharacter}*     { Error(yytext(), false);}
-{RegularIdentifier}            { return token(sym.ID, "ID", yytext(), false); }
+{RegularIdentifier}            { return token(sym.IDENTIFIER, "Identifier", yytext(), false); }
 {ClassIdentifier}              { return token(sym.CLASS_ID, "CLASS_ID", yytext(), false); }
 
 
@@ -201,31 +201,33 @@ comaStracture = ","
 
 /* comments */
 
-{LineComment}             		   { /* ignore */ }         
-"/*"                           { lastPos(); yybegin(TRADITIONAL_COMMENT); }     
+{LineComment}             		{ /* ignore */ }         
+"/*"                           	{ lastPos(); yybegin(TRADITIONAL_COMMENT); }     
 
                                                              
 /* whitespace */
 
-{WhiteSpace}                   { /* ignore */ }
+{WhiteSpace}                   	{ /* ignore */ }
 }
 
 
 <STRING> {
-\"                             { yybegin(YYINITIAL); string.append("\""); return token(sym.STRING_LITERAL, "STRING", string.toString(), true); }
-{StringCharacter}+             { string.append(yytext()); }
-<<EOF>>                        { Error(yytext(), true); }
+\"                             	{ yybegin(YYINITIAL); string.append("\""); return token(sym.STRING_LITERAL, "STRING", string.toString(), true); }
+{StringCharacter}+             	{ string.append(yytext()); }
+<<EOF>>                        	{ Error(yytext(), true); }
 }
 
 
 <TRADITIONAL_COMMENT> {
-[^\*]                          { /* ignore */ }
-"*/"                           { yybegin(YYINITIAL); }
-"*"                            { /* ignore */ }
-<<EOF>>                        { Error(yytext(), true); }
+[^\*]                          	{ /* ignore */ }
+"*/"                           	{ yybegin(YYINITIAL); }
+"*"                            	{ /* ignore */ }
+<<EOF>>                        	{ Error(yytext(), true); }
 }
 
 
 /* error fallback */
-[^]                           { Error(yytext(), false); }
+[^]                           	{ Error(yytext(), false); }
 
+/*regular EOF*/
+<<EOF>>							{ /* ignore */ }
