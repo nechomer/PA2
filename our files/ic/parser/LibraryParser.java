@@ -141,7 +141,6 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 	
 	private Lexer lexer;
 
-	private dataTypes
 	public LibraryParser(Lexer lexer) {
 		super(lexer);
 		this.lexer = lexer;
