@@ -1,7 +1,9 @@
 package ic.parser;
 import ic.parser.LexicalError;
+import ic.parser.sym;
 /*********** Definitions ***********/
 %%
+%cup
 %class Lexer
 %public
 %yylexthrow LexicalError
@@ -130,13 +132,13 @@ comaStracture = ","
 
 /* keywords */
 
-{classKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
+{classKeyword}					{ return token(sym.CLASS, yytext(), false); }
 {extendsKeyword}				{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{staticKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); } 
-{voidKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{intKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{booleanKeyword}				{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{stringKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
+{staticKeyword}					{ return token(sym.STATIC, yytext(), false); } 
+{voidKeyword}					{ return token(sym.VOID, yytext(), false); }
+{intKeyword}					{ return token(sym.INTEGER, yytext(), false); }
+{booleanKeyword}				{ return token(sym.BOOLEAN, yytext(), false); }
+{stringKeyword}					{ return token(sym.STRING, yytext(), false); }
 {returnKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {ifKeyword}						{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {elseKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
@@ -146,9 +148,9 @@ comaStracture = ","
 {thisKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {newKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {lengthKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{trueKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{falseKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{nullKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
+{trueKeyword}					{ return token(sym.BOOLEAN_LITERAL, Boolean.valueOf(yytext()), false); }
+{falseKeyword}					{ return token(sym.BOOLEAN_LITERAL, Boolean.valueOf(yytext()), false); }
+{nullKeyword}					{ return token(sym.NULL_LITERAL, yytext(), false); }
 
 
 /* identifiers */
@@ -161,17 +163,17 @@ comaStracture = ","
 /* literals */
 
 0+ {DecIntegerLiteral}         { Error(yytext(), false); }
-{DecIntegerLiteral}            { return token(sym.INTEGER, "INTEGER", new Integer(yytext()), false); }
+{DecIntegerLiteral}            { return token(sym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
 \"                             { lastPos(); string.setLength(0); string.append("\""); yybegin(STRING); }
 
 
 /* operators */
 
-{leftBracketOperator}			{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{rightBracketOperator}			{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{leftparenOperator}				{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{rightparenOperator}			{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{dotOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
+{leftBracketOperator}			{ return token(sym.LBRACKET, yytext(), false); }
+{rightBracketOperator}			{ return token(sym.RBRACKET, yytext(), false); }
+{leftparenOperator}				{ return token(sym.LPAREN, yytext(), false); }
+{rightparenOperator}			{ return token(sym.RPAREN, yytext(), false); }
+{dotOperator}					{ return token(sym.DOT, yytext(), false); }
 {minusOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {notOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {multOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
@@ -191,10 +193,10 @@ comaStracture = ","
                                                            
 /* structure */  
 
-{leftBracesStracture}			{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{rightBracesStracture}			{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{semiStracture}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{comaStracture}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
+{leftBracesStracture}			{ return token(sym.LBRACE, yytext(), false); }
+{rightBracesStracture}			{ return token(sym.RBRACE, yytext(), false); }
+{semiStracture}					{ return token(sym.SEMI, yytext(), false); }
+{comaStracture}					{ return token(sym.COMA, yytext(), false); }
 
 
 /* comments */
@@ -210,7 +212,7 @@ comaStracture = ","
 
 
 <STRING> {
-\"                             { yybegin(YYINITIAL); string.append("\""); return token(sym.STRING, "STRING", string.toString(), true); }
+\"                             { yybegin(YYINITIAL); string.append("\""); return token(sym.STRING_LITERAL, "STRING", string.toString(), true); }
 {StringCharacter}+             { string.append(yytext()); }
 <<EOF>>                        { Error(yytext(), true); }
 }
