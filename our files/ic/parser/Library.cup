@@ -59,12 +59,15 @@ non terminal  Type type;
 icclass ::= class CLASS_ID:ci LBRACE methodlist:ml RBRACE SEMI
 {:ml = new List<Method>; RESULT = new ICClass(line, ci, null, ml):};
 
-methodlist ::=  
+methodlist ::= stmethod:sm
+	{: RESULT = new FieldList(f); :}
+	| methodlist:ml stmethod:sm
+	{: fl.addField(f); RESULT = fl; :}
 
 stmethod ::= static type METHOD_ID LPAREN formallist RPAREN SEMI
 {: :}
 
-formallist ::=  field:f
+formallist ::= field:f
 	{: RESULT = new FieldList(f); :}
 	| formallist:fl field:f
 	{: fl.addField(f); RESULT = fl; :}
