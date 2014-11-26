@@ -34,8 +34,8 @@ scan with {:
 :};
 
 /*********** Symbol list - terminals ***********/
-terminal LBRACE, RBRACE, LBRACKET, LBRACKET LPAREN, RPAREN, SEMI;
-terminal class;
+terminal LBRACE, RBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN, SEMI;
+terminal CLASS;
 terminal static;
 terminal void;
 terminal java.lang.String IDENTIFIER; // name
@@ -61,24 +61,24 @@ non terminal  Type type;
 
 /*********** The grammar ***********/
 
-icclass ::= class CLASS_ID:ci LBRACE method_list:ml RBRACE
+icclass ::= CLASS CLASS_ID:ci LBRACE method_list:ml RBRACE
 {:RESULT = new ICClass(getLine(), ci, null, ml):};
 
 method_list ::= stmethod:sm
 	{: RESULT = new MethodList(sm); :}
 	| method_list:ml stmethod:sm
-	{: ml.addMethod(sm); RESULT = ml; :}
+	{: ml.addMethod(sm); RESULT = ml; :};
 
 stmethod ::= static type:t METHOD_ID:mi LPAREN formal_list:fl RPAREN SEMI
-{:RESULT = new StaticMethod(t,mi,fl,null) :}
+{:RESULT = new StaticMethod(t,mi,fl,null) :};
 
 formal_list ::= formal:f
 	{: RESULT = new FormalList(f); :}
 	| formal_list:fl formal:f
-	{: fl.addFormal(f); RESULT = fl; :}
+	{: fl.addFormal(f); RESULT = fl; :};
 
 formal  ::= type:t IDENTIFIER:i
-{:RESULT = new Formal(t,i):}
+{:RESULT = new Formal(t,i):};
 
 type ::=	INTEGER_LITERAL:il
 	{:RESULT = new Type(getLine()):}
@@ -87,5 +87,5 @@ type ::=	INTEGER_LITERAL:il
 		|	STRING_LITERAL
 	{:RESULT = new Type(getLine()):}
 		|	NULL_LITERAL
-	{:RESULT = new Type(getLine()):}
+	{:RESULT = new Type(getLine()):};
 		
