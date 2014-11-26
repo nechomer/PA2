@@ -1,0 +1,17 @@
+token	tag	line :column
+class	class	1:1
+A	CLASS_ID	1:7
+{	{	1:8
+void	void	2:2
+main	Identifier	2:7
+(	(	2:11
+)	)	2:12
+;	;	2:13
+}	}	3:1
+int	int	5:1
+a	Identifier	5:5
+;	;	5:6
+class	class	7:1
+B	CLASS_ID	7:7
+{	{	7:8
+}	}	9:1

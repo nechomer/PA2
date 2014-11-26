@@ -1,0 +1,13 @@
+token	tag	line :column
+class	class	1:1
+A	CLASS_ID	1:7
+{	{	1:8
+}	}	2:1
+class	class	4:1
+B	CLASS_ID	4:7
+extends	extends	4:9
+A	CLASS_ID	4:17
+,	,	4:18
+B	CLASS_ID	4:20
+{	{	4:21
+}	}	5:1

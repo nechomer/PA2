@@ -1,0 +1,4 @@
+token	tag	line :column
+int	int	1:1
+i	Identifier	1:5
+;	;	1:6

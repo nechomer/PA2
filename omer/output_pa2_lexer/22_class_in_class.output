@@ -1,0 +1,9 @@
+token	tag	line :column
+class	class	1:1
+A	CLASS_ID	1:7
+{	{	1:8
+class	class	2:2
+B	CLASS_ID	2:8
+{	{	2:9
+}	}	3:2
+}	}	4:1

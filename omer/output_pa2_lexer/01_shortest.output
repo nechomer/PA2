@@ -1,0 +1,8 @@
+token	tag	line :column
+class	class	1:1
+A	CLASS_ID	1:7
+{	{	1:8
+int	int	2:2
+x	Identifier	2:6
+;	;	2:7
+}	}	3:1
