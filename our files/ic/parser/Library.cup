@@ -35,8 +35,15 @@ scan with {:
 
 /*********** Symbol list - terminals ***********/
 terminal LBRACE, RBRACE, LBRACKET, LBRACKET LPAREN, RPAREN, SEMI;
-terminal class, static;
-terminal void, string, int, boolean;
+terminal class;
+terminal static;
+terminal void;
+terminal java.lang.String IDENTIFIER; // name
+
+terminal java.lang.Number INTEGER_LITERAL;
+terminal java.lang.Boolean BOOLEAN_LITERAL;
+terminal java.lang.String STRING_LITERAL;
+terminal NULL_LITERAL;
 
 /*********** Symbol list - non-terminals) ***********/
 non terminal  ICClass icclass;
@@ -44,8 +51,6 @@ non terminal  String CLASS_ID;
 non terminal  StaticMethod stmethod;
 non terminal  MethodList method_list;
 non terminal  String METHOD_ID;
-non terminal  Field field;
-non terminal  FieldList field_list;
 non terminal  Formal formal;
 non terminal  FormalList formal_list;
 non terminal  Type type;
@@ -56,20 +61,31 @@ non terminal  Type type;
 
 /*********** The grammar ***********/
 
-icclass ::= class CLASS_ID:ci LBRACE methodlist:ml RBRACE SEMI
-{:ml = new List<Method>; RESULT = new ICClass(line, ci, null, ml):};
+icclass ::= class CLASS_ID:ci LBRACE method_list:ml RBRACE
+{:RESULT = new ICClass(getLine(), ci, null, ml):};
 
-methodlist ::= stmethod:sm
-	{: RESULT = new FieldList(f); :}
-	| methodlist:ml stmethod:sm
-	{: fl.addField(f); RESULT = fl; :}
+method_list ::= stmethod:sm
+	{: RESULT = new MethodList(sm); :}
+	| method_list:ml stmethod:sm
+	{: ml.addMethod(sm); RESULT = ml; :}
 
-stmethod ::= static type METHOD_ID LPAREN formallist RPAREN SEMI
-{: :}
+stmethod ::= static type:t METHOD_ID:mi LPAREN formal_list:fl RPAREN SEMI
+{:RESULT = new StaticMethod(t,mi,fl,null) :}
 
-formallist ::= field:f
-	{: RESULT = new FieldList(f); :}
-	| formallist:fl field:f
-	{: fl.addField(f); RESULT = fl; :}
+formal_list ::= formal:f
+	{: RESULT = new FormalList(f); :}
+	| formal_list:fl formal:f
+	{: fl.addFormal(f); RESULT = fl; :}
 
-type ::= 
+formal  ::= type:t IDENTIFIER:i
+{:RESULT = new Formal(t,i):}
+
+type ::=	INTEGER_LITERAL:il
+	{:RESULT = new Type(getLine()):}
+		|	BOOLEAN_LITERAL
+	{:RESULT = new Type(getLine()):}
+		|	STRING_LITERAL
+	{:RESULT = new Type(getLine()):}
+		|	NULL_LITERAL
+	{:RESULT = new Type(getLine()):}
+		
