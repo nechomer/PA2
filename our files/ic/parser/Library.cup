@@ -34,12 +34,14 @@ scan with {:
 :};
 
 /*********** Symbol list - terminals ***********/
-terminal LBRACE, RBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN, SEMI, COMA;
-terminal CLASS;
-terminal STATIC;
-terminal VOID;
+terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMI, COMA, DOT;
+terminal LBRACKET, RBRACKET; /****array_type****/
 terminal OTHER_SYMBOL; /****Debug****/
-terminal java.lang.String IDENTIFIER; 
+terminal STATIC;
+terminal VOID, INTERGER, STRING, BOOLEAN;
+terminal java.lang.String IDENTIFIER; /****var_name****/
+terminal CLASS;
+terminal java.lang.String CLASS_ID; /****class_name****/
 
 terminal java.lang.Number INTEGER_LITERAL;
 terminal java.lang.Boolean BOOLEAN_LITERAL;
@@ -48,7 +50,6 @@ terminal NULL_LITERAL;
 
 /*********** Symbol list - non-terminals) ***********/
 non terminal  ICClass icclass;
-non terminal  String CLASS_ID;
 non terminal  StaticMethod stmethod;
 non terminal  MethodList method_list;
 non terminal  String METHOD_ID;
