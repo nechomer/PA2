@@ -59,9 +59,27 @@ RegularIdentifier = [a-z]{IdentifierCharacter}*
 
 DecIntegerLiteral = (0 | [1-9][0-9]*)
 
-Keyword = ("class" | "extends" | "static" | "void" | "int" | "boolean" | "string" |
-           "return" | "if" | "else" | "while" | "break" | "continue" | "this" |
-           "new" | "length" | "true" | "false" | "null")
+//**************************** keywords ***********************************
+classKeyword = "class"
+extendsKeyword = "extends"
+staticKeyword = "static" 
+voidKeyword = "void"
+intKeyword = "int"
+booleanKeyword = "boolean"
+stringKeyword = "string"
+returnKeyword = "return"
+ifKeyword = "if"
+elseKeyword = "else"
+whileKeyword = "while"
+breakKeyword = "break"
+continueKeyword = "continue"
+thisKeyword = "this"
+newKeyword = "new"
+lengthKeyword = "length"
+trueKeyword = "true"
+falseKeyword = "false"
+nullKeyword = "null"
+
 
 Operator = ("[" | "]" | "(" | ")" | "." | "-" | "!" | "*" | "/" | "%" | "+" |
             "<" | "<=" | ">" | ">=" | "==" | "!=" | "&&" | "||" | "=")
@@ -79,7 +97,26 @@ Structure = [{};,]
 
 <YYINITIAL> {
 /* keywords */
-{Keyword}                      { return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+classKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+extendsKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+staticKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); } 
+voidKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+intKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+booleanKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+stringKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+returnKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+ifKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+elseKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+whileKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+breakKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+continueKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+thisKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+newKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+lengthKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+trueKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+falseKeyword					{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+nullKeyword						{ return token(sym.OTHER_SYMBOL, yytext(), yytext(), false); }
+
 
 /* identifiers */
 "_" {IdentifierCharacter}*     { Error(yytext(), false);}
