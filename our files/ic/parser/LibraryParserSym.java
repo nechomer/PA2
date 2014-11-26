@@ -6,7 +6,7 @@
 package ic.parser;
 
 /** CUP generated class containing symbol constants. */
-public class ParserSym {
+public class LibraryParserSym {
   /* terminals */
   public static final int METHOD_ID = 20;
   public static final int CLASS = 18;
