@@ -136,9 +136,9 @@ comaStracture = ","
 {extendsKeyword}				{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {staticKeyword}					{ return token(sym.STATIC, yytext(), false); } 
 {voidKeyword}					{ return token(sym.VOID, yytext(), false); }
-{intKeyword}					{ return token(sym.INTEGER_LITERAL, yytext(), false); }
-{booleanKeyword}				{ return token(sym.BOOLEAN_LITERAL, yytext(), false); }
-{stringKeyword}					{ return token(sym.STRING_LITERAL, yytext(), false); }
+{intKeyword}					{ return token(sym.INTEGER, yytext(), false); }
+{booleanKeyword}				{ return token(sym.BOOLEAN, yytext(), false); }
+{stringKeyword}					{ return token(sym.STRING, yytext(), false); }
 {returnKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {ifKeyword}						{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {elseKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
@@ -148,8 +148,8 @@ comaStracture = ","
 {thisKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {newKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {lengthKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{trueKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
-{falseKeyword}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
+{trueKeyword}					{ return token(sym.BOOLEAN_LITERAL, Boolean.valueOf(yytext()), false); }
+{falseKeyword}					{ return token(sym.BOOLEAN_LITERAL, Boolean.valueOf(yytext()), false); }
 {nullKeyword}					{ return token(sym.NULL_LITERAL, yytext(), false); }
 
 
@@ -163,7 +163,7 @@ comaStracture = ","
 /* literals */
 
 0+ {DecIntegerLiteral}         { Error(yytext(), false); }
-{DecIntegerLiteral}            { return token(sym.INTEGER, "INTEGER", new Integer(yytext()), false); }
+{DecIntegerLiteral}            { return token(sym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
 \"                             { lastPos(); string.setLength(0); string.append("\""); yybegin(STRING); }
 
 
@@ -173,7 +173,7 @@ comaStracture = ","
 {rightBracketOperator}			{ return token(sym.RBRACKET, yytext(), false); }
 {leftparenOperator}				{ return token(sym.LPAREN, yytext(), false); }
 {rightparenOperator}			{ return token(sym.RPAREN, yytext(), false); }
-{dotOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
+{dotOperator}					{ return token(sym.DOT, yytext(), false); }
 {minusOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {notOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
 {multOperator}					{ return token(sym.OTHER_SYMBOL, yytext(), false); }
@@ -212,7 +212,7 @@ comaStracture = ","
 
 
 <STRING> {
-\"                             { yybegin(YYINITIAL); string.append("\""); return token(sym.STRING, "STRING", string.toString(), true); }
+\"                             { yybegin(YYINITIAL); string.append("\""); return token(sym.STRING_LITERAL, "STRING", string.toString(), true); }
 {StringCharacter}+             { string.append(yytext()); }
 <<EOF>>                        { Error(yytext(), true); }
 }
