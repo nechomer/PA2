@@ -56,16 +56,16 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
     "\012\017\023\020\016\021\017\022\022\001\002\000\006" +
     "\005\014\016\011\001\002\000\006\005\uffff\016\uffff\001" +
     "\002\000\004\002\001\001\002\000\006\005\ufffe\016\ufffe" +
-    "\001\002\000\006\023\ufff7\026\ufff7\001\002\000\006\023" +
-    "\ufff5\026\ufff5\001\002\000\004\026\ufffc\001\002\000\004" +
-    "\026\024\001\002\000\006\023\ufff6\026\ufff6\001\002\000" +
-    "\004\026\ufffb\001\002\000\004\006\025\001\002\000\010" +
-    "\020\016\021\017\022\022\001\002\000\012\007\032\020" +
-    "\016\021\017\022\022\001\002\000\004\023\031\001\002" +
-    "\000\012\007\ufffa\020\ufffa\021\ufffa\022\ufffa\001\002\000" +
-    "\012\007\ufff8\020\ufff8\021\ufff8\022\ufff8\001\002\000\004" +
-    "\010\034\001\002\000\012\007\ufff9\020\ufff9\021\ufff9\022" +
-    "\ufff9\001\002\000\006\005\ufffd\016\ufffd\001\002" });
+    "\001\002\000\004\023\ufff7\001\002\000\004\023\ufff5\001" +
+    "\002\000\004\023\ufffc\001\002\000\004\023\024\001\002" +
+    "\000\004\023\ufff6\001\002\000\004\023\ufffb\001\002\000" +
+    "\004\006\025\001\002\000\010\020\016\021\017\022\022" +
+    "\001\002\000\012\007\032\020\016\021\017\022\022\001" +
+    "\002\000\004\023\031\001\002\000\012\007\ufffa\020\ufffa" +
+    "\021\ufffa\022\ufffa\001\002\000\012\007\ufff8\020\ufff8\021" +
+    "\ufff8\022\ufff8\001\002\000\004\010\034\001\002\000\012" +
+    "\007\ufff9\020\ufff9\021\ufff9\022\ufff9\001\002\000\006\005" +
+    "\ufffd\016\ufffd\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -239,19 +239,19 @@ class CUP$LibraryParser$actions {
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // stmethod ::= STATIC methodType METHOD_ID LPAREN formal_block RPAREN SEMI 
+          case 4: // stmethod ::= STATIC methodType IDENTIFIER LPAREN formal_block RPAREN SEMI 
             {
               StaticMethod RESULT =null;
 		int tleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)).right;
 		PrimitiveType t = (PrimitiveType)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)).value;
-		int mileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).left;
-		int miright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).right;
-		java.lang.String mi = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).right;
+		java.lang.String id = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).value;
 		int fbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
 		int fbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
 		List<Formal> fb = (List<Formal>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
-		RESULT = new StaticMethod(t,mi,fb,null); 
+		RESULT = new StaticMethod(t,id,fb,null); 
               CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("stmethod",1, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-6)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
@@ -269,7 +269,7 @@ class CUP$LibraryParser$actions {
           case 6: // methodType ::= VOID 
             {
               PrimitiveType RESULT =null;
-		 RESULT = new Type(getLine(), DataTypes.VOID); 
+		 RESULT = new PrimitiveType(getLine(), DataTypes.VOID); 
               CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("methodType",5, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
@@ -320,7 +320,7 @@ class CUP$LibraryParser$actions {
           case 10: // formalType ::= INTEGER 
             {
               PrimitiveType RESULT =null;
-		 RESULT = new Type(getLine(), DataTypes.INT); 
+		 RESULT = new PrimitiveType(getLine(), DataTypes.INT); 
               CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
@@ -329,7 +329,7 @@ class CUP$LibraryParser$actions {
           case 11: // formalType ::= BOOLEAN 
             {
               PrimitiveType RESULT =null;
-		 RESULT = new Type(getLine(), DataTypes.BOOLEAN); 
+		 RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); 
               CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
@@ -338,7 +338,7 @@ class CUP$LibraryParser$actions {
           case 12: // formalType ::= STRING 
             {
               PrimitiveType RESULT =null;
-		 RESULT = new Type(getLine(), DataTypes.STRING); 
+		 RESULT = new PrimitiveType(getLine(), DataTypes.STRING); 
               CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
