@@ -3,7 +3,7 @@ import java_cup.runtime.Symbol;
 
 public class Token extends Symbol {
     public int line, column;
-    public String tag
+    public String tag;
     public Object value;
 
     public Token(int id, int line, int column, String tag, Object value) {
@@ -19,12 +19,11 @@ public class Token extends Symbol {
         this.line = line;
         this.column = column;
         this.tag = tag;
-        this.value = value;
     }
 
     public String toString() {
 		String val = value != null ? "(" + value + ")" : "";
-		return name +  val;
+		return tag +  val;
 	}
 }
 
