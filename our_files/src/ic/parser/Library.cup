@@ -1,0 +1,114 @@
+package ic.parser;
+
+import ic.*;
+import ic.parser.*;
+import ic.ast.*;
+import ic.ast.expr.*;
+import ic.ast.methods.*;
+import ic.ast.stmt.*;
+import ic.ast.types.*;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.util.List;
+class LibraryParser;
+
+parser code  {:
+	/** Causes the parsr to print every token it reads.
+	 * This is useful for debugging.
+	 */
+	
+	public boolean printTokens;
+	
+	private Lexer lexer;
+
+	public LibraryParser(Lexer lexer) {
+		super(lexer);
+		this.lexer = lexer;
+	}
+	
+	public int getLine() {
+		//return lexer.getCurrentLine(); 
+		return 1;
+	}
+	
+	public void syntax_error(Symbol s) {
+		Token tok = (Token) s;
+		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+	}
+:}
+
+// This is just for debugging
+scan with {:
+	Token t = lexer.next_token();
+	if (printTokens)
+		System.out.println(t.getLine() + ":" + t);
+	return t; 
+:};
+
+/*********** Symbol list - terminals ***********/
+terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMI, COMA, DOT;
+terminal LBRACKET, RBRACKET; /****array_type****/
+terminal OTHER_SYMBOL; /****Debug****/
+terminal STATIC;
+terminal VOID, INTEGER, STRING, BOOLEAN;
+terminal java.lang.String IDENTIFIER; /****var_name****/
+terminal CLASS;
+terminal java.lang.String CLASS_ID; /****class_name****/
+
+terminal java.lang.Number INTEGER_LITERAL;
+terminal java.lang.Boolean BOOLEAN_LITERAL;
+terminal java.lang.String STRING_LITERAL;
+terminal NULL_LITERAL;
+
+/*********** Symbol list - non-terminals) ***********/
+non terminal  ICClass icclass;
+non terminal  StaticMethod stmethod;
+non terminal  List<Method> method_block;
+non terminal  Formal formal;
+non terminal  List<Formal> formal_block;
+non terminal  PrimitiveType methodType;
+non terminal  PrimitiveType formalType;
+
+
+/*********** Precedence declarations ***********/
+
+
+/*********** The grammar ***********/
+
+icclass ::= CLASS CLASS_ID:ci LBRACE method_block:mb RBRACE
+	{: RESULT = new ICClass(getLine(), ci, null, mb); :};
+
+method_block ::= stmethod:sm
+	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; :}
+	| 			 method_block:mb stmethod:sm
+	{: mb.add(sm); RESULT = mb; :};
+
+stmethod ::= STATIC methodType:t IDENTIFIER:id LPAREN RPAREN SEMI
+{:RESULT = new StaticMethod(t,id,null,null); System.out.println("finish function"); :}
+	|		 STATIC methodType:t IDENTIFIER:id LPAREN formal_block:fb RPAREN SEMI
+{:RESULT = new StaticMethod(t,id,fb,null); System.out.println("finish function"); :};
+
+methodType ::=	formalType:ft
+	{: RESULT = ft; :}
+	|			VOID
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); :};
+		
+
+formal_block ::= formal:f
+	{: List<Formal> fb = new ArrayList<Formal>(); fb.add(f); RESULT = fb; :}
+	| formal_block:fb COMA formal:f
+	{: fb.add(f); RESULT = fb; :};
+
+formal  ::= formalType:t IDENTIFIER:i
+	{: RESULT = new Formal(t,i); :};
+
+formalType  ::= INTEGER
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); :}
+		|		BOOLEAN
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); :}
+		|		STRING
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); :}
+		| 		formalType:ft LBRACKET RBRACKET
+	{: ft.incrementDimension(); RESULT = ft; :}  
+	;
+
