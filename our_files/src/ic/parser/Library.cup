@@ -61,6 +61,7 @@ terminal java.lang.String STRING_LITERAL;
 terminal NULL_LITERAL;
 
 /*********** Symbol list - non-terminals) ***********/
+non terminal  Program program;
 non terminal  ICClass icclass;
 non terminal  StaticMethod stmethod;
 non terminal  List<Method> method_block;
@@ -75,40 +76,45 @@ non terminal  PrimitiveType formalType;
 
 /*********** The grammar ***********/
 
+program ::= program icclass
+	|		icclass;
+
 icclass ::= CLASS CLASS_ID:ci LBRACE method_block:mb RBRACE
-	{: RESULT = new ICClass(getLine(), ci, null, mb); :};
+	{: RESULT = new ICClass(getLine(), ci, null, mb); System.out.println("finish icclass "+ci+ " : " + mb); :}
+	| 		CLASS CLASS_ID:ci LBRACE RBRACE
+	{: RESULT = new ICClass(getLine(), ci, null, null); System.out.println("finish icclass "+ci); :};
 
 method_block ::= stmethod:sm
-	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; :}
+	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; System.out.println("crate function block with methods mb= "+mb+" added function sm = "+sm);:}
 	| 			 method_block:mb stmethod:sm
-	{: mb.add(sm); RESULT = mb; :};
+	{: mb.add(sm); RESULT = mb; System.out.println("added function to function block with methods mb= "+mb+" added function sm = "+sm); :};
 
 stmethod ::= STATIC methodType:t IDENTIFIER:id LPAREN RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,null,null); System.out.println("finish function"); :}
+{:RESULT = new StaticMethod(t,id,null,null); System.out.println("finish function not args "+id); :}
 	|		 STATIC methodType:t IDENTIFIER:id LPAREN formal_block:fb RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,fb,null); System.out.println("finish function"); :};
+{:RESULT = new StaticMethod(t,id,fb,null); System.out.println("finish function "+id+" : "+fb); :};
 
 methodType ::=	formalType:ft
 	{: RESULT = ft; :}
 	|			VOID
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); :};
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); :};
 		
 
 formal_block ::= formal:f
-	{: List<Formal> fb = new ArrayList<Formal>(); fb.add(f); RESULT = fb; :}
+	{: List<Formal> fb = new ArrayList<Formal>(); fb.add(f); RESULT = fb; System.out.println("added formal block : fb= "+fb+" : f= "+f); :}
 	| formal_block:fb COMA formal:f
-	{: fb.add(f); RESULT = fb; :};
+	{: fb.add(f); RESULT = fb; System.out.println("added formal to block fb= "+fb+" : f= "+f);:};
 
 formal  ::= formalType:t IDENTIFIER:i
-	{: RESULT = new Formal(t,i); :};
+	{: RESULT = new Formal(t,i); System.out.println("added formal t= "+t+" : i= "+i);:};
 
 formalType  ::= INTEGER
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); :}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); :}
 		|		BOOLEAN
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); :}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("added primitive boolean");:}
 		|		STRING
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); :}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("added primitive string");:}
 		| 		formalType:ft LBRACKET RBRACKET
-	{: ft.incrementDimension(); RESULT = ft; :}  
+	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:}  
 	;
 
