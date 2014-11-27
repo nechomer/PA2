@@ -41,8 +41,8 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
     "\000\017\000\002\002\007\000\002\002\004\000\002\004" +
     "\003\000\002\004\004\000\002\003\011\000\002\007\003" +
     "\000\002\007\003\000\002\006\003\000\002\006\004\000" +
-    "\002\005\004\000\002\005\006\000\002\010\003\000\002" +
-    "\010\003\000\002\010\003\000\002\010\002" });
+    "\002\005\004\000\002\010\003\000\002\010\003\000\002" +
+    "\010\003\000\002\010\005\000\002\010\002" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -50,26 +50,26 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\035\000\004\024\004\001\002\000\004\025\007\001" +
+    "\000\034\000\004\024\004\001\002\000\004\025\007\001" +
     "\002\000\004\002\006\001\002\000\004\002\000\001\002" +
     "\000\004\004\010\001\002\000\004\016\011\001\002\000" +
-    "\014\017\022\020\016\021\017\022\023\023\ufff3\001\002" +
-    "\000\006\005\014\016\011\001\002\000\006\005\uffff\016" +
-    "\uffff\001\002\000\004\002\001\001\002\000\006\005\ufffe" +
-    "\016\ufffe\001\002\000\006\013\ufff6\023\ufff6\001\002\000" +
-    "\006\013\ufff4\023\ufff4\001\002\000\004\023\ufffc\001\002" +
-    "\000\004\023\024\001\002\000\004\023\ufffb\001\002\000" +
-    "\006\013\ufff5\023\ufff5\001\002\000\004\006\025\001\002" +
-    "\000\014\013\ufff3\020\016\021\017\022\023\023\ufff3\001" +
-    "\002\000\016\007\035\013\ufff3\020\016\021\017\022\023" +
-    "\023\ufff3\001\002\000\006\013\032\023\031\001\002\000" +
-    "\016\007\ufffa\013\ufffa\020\ufffa\021\ufffa\022\ufffa\023\ufffa" +
-    "\001\002\000\016\007\ufff8\013\ufff8\020\ufff8\021\ufff8\022" +
-    "\ufff8\023\ufff8\001\002\000\004\014\033\001\002\000\004" +
-    "\023\034\001\002\000\016\007\ufff7\013\ufff7\020\ufff7\021" +
-    "\ufff7\022\ufff7\023\ufff7\001\002\000\004\010\037\001\002" +
-    "\000\016\007\ufff9\013\ufff9\020\ufff9\021\ufff9\022\ufff9\023" +
-    "\ufff9\001\002\000\006\005\ufffd\016\ufffd\001\002" });
+    "\016\013\ufff3\017\023\020\016\021\017\022\022\023\ufff3" +
+    "\001\002\000\006\005\014\016\011\001\002\000\006\005" +
+    "\uffff\016\uffff\001\002\000\004\002\001\001\002\000\006" +
+    "\005\ufffe\016\ufffe\001\002\000\006\013\ufff7\023\ufff7\001" +
+    "\002\000\006\013\ufff5\023\ufff5\001\002\000\006\013\032" +
+    "\023\ufffc\001\002\000\004\023\024\001\002\000\006\013" +
+    "\ufff6\023\ufff6\001\002\000\004\023\ufffb\001\002\000\004" +
+    "\006\025\001\002\000\014\013\ufff3\020\016\021\017\022" +
+    "\022\023\ufff3\001\002\000\016\007\034\013\ufff3\020\016" +
+    "\021\017\022\022\023\ufff3\001\002\000\006\013\032\023" +
+    "\031\001\002\000\016\007\ufffa\013\ufffa\020\ufffa\021\ufffa" +
+    "\022\ufffa\023\ufffa\001\002\000\016\007\ufff8\013\ufff8\020" +
+    "\ufff8\021\ufff8\022\ufff8\023\ufff8\001\002\000\004\014\033" +
+    "\001\002\000\006\013\ufff4\023\ufff4\001\002\000\004\010" +
+    "\036\001\002\000\016\007\ufff9\013\ufff9\020\ufff9\021\ufff9" +
+    "\022\ufff9\023\ufff9\001\002\000\006\005\ufffd\016\ufffd\001" +
+    "\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -77,17 +77,17 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\035\000\004\002\004\001\001\000\002\001\001\000" +
+    "\000\034\000\004\002\004\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\006" +
     "\003\012\004\011\001\001\000\006\007\020\010\017\001" +
     "\001\000\004\003\014\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\010\005\027\006" +
-    "\025\010\026\001\001\000\006\005\035\010\026\001\001" +
+    "\025\010\026\001\001\000\006\005\034\010\026\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001" });
+    "\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -321,19 +321,7 @@ class CUP$LibraryParser$actions {
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // formal ::= formalType LBRACKET RBRACKET IDENTIFIER 
-            {
-              Formal RESULT =null;
-		int ileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
-		int iright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
-		java.lang.String i = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
-		 RESULT = new Formal(t,i); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal",3, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
-            }
-          return CUP$LibraryParser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // formalType ::= INTEGER 
+          case 10: // formalType ::= INTEGER 
             {
               PrimitiveType RESULT =null;
 		 RESULT = new PrimitiveType(getLine(), DataTypes.INT); 
@@ -342,7 +330,7 @@ class CUP$LibraryParser$actions {
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // formalType ::= BOOLEAN 
+          case 11: // formalType ::= BOOLEAN 
             {
               PrimitiveType RESULT =null;
 		 RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); 
@@ -351,7 +339,7 @@ class CUP$LibraryParser$actions {
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // formalType ::= STRING 
+          case 12: // formalType ::= STRING 
             {
               PrimitiveType RESULT =null;
 		 RESULT = new PrimitiveType(getLine(), DataTypes.STRING); 
@@ -360,10 +348,22 @@ class CUP$LibraryParser$actions {
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
+          case 13: // formalType ::= formalType LBRACKET RBRACKET 
+            {
+              PrimitiveType RESULT =null;
+		int ftleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
+		int ftright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
+		PrimitiveType ft = (PrimitiveType)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
+		 ft.incrementDimension(); RESULT = ft; 
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+            }
+          return CUP$LibraryParser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
           case 14: // formalType ::= 
             {
               PrimitiveType RESULT =null;
-		RESULT = NULL
+		 RESULT = null; 
               CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
