@@ -230,4 +230,4 @@ comaStracture = ","
 [^]                           	{ Error(yytext(), false); }
 
 /*regular EOF*/
-<<EOF>>							{ return null; }
+<<EOF>>							{ return token(LibraryParserSym.EOF, yytext(), false); }

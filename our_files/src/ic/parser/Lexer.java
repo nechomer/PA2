@@ -834,7 +834,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             case 109: break;
             default:
               {
-                return null;
+                return token(LibraryParserSym.EOF, yytext(), false);
               }
             }
           } 

@@ -1,0 +1,88 @@
+package ic.parser;
+
+import ic.*;
+import ic.parser.*;
+import ic.ast.*;
+import ic.ast.expr.*;
+import ic.ast.methods.*;
+import ic.ast.stmt.*;
+import ic.ast.types.*;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.util.List;
+class LibraryParser;
+
+parser code  {:
+	/** Causes the parsr to print every token it reads.
+	 * This is useful for debugging.
+	 */
+	
+	public boolean printTokens;
+	
+	private Lexer lexer;
+
+	public LibraryParser(Lexer lexer) {
+		super(lexer);
+		this.lexer = lexer;
+		printTokens = true;
+	}
+	
+	public int getLine() {
+		//return lexer.getCurrentLine(); 
+		return 1;
+	}
+	
+	public void syntax_error(Symbol s) {
+		Token tok = (Token) s;
+		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+	}
+:}
+
+// This is just for debugging
+scan with {:
+	Token t = lexer.next_token();
+	if (printTokens && (t != null)){
+		System.out.println(t.getLine() + ":" + t);
+	}
+	if (printTokens && (t==null)) {
+		System.out.println("tried printing null token!");
+	}
+	return t; 
+:};
+
+/*********** Symbol list - terminals ***********/
+terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMI, COMA, DOT;
+terminal LBRACKET, RBRACKET; /****array_type****/
+terminal OTHER_SYMBOL; /****Debug****/
+terminal STATIC;
+terminal VOID, INTEGER, STRING, BOOLEAN;
+terminal java.lang.String IDENTIFIER; /****var_name****/
+terminal CLASS;
+terminal java.lang.String CLASS_ID; /****class_name****/
+
+terminal java.lang.Number INTEGER_LITERAL;
+terminal java.lang.Boolean BOOLEAN_LITERAL;
+terminal java.lang.String STRING_LITERAL;
+terminal NULL_LITERAL;
+
+/*********** Symbol list - non-terminals) ***********/
+non terminal  Program program;
+non terminal  ICClass icclass;
+non terminal  StaticMethod stmethod;
+non terminal  List<Method> method_block;
+non terminal  Formal formal;
+non terminal  List<Formal> formal_block;
+non terminal  PrimitiveType methodType;
+non terminal  PrimitiveType formalType;
+
+
+/*********** Precedence declarations ***********/
+
+
+/*********** The grammar ***********/
+
+start with program;
+
+program ::= LPAREN
+	{: RESULT =  new Program(null); :}
+	;
