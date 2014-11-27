@@ -91,7 +91,9 @@ methodType ::=	formalType
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); :};
 		
 
-formal_block ::= formal:f
+formal_block ::= /* empty */
+                {: RESULT = null; :}
+	| formal:f
 	{: RESULT = new ArrayList<Formal>(); RESULT.add(f); :}
 	| formal_block:fb formal:f
 	{: fb.add(f); RESULT = fb; :};
