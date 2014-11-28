@@ -1,6 +1,7 @@
 package ic;
 
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -34,9 +35,17 @@ public class Main
 //        	Lexer lexer = new Lexer(new FileReader(args[0]));
 //        	while ((token = lexer.next_token()) != null) {
 //            	objValue = token.value;
-//            	System.out.println((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
+//            	System.out.println((objValue != null ? objValue.toString(): token.sym)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
 //            }
 //        	System.out.println("finished!");
+//        	boolean skipParser = true;
+//        	try {
+//        		debugOverFolder(args[1], skipParser, args[2]);
+//        	} catch (Exception e){
+//        		System.out.println(e.getMessage());
+//        	}
+        	
+        	
             LibraryParser lp = new LibraryParser(new Lexer(new FileReader(args[0])));
             System.out.println("finished part 1!");
             Symbol result = lp.parse();
@@ -69,6 +78,12 @@ public class Main
 		}
     }
 	
+	
+	
+	/**********************************************DEBUG*******************************************************/
+	
+	
+	
 	public static void PrintHeader() { 
 		System.out.println("token\ttag\tline :column");
 	}
@@ -78,5 +93,111 @@ public class Main
 	}
 	public static void PrintTokenError(String errMsg) {
 		System.err. println ("Error!\t"+errMsg);
+	}
+	
+	//folderPath is source of files folder
+	//onlyLexer is true if we try only the lexer
+	//outputFolder is the output folder if its supplied, else its a new folder named "output_pa2" that need to be present at destination
+	private static void debugOverFolder(String folderPath, boolean onlyLexer, String outputFolder) throws Exception {
+		
+		if(folderPath == null) return; 
+		
+		File[] files = new File(folderPath).listFiles();
+		String tempFile, targetFile, targetDirPath, tempFileName;
+		Token token;
+    	Object objValue;
+    	FileWriter fw;
+    	
+    	//make target dir path
+    	targetDirPath = String.format("%s", folderPath);
+    	targetDirPath = removeDirOfFile(targetDirPath);
+    	targetDirPath += File.separator + "output_pa2" + File.separator;
+    	
+		for (File file : files) {
+	        if (file.isDirectory()) {
+	           //do nothing
+	        } else {
+	        	tempFileName = file.getName();
+	        	if(!tempFileName.endsWith(".ic") && !tempFileName.endsWith(".sig")) continue; // skip non ic sig files
+	        	
+	            System.out.println("Entered File: " + tempFileName);
+	            tempFile = String.format("%s%s", folderPath, tempFileName);
+	        	System.out.println("temp file is: " + tempFile);
+	        	
+	        	//make target fileName for lexer
+	        	targetFile = String.format("%s", tempFileName);
+	        	targetFile = removeEnd(targetFile);
+	        	targetFile = String.format("%s.output", targetFile);
+	        	
+	        	//make target file path
+	        	if (null == outputFolder) {
+	        		targetFile = targetDirPath + targetFile;
+	        	} else {
+	        		targetFile = outputFolder + targetFile;
+	        	}
+	        	
+	        	
+	        	fw = new FileWriter(targetFile);
+    			fw.write("token\ttag\tline :column\n");
+    			
+    			
+	        	Lexer lexer = new Lexer(new FileReader(tempFile));
+	        	while ((token = lexer.next_token()) != null) {
+	            	objValue = token.value;
+	            	System.out.println((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
+	            	fw.write((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
+	            }
+	        	fw.close();
+	        	
+	        	System.out.println("finished lexing file " + tempFile);
+	            if (!onlyLexer){
+	            	LibraryParser lp = new LibraryParser(new Lexer(new FileReader(tempFile)));
+	                System.out.println("finished constructing parser for" + tempFile);
+	                Symbol result = lp.parse();
+	                System.out.println("finished parsing!");
+	                Object symbol = result.value;
+	                System.out.println("finished all");
+	            }
+	        }
+	    }
+	}
+	
+	
+	public static String removeEnd(String in){
+        if(in == null) {
+            return null;
+        }
+        int p = in.lastIndexOf(".");
+        if(p <= 0){
+            return in;
+        }
+        return in.substring(0, p);
+    }
+	
+	public static String getFileName(String in) {
+		if(in == null) {
+            return null;
+        }
+        int p = in.lastIndexOf(File.separator);
+        if(p <= 0){
+            return in;
+        }
+        return in.substring(p, in.length());
+	}
+	
+	public static String removeDirOfFile(String in) {
+		if(in == null) {
+            return null;
+        }
+        int p = in.lastIndexOf(File.separator);
+        if(p <= 0){
+            return in;
+        }
+        String beforeLast = in.substring(0, p);
+        p = beforeLast.lastIndexOf(File.separator);
+        if(p <= 0){
+            return in;
+        }
+        return beforeLast.substring(0, p);
 	}
 }
