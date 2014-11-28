@@ -64,6 +64,7 @@ terminal NULL_LITERAL;
 /*********** Symbol list - non-terminals) ***********/
 non terminal  Program program;
 non terminal  ICClass icclass;
+non terminal  List<ICClass> icclass_block;
 non terminal  StaticMethod stmethod;
 non terminal  List<Method> method_block;
 non terminal  Formal formal;
@@ -77,8 +78,8 @@ non terminal  PrimitiveType formalType;
 
 /*********** The grammar ***********/
 
-program ::= program icclass
-	|		icclass;
+program ::=  icclass:icc
+	{: List<ICClass> iccb = new ArrayList<ICClass>(); iccb.add(icc); RESULT = new Program(iccb); System.out.println("finish Program with calss : " + iccb); :};
 
 icclass ::= CLASS CLASS_ID:ci LBRACE method_block:mb RBRACE
 	{: RESULT = new ICClass(getLine(), ci, null, mb); System.out.println("finish icclass "+ci+ " : " + mb); :}
