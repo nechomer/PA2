@@ -135,6 +135,7 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
     {
 
 	Token t = lexer.next_token();
+	currentLine = t.getLine();
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + t);
 	return t; 
@@ -149,6 +150,7 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 	public boolean printTokens;
 	
 	private Lexer lexer;
+	private int currentLine = 0;
 
 	public LibraryParser(Lexer lexer) {
 		super(lexer);
@@ -156,8 +158,7 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 	}
 	
 	public int getLine() {
-		//return lexer.getCurrentLine(); 
-		return 1;
+		return currentLine;
 	}
 	
 	public void syntax_error(Symbol s) {
