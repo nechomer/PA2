@@ -72,58 +72,98 @@ non terminal
 non terminal Program program;
 non terminal ICClass icclass;
 non terminal List<ICClass> icclass_block;
-non terminal StaticMethod stmethod;
-non terminal List<Method> method_block;
-non terminal Formal formal;
-non terminal List<Formal> formal_block;
-non terminal Field field;
-non terminal List<Field> field_block;
-non terminal Statement stmt;
-non terminal List<Statement> stmt_block;
-non terminal Assignment assg;
-non terminal If if;
-non terminal While while;
-non terminal Return return;
-non terminal Continue continue;
-non terminal Break break;
-non terminal PrimitiveType methodType;
-non terminal PrimitiveType primitive_type;
+non terminal String class_extends;
+non terminal List<ASTNode> class_body;
 
-non terminal class_extends
+non terminal Method method;
+non terminal List<Field> field_list;
+non terminal Field field;
+
+non terminal StaticMethod static_method;
+non terminal VirtualMethod virtual_method;
+
+
+non terminal List<Statement> stmt_list;
+non terminal Statement stmt;
+non terminal StatementsBlock stmt_block;
+
+non terminal Assignment assignment_stmt;
+non terminal CallStatement call_stmt;
+non terminal Return return_stmt;
+non terminal If if_stmt;
+non terminal While while_stmt;
+non terminal Break break_stmt;
+non terminal Continue continue_stmt;
+
+
+non terminal List<Formal> formal_list;
+non terminal Formal formal;
+non terminal Type methodType;
+non terminal Type type;
+
+
 
 /*********** Precedence declarations ***********/
 
 
 /*********** The grammar ***********/
 
-program ::=  icclass:icc
-	|		 icclass_block:iccb icclass:icc
+program ::= icclass:icc
+	|		icclass_block:iccb icclass:icc
+	| 		/* return new program with empty List<ICClass> */
 	;
 
-icclass ::= CLASS CLASS_ID:ci class_extends LBRACE class_body RBRACE
+icclass ::= CLASS CLASS_ID:ci class_extends:ce LBRACE class_body:cb RBRACE
 	;
 
-class_extends  ::= EXTENDS
-	|
+class_extends ::= 	EXTENDS CLASS_ID:ci
+	| 				/* return null as String */
 	;
 
-class_body ::= field_block:fb method_block:mb
-	|
+class_body ::= 	class_body:cb field_list:fl SEMI		/* return new List<ASTNode> after cb
+															list unified with field list */
+	|			class_body:cb method:m SEMI
+	|			field_list:fl SEMI						/* return new List<ASTNode> with 1 object */
+	|			method:m SEMI						/* return new List<ASTNode> with 1 object */
+	| 				/* return empty List<ASTNode> */
 	;
 
-
-
-field_block ::= field:f
-	{: List<Field> fb = new ArrayList<Field>(); fb.add(f); RESULT = fb; System.out.println("added field block : fb= "+fb+" : f= "+f); :}
-	| 			field_block:fb COMA field:f
-	{: fb.add(f); RESULT = fb; System.out.println("added field to block fb= "+fb+" : f= "+f); :}
-	|
-	{: List<Field> fb = new ArrayList<Field>(); RESULT = fb; :}
+method ::= 	static_method
+	|		virtual_method
 	;
 
-field  ::= primitive_type:t IDENTIFIER:i
+field_list ::= 	field:f
+	| 			field_list:fl COMA field:f
+	;
+
+field ::= type:t IDENTIFIER:i
 	{: RESULT = new Field(t,i); System.out.println("added field t= "+t+" : i= "+i); :}
 	;
+
+static_method ::= STATIC methodType:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list RBRACKET
+	;
+
+virtual_method ::= 	methodType:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list RBRACKET
+	;
+
+
+stmt_list ::= 	stmt:st 
+	|			stmt_list:sl stmt:st
+	| 				/* return empty List<Statement> */
+	;
+
+stmt ::= assignment_stmt SEMI
+	|	call_stmt SEMI
+	|	return_stmt SEMI
+	|	if_stmt SEMI
+	|	while_stmt SEMI
+	|	break_stmt SEMI
+	|	continue_stmt SEMI
+	|	stmt_block
+	|	type Identifier:i
+	|	type Identifier:i EQ expr
+
+
 
 method_block ::= stmethod:sm 
 	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; System.out.println("crate function block with methods mb= "+mb+" added function sm = "+sm);:}
@@ -133,36 +173,40 @@ method_block ::= stmethod:sm
 	{: List<Method> mb = new ArrayList<Method>(); RESULT = mb; :}
 	;
 
-stmethod ::= STATIC methodType:t IDENTIFIER:id LPAREN formal_block:fb RPAREN 
+stmethod ::= STATIC methodType:t IDENTIFIER:id LPAREN formal_list:fl RPAREN 
 	{:RESULT = new StaticMethod(t,id,fb,null); System.out.println("finish function "+id+" : "+fb); :}
 	;
 
-methodType ::=	primitive_type:ft
-	{: RESULT = ft; :}
-	|			VOID
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); :}
-	;
+
 		
 
-formal_block ::= formal:f
-	{: List<Formal> fb = new ArrayList<Formal>(); fb.add(f); RESULT = fb; System.out.println("added formal block : fb= "+fb+" : f= "+f); :}
-	| formal_block:fb COMA formal:f
-	{: fb.add(f); RESULT = fb; System.out.println("added formal to block fb= "+fb+" : f= "+f); :}
-	|
-	{: List<Formal> fb = new ArrayList<Formal>(); RESULT = fb; :}
+
+
+
+formal_list ::= formal:f
+	| 			formal_list:fl COMA formal:f
+	| 			/* return empty List<Formal> */
 	;
 
 formal  ::= primitive_type:t IDENTIFIER:i
 	{: RESULT = new Formal(t,i); System.out.println("added formal t= "+t+" : i= "+i); :}
 	;
 
-primitive_type  ::= INTEGER
+methodType ::=	type:ft
+	{: RESULT = ft; :}
+	|			VOID
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); :}
+	;
+
+type  ::= 		INTEGER
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); :}
 		|		BOOLEAN
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("added primitive boolean");:}
 		|		STRING
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("added primitive string");:}
-		| 		primitive_type:ft LBRACKET RBRACKET
+		|		CLASS_ID:ci
+	{: RESULT = new UserType(getLine(), ci); System.out.println("added TYPE User Defined type");:}
+		| 		type:ft LBRACKET RBRACKET
 	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:} 
 	;
 
