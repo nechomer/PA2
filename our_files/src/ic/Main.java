@@ -14,6 +14,7 @@ import ic.ast.ASTNode;
 import ic.parser.Lexer;
 import ic.parser.LexicalError;
 import ic.parser.LibraryParser;
+import ic.parser.LibraryParserSym;
 import ic.parser.ParserException;
 import ic.parser.Scanner;
 import ic.parser.Token;
@@ -25,33 +26,33 @@ public class Main
         List<Token> libtokens = new ArrayList<Token>();
         
         try {
-//            // Lexical analysis
+            // Lexical analysis
 //        	Scanner.process(new FileReader(args[0]), tokens);
 //            if (args.length > 1) 
 //            	Scanner.process(new FileReader(args[1].substring(2)), libtokens);
         	
 //        	Token token;
 //        	Object objValue;
-//        	Lexer lexer = new Lexer(new FileReader(args[0]));
-//        	while ((token = lexer.next_token()) != null) {
-//            	objValue = token.value;
-//            	System.out.println((objValue != null ? objValue.toString(): token.sym)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
-//            }
-//        	System.out.println("finished!");
-//        	boolean skipParser = true;
-//        	try {
-//        		debugOverFolder(args[1], skipParser, args[2]);
-//        	} catch (Exception e){
-//        		System.out.println(e.getMessage());
-//        	}
+ //       	Lexer lexer = new Lexer(new FileReader(args[0]));
+ //       	while ((token = lexer.next_token()) != null) {
+ //           	objValue = token.value;
+ //           	System.out.println((objValue != null ? objValue.toString(): token.sym)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
+ //           }
+ //       	System.out.println("finished!");
+        	boolean skipParser = false;
+        	try {
+        		debugOverFolder(args[0], skipParser, args[1]);
+        	} catch (Exception e){
+        		System.out.println(e.getMessage());
+        	}
         	
         	
-            LibraryParser lp = new LibraryParser(new Lexer(new FileReader(args[0])));
-            System.out.println("finished part 1!");
-            Symbol result = lp.parse();
-            System.out.println("finished part 2!");
-            Object symbol = result.value;
-            System.out.println("finished part 3!");
+//            LibraryParser lp = new LibraryParser(new Lexer(new FileReader(args[0])));
+//            System.out.println("finished part 1!");
+//            Symbol result = lp.parse();
+//            System.out.println("finished part 2!");
+//            Object symbol = result.value;
+//            System.out.println("finished part 3!");
             
 //            // Syntax Analysis
 //            ASTNode progAst = null, libAst = null;            
@@ -67,11 +68,11 @@ public class Main
 //            if (progAst != null) 
 //                System.out.println(progAst.accept(new PrettyPrint()));
             
-        } catch (ParserException  | LexicalError e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.printf("IO Error:\n%s\n", e.getMessage());
+        //} catch (ParserException  | LexicalError e) {
+        //    System.out.println(e.getMessage());
+        //    System.exit(1);
+        //} catch (IOException e) {
+        //    System.err.printf("IO Error:\n%s\n", e.getMessage());
         } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -118,10 +119,10 @@ public class Main
 	           //do nothing
 	        } else {
 	        	tempFileName = file.getName();
-	        	if(!tempFileName.endsWith(".ic") && !tempFileName.endsWith(".sig")) continue; // skip non ic sig files
+	        	if(/*!tempFileName.endsWith(".ic") &&*/ !tempFileName.endsWith(".sig")) continue; // skip non ic sig files
 	        	
 	            System.out.println("Entered File: " + tempFileName);
-	            tempFile = String.format("%s%s", folderPath, tempFileName);
+	            tempFile = folderPath + File.separator + tempFileName;
 	        	System.out.println("temp file is: " + tempFile);
 	        	
 	        	//make target fileName for lexer
@@ -131,9 +132,9 @@ public class Main
 	        	
 	        	//make target file path
 	        	if (null == outputFolder) {
-	        		targetFile = targetDirPath + targetFile;
+	        		targetFile = targetDirPath + File.separator + targetFile;
 	        	} else {
-	        		targetFile = outputFolder + targetFile;
+	        		targetFile = outputFolder + File.separator + targetFile;
 	        	}
 	        	
 	        	
@@ -141,13 +142,14 @@ public class Main
     			fw.write("token\ttag\tline :column\n");
     			
     			
-	        	Lexer lexer = new Lexer(new FileReader(tempFile));
-	        	while ((token = lexer.next_token()) != null) {
-	            	objValue = token.value;
-	            	System.out.println((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
-	            	fw.write((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
-	            }
-	        	fw.close();
+//	        	Lexer lexer = new Lexer(new FileReader(tempFile));
+//	        	while ((token = lexer.next_token()) != null) {
+//	            	objValue = token.value;
+//	            	if (token.sym == LibraryParserSym.EOF) break;
+//	            	System.out.println((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
+//	            	fw.write((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
+//	            }
+//	        	fw.close();
 	        	
 	        	System.out.println("finished lexing file " + tempFile);
 	            if (!onlyLexer){
