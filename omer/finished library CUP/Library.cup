@@ -17,10 +17,11 @@ parser code  {:
 	 * This is useful for debugging.
 	 */
 	
-	public boolean printTokens;
+	public boolean printTokens = true;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
+	private int currentClassLine = 0;
 
 	public LibraryParser(Lexer lexer) {
 		super(lexer);
@@ -29,6 +30,10 @@ parser code  {:
 	
 	public int getLine() {
 		return currentLine;
+	}
+
+	public int getClassLine() {
+		return currentClassLine;
 	}
 	
 	public void syntax_error(Symbol s) {
@@ -41,6 +46,9 @@ parser code  {:
 scan with {:
 	Token t = lexer.next_token();
 	currentLine = t.getLine();
+
+	if(t.sym == LibraryParserSym.CLASS) currentClassLine = currentLine;
+
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + t);
 	return t; 
@@ -85,9 +93,9 @@ program ::=  icclass:icc
 	{: List<ICClass> iccb = new ArrayList<ICClass>(); if (null != icc) iccb.add(icc); RESULT = new Program(iccb); System.out.println("finish Program with calss : " + iccb); :};
 
 icclass ::= CLASS CLASS_ID:ci LBRACE method_block:mb RBRACE
-	{: RESULT = new ICClass(getLine(), ci, null, mb); System.out.println("finish icclass "+ci+ " : " + mb); :}
+	{: RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), mb); System.out.println("finish icclass "+ci+ " : " + mb); :}
 	| 		CLASS CLASS_ID:ci LBRACE RBRACE
-	{: RESULT = new ICClass(getLine(), ci, new ArrayList<Field>(), new ArrayList<Method>()); System.out.println("finish icclass "+ci); :};
+	{: RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), new ArrayList<Method>()); System.out.println("finish icclass "+ci); :};
 
 method_block ::= stmethod:sm
 	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; System.out.println("crate function block with methods mb= "+mb+" added function sm = "+sm);:}
@@ -95,9 +103,9 @@ method_block ::= stmethod:sm
 	{: mb.add(sm); RESULT = mb; System.out.println("added function to function block with methods mb= "+mb+" added function sm = "+sm); :};
 
 stmethod ::= STATIC methodType:t IDENTIFIER:id LPAREN RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,null,null); System.out.println("finish function not args "+id); :}
+{:RESULT = new StaticMethod(t,id,new ArrayList<Formal>() ,new ArrayList<Statement>()); System.out.println("finish function not args "+id); :}
 	|		 STATIC methodType:t IDENTIFIER:id LPAREN formal_block:fb RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,fb,null); System.out.println("finish function "+id+" : "+fb); :};
+{:RESULT = new StaticMethod(t,id,fb,new ArrayList<Statement>()); System.out.println("finish function "+id+" : "+fb); :};
 
 methodType ::=	formalType:ft
 	{: RESULT = ft; :}
