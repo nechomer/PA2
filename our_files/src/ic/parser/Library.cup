@@ -47,15 +47,18 @@ scan with {:
 :};
 
 /*********** Symbol list - terminals ***********/
-terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMI, COMA, DOT;
+terminal CLASS, EXTENDS, STATIC;
+terminal VOID, INTEGER, BOOLEAN, STRING;
+terminal RETURN, IF, ELSE, WHILE, BREAK, CONTINUE;
+terminal THIS, NEW, LENGTH;
 terminal LBRACKET, RBRACKET; /****array_type****/
-terminal OTHER_SYMBOL; /****Debug****/
-terminal STATIC;
-terminal VOID, INTEGER, STRING, BOOLEAN;
-terminal java.lang.String IDENTIFIER; /****var_name****/
-terminal CLASS;
-terminal java.lang.String CLASS_ID; /****class_name****/
+terminal LPAREN, RPAREN;
+terminal DOT, MINUS, NOT, MULT, DIV, MODULU, PLUS, LT, LTEQ, GT, GTEQ, EQEQ, NEQ, AND, OR, EQ;
+terminal LBRACE, RBRACE,SEMI, COMA;
 
+
+terminal java.lang.String IDENTIFIER; /****var_name****/
+terminal java.lang.String CLASS_ID; /****class_name****/
 terminal java.lang.Number INTEGER_LITERAL;
 terminal java.lang.Boolean BOOLEAN_LITERAL;
 terminal java.lang.String STRING_LITERAL;
