@@ -211,45 +211,64 @@ stmt_block ::=	LBRACKET stmt_list_for_block:sl RBRACKET
 expr ::= expr_8
 	;
 	
-expr_8  ::= expr_8 OR expr_7
-	|				 expr_7
+expr_8  ::=  expr_8 OR expr_7
+	;
+	
+expr_8  ::=  expr_7
 	;
 	
 expr_7  ::= expr_7 AND expr_6
-	|				 expr_6
+	;
+	
+expr_7  ::= expr_6
 	;
 	
 expr_6  ::=  expr_6 EQEQ expr_5 
 	|				  expr_6 NEQ expr_5
-	|				  expr_5
+	;
+	
+expr_6  ::=  expr_5
 	;
 	
 expr_5  ::= expr_5 LT expr_4 
 	| 				 expr_5 LTEQ expr_4
-	| 				 expr_5 GT expr_4
-	| 				 expr_5 GTEQ expr_4
-	| 				 expr_4
 	;
+	
+expr_5  ::= expr_5 GT expr_4
+	| 				 expr_5 GTEQ expr_4
+	;
+	
+expr_5 ::=	 expr_4
+	;
+	
 expr_4 ::=  expr_4 PLUS expr_3
 	| 				 expr_4 MINUS expr_3
-    |				 expr_3
+    ;
+	
+expr_4 ::=	expr_3
 	;
 	
 expr_3 ::=  expr_3 MULT expr_2
     | 				 expr_3 DIV expr_2
 	| 				 expr_3 MODULU expr_2
-	|				 expr_2
+	;
+	
+expr_3 ::=	 expr_2
 	;
 	
 expr_2 ::=  MINUS expr_2 
 	|				 NOT expr_2
-	|				 expr_1
+	;
+	
+expr_2 ::=	 expr_1
 	;
 	
 expr_1 ::=  NEW CLASS_ID:ci LPAREN RPAREN
    | 				 NEW type LBRACE expr:e  RBRACE
-   |				 expr_0
    ;
+ 
+expr_1 ::= expr_0
+  ;
    
 expr_0  ::= location:l 
    | 				call_expr:c 
