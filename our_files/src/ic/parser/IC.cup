@@ -129,9 +129,9 @@ class_extends ::= 	EXTENDS CLASS_ID:ci
 	| 				/* return null as String */
 	;
 
-class_body ::= 	class_body:cb field_list:fl SEMI		/* return new List<ASTNode> after cb
+class_body ::= 	class_body:cb field_list:fl					/* return new List<ASTNode> after cb
 															list unified with field list */
-	|			class_body:cb method:m SEMI
+	|			class_body:cb method:m 
 	| 				/* return empty List<ASTNode> */
 	;
 
@@ -139,8 +139,8 @@ method ::= 	static_method
 	|		virtual_method
 	;
 
-field_list ::= 	field:f
-	| 			field_list:fl COMA field:f
+field_list ::= 	field:f SEMI
+	| 			field_list:fl COMA field:f SEMI
 	;
 
 field ::= type:t IDENTIFIER:i
