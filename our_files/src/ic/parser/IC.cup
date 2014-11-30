@@ -64,6 +64,7 @@ terminal java.lang.Boolean BOOLEAN_LITERAL;
 terminal java.lang.String STRING_LITERAL;
 terminal NULL_LITERAL;
 
+
 /*********** Symbol list - non-terminals) ***********/
 
 non treminal stmt, stmt_open, stmt_closed, stmt_simple  
@@ -101,7 +102,16 @@ non terminal Formal formal;
 non terminal Type methodType;
 non terminal Type type;
 
-
+non terminal StaticCall staticCall;
+non terminal VirtualCall virtualCall;
+non terminal Expression expr;
+non terminal Location location;
+non terminal Call call;
+non terminal This this;
+non terminal New new;
+non terminal BinaryOp binop;
+non terminal UnaryOp unop;
+non terminal Literal literal;
 
 /*********** Precedence declarations ***********/
 
@@ -165,6 +175,8 @@ stmt ::= assignment_stmt SEMI
 
 
 
+
+
 method_block ::= stmethod:sm 
 	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; System.out.println("crate function block with methods mb= "+mb+" added function sm = "+sm);:}
 	| 			 method_block:mb SEMI stmethod:sm   
@@ -210,4 +222,51 @@ type  ::= 		INTEGER
 	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:} 
 	;
 
+exprStar ::=   COMA expr:e 
+		|	   COMA expr:e exprStar
+		|	   NULL:nullPtr
+		;
 
+staticCall ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN 
+		|	   CLASS_ID:ci DOT IDENTIFIER:id LPAREN  expr:e exprStar:eStar RPAREN 	
+		;
+		
+virtualCall ::= DOT IDENTIFIER:id LPAREN RPAREN 
+		|	    DOT IDENTIFIER:id LPAREN expr:e exprStar:eStar RPAREN
+		|		Expr:e DOT IDENTIFIER:id LPAREN RPAREN 
+		|	    Expr:e DOT IDENTIFIER:id LPAREN expr:e exprStar:eStar RPAREN 	 	
+		;
+		
+location ::=	IDENTIFIER:id
+		|		expr:e DOT IDENTIFIER:id
+		|		expr:e LBRACE expr:e RBRACE
+		;
+		
+binop	::= 	DOT:bop
+		|		MINUS:bop
+		|		NOT:bop
+		|	    MULT:bop
+		|		DIV:bop
+		|	    MODULU:bop
+		|		PLUS:bop
+		|		LT:bop
+		|		LTEQ:bop
+		|		GT:bop
+		|		GTEQ:bop
+		|		EQEQ:bop
+		|		NEQ:bop
+		|		AND:bop
+		|		OR:bop
+		|		EQ:bop
+		;
+		
+		
+unop	::=		UMINUS:uop
+		|		LNEG:uop
+		;
+		
+literal ::=	    STRING:st
+		|		INTEGER:int
+		|		BOOLEAN:bool
+		|		NULL:nullPtr
+		;
