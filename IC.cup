@@ -1,0 +1,489 @@
+package IC.Parser;
+
+import IC.AST.*;
+import IC.AST.expressions.*;
+import IC.AST.methods.*;
+import IC.AST.operations.*;
+import IC.AST.statements.*;
+import IC.AST.types.*;
+
+import java.util.*;
+
+parser code  {:
+
+    public Parser(Lexer lexer)
+    {
+        super(lexer);
+    }
+    
+:}
+
+scan with {:
+    return super.scan();
+:}
+
+////////////////////////////////////////////
+// Symbol list (terminals and non-terminals)
+
+//Non-Terminals
+non terminal Program program;
+non terminal ICClass class;
+non terminal List<ICClass> class_list, class_list_or_empty;
+non terminal Method method;
+non terminal List<Field> field;
+non terminal List<String> field_ids;
+non terminal MethodsAndFields method_field_list, method_field_list_or_empty;
+non terminal Type type;
+non terminal List<Formal> formals;
+non terminal List<Statement> stmts_list, stmts_list_or_empty;
+non terminal Statement stmt;
+non terminal String extends_or_empty;
+non terminal Expression expr;
+non terminal Location location;
+non terminal Call call;
+non terminal StaticCall static_call;
+non terminal VirtualCall virtual_call;
+non terminal BinaryOp binop;
+non terminal UnaryOp unop;
+non terminal Literal literal;
+non terminal Expression expr_dot_or_empty, expr_or_empty;
+non terminal Statement else_or_empty;
+non terminal Expression var_init_or_empty;
+non terminal List<Expression> actuals;
+non terminal Integer line;
+
+//Terminals
+
+terminal			ASSIGN, BOOLEAN, BREAK, CLASS, COMMA, CONTINUE, DIVIDE, DOT, EQUAL, EXTENDS, ELSE, 
+					FALSE, GT, GTE, IF, INT, LAND, LB, LP, LCBR, LENGTH, NEW, LNEG, LOR, LT, LTE, 
+					MINUS, MOD, MULTIPLY, NEQUAL, NULL, PLUS, RB, RCBR, RETURN, RP, SEMI, STATIC, 
+					STRING, THIS, TRUE, VOID, WHILE, UMINUS;
+terminal	String 	ID, CLASS_ID, QUOTE;
+terminal	Integer INTEGER;
+
+
+//////////////////////////
+// Precedence declarations
+
+precedence left  ELSE;
+precedence right ASSIGN;
+precedence left  LOR;
+precedence left  LAND;
+precedence left  EQUAL, NEQUAL;
+precedence left  LT, LTE, GT, GTE;
+precedence left  MINUS, PLUS;
+precedence left  DIVIDE, MULTIPLY, MOD;
+precedence right LNEG, UMINUS;
+precedence left  LP, LB, DOT;
+
+//////////////
+// The grammar
+
+program ::= class_list_or_empty:cl
+            {: RESULT = new Program(cl);
+               //TODO- Should print success string or report recovered errors	;
+            :}
+          ;
+
+
+class_list_or_empty ::= class_list:cl
+                        {: RESULT = cl; :}
+                      
+                      | /* empty */
+                        {: RESULT = new LinkedList<ICClass>(); :}
+                      ;
+
+
+class_list ::= class:c
+               {: List<ICClass> cl = new LinkedList<ICClass>();
+                  cl.add(c);
+                  RESULT = cl; 
+               :}
+               
+             | class_list:cl class:c
+               {: cl.add(c);
+                  RESULT = cl;
+               :}
+             ;
+             
+class ::= line:l CLASS CLASS_ID:cid extends_or_empty:eor LCBR
+          method_field_list_or_empty:mf RCBR
+          {: RESULT = new ICClass(l, cid, eor,
+                                  mf.getFieldsList(), mf.getMethodsList()); 
+          :}
+                                  
+         | line:l error RCBR
+          // General error
+          {:
+          	parser.syntax_error("Invalid class declaration.", l);             
+          :}
+        ;
+
+
+extends_or_empty ::= EXTENDS CLASS_ID:cid
+                     {: RESULT = cid; :}
+                   | /* empty */
+                   ;
+                   
+// A list of methods or fields
+method_field_list_or_empty ::= method_field_list:mf
+                               {: RESULT = mf; :}
+                             
+                             | /* empty */
+                               {: RESULT = new MethodsAndFields(); :}
+                             ;
+
+
+method_field_list ::= method:m
+                      {: MethodsAndFields mf = new MethodsAndFields();
+                         mf.addMethod(m);
+                         RESULT = mf; 
+                      :}
+                      
+                    | method_field_list:mf method:m
+                      {: mf.addMethod(m);
+                         RESULT = mf; 
+                      :}
+                      
+                    | field:f
+                      {: MethodsAndFields mf = new MethodsAndFields();
+                      //TODO- Check why they are using a for loop and not just add one field
+                         for (Field item : f)
+                             mf.addField(item);
+                         RESULT = mf; 
+                      :}
+                      
+                    | method_field_list:mf field:f
+                    //TODO- Check why they are using a for loop and not just add one field
+                      {: for (Field item : f)
+                             mf.addField(item);
+                         RESULT = mf; 
+                      :}
+                    ;
+                    
+field ::= type:t field_ids:f_ids SEMI
+          {: List<Field> list = new LinkedList<Field>();
+             for (String s : f_ids)
+                 list.add(new Field(t, s));
+             RESULT = list; 
+          :}
+          
+           |  error SEMI
+            // General error in field declaration
+            {: parser.syntax_error ("Invalid field declaration.");
+               
+            :}        
+          ;
+          
+          
+field_ids ::= ID:id
+              {: List<String> l = new LinkedList<String>();
+                 l.add(id);
+                 RESULT = l; 
+              :}
+                
+            | field_ids:l COMMA ID:id
+              {: l.add(id);
+                 RESULT = l;
+              :}
+            ;
+            
+method ::= STATIC type:t ID:id LP formals:f RP LCBR stmts_list_or_empty:ls RCBR
+           {: RESULT = new StaticMethod(t, id, f, ls); :}
+         
+         | type:t ID:id LP formals:f RP LCBR stmts_list_or_empty:ls RCBR
+           {: RESULT = new VirtualMethod(t, id, f, ls); :}
+         
+         | STATIC line:l VOID ID:id LP formals:f RP LCBR stmts_list_or_empty:ls RCBR
+           {: PrimitiveType voidType = new PrimitiveType(
+                                    l, DataTypes.VOID);
+              RESULT = new StaticMethod(voidType, id, f, ls); 
+           :}
+           
+         | line:l VOID ID:id LP formals:f RP LCBR stmts_list_or_empty:ls RCBR
+           {: PrimitiveType voidType = new PrimitiveType(
+                                    l, DataTypes.VOID);
+              RESULT = new VirtualMethod(voidType, id, f, ls); 
+           :}
+           
+         | error LCBR stmts_list_or_empty:ls RCBR
+           // Error in the method declaration only
+           {: 
+              parser.syntax_error("Invalid method declaration.");              
+           :}
+        ;
+        
+formals ::= /* empty */
+            {: RESULT = new LinkedList<Formal>(); :}
+          
+          | type:t ID:id
+            {: List<Formal> fl = new LinkedList<Formal>();
+               fl.add(new Formal(t, id.toString()));
+               RESULT = fl; 
+            :}
+            
+          | formals:fl COMMA type:t ID:id
+            {: fl.add(new Formal(t, id.toString()));
+               RESULT = fl; 
+            :}
+          ;
+          
+type ::= INT:i
+         {: RESULT = new PrimitiveType(
+                         parser.cur_line, DataTypes.INT); 
+         :}
+       
+       | STRING:s
+         {: RESULT = new PrimitiveType(
+                         parser.cur_line, DataTypes.STRING); 
+         :}
+         
+       | BOOLEAN:b
+         {: RESULT = new PrimitiveType(
+                         parser.cur_line, DataTypes.BOOLEAN);
+         :}
+         
+       | CLASS_ID:cid 
+         {: RESULT = new UserType(
+                         parser.cur_line, cid.toString()); 
+         :}
+         
+       | type:t LB RB
+         {: t.incrementDimension();
+            RESULT = t; 
+         :}
+       ;
+       
+stmts_list_or_empty ::= stmts_list:ls
+                        {: RESULT = ls; :}
+                      
+                      | /* empty */
+                        {: RESULT = new LinkedList<Statement>(); :}
+                      ;
+                      
+stmts_list ::= stmt:s
+               {: List<Statement> ls = new LinkedList<Statement>();
+                  ls.add(s);
+                  RESULT = ls;
+               :}
+             
+             | stmts_list:ls stmt:s
+               {: ls.add(s);
+                  RESULT = ls; 
+               :}
+             ;
+
+
+stmt ::= location:l ASSIGN expr:e SEMI
+         {: RESULT = new Assignment(l, e); :}
+         
+       | call:c SEMI
+         {: RESULT = new CallStatement(c); :}
+         
+       | line:l RETURN expr_or_empty:e SEMI
+         {: RESULT = new Return(l, e); :}
+         
+       | IF LP expr:e RP stmt:s else_or_empty:el
+         {: RESULT = new If(e, s, el); :}
+         
+       | WHILE LP expr:e RP stmt:s
+         {: RESULT = new While(e, s); :}
+         
+       | line:l BREAK SEMI
+         {: RESULT = new Break(l); :}
+         
+       | line:l CONTINUE SEMI
+         {: RESULT = new Continue(l); :}
+         
+       | line:l LCBR stmts_list:sl RCBR
+         {: RESULT = new StatementsBlock(l, sl); :}
+         
+       | type:t ID:id var_init_or_empty:v SEMI
+         // TODO remember to check default values
+         {: RESULT = new LocalVariable(t, id, v); :}
+         
+       | error SEMI
+         // General error in the statement
+         {: parser.syntax_error("Invalid statement.");
+            
+         :}
+       ;
+       
+expr_or_empty ::= expr:e
+                  {: RESULT = e; :}
+                
+                | /* empty */
+                ;
+
+
+else_or_empty ::= ELSE stmt:s
+                  {: RESULT = s; :}
+                
+                | /* empty */
+                ;
+
+
+var_init_or_empty ::= ASSIGN expr:e
+                      {: RESULT = e; :}
+                    
+                    | /* empty */
+                    ;
+                    
+expr ::= location:l
+         {: RESULT = l; :}
+       
+       | call:c
+         {: RESULT = c; :}
+       
+       | THIS:t
+         {: RESULT = new This(parser.cur_line); :}
+   
+       | NEW CLASS_ID:cid LP RP
+         //TODO- Check if the definition of NewClass is needed
+         {: RESULT = new NewClass(parser.cur_line, cid); :}
+       
+       | NEW type:t LB expr:e RB
+         //TODO- Check if the definition of NewArray is needed
+         {: RESULT = new NewArray(t, e); :}
+       
+       | expr:e DOT LENGTH
+         {: RESULT = new Length(e); :}
+       
+       | binop:op
+         {: RESULT = op; :}
+       
+       | unop:op
+         {: RESULT = op; :}
+       
+       | literal:l
+         {: RESULT = l; :}
+       
+       | LP expr:e RP
+         {: RESULT = e; :}
+       ;
+      
+location ::= expr_dot_or_empty:e ID:id 
+             {: RESULT = new VariableLocation(
+                             parser.cur_line, e, id); 
+             :}
+           
+           | expr:a LB expr:i RB
+             {: RESULT = new ArrayLocation(a, i); :}
+           ;
+
+
+call ::= static_call:sc
+         {: RESULT = sc; :}
+       
+       | virtual_call:vc
+         {: RESULT = vc; :}
+       ;
+       
+static_call ::= CLASS_ID:cid DOT ID:id LP actuals:a RP
+                {: RESULT = new StaticCall(
+                                parser.cur_line, cid, id, a);
+                :}
+              ;
+
+
+virtual_call ::= expr_dot_or_empty:e ID:id LP actuals:a RP
+                 {: RESULT = new VirtualCall(
+                                 parser.cur_line, e, id, a);                     
+                 :}
+               ;
+               
+expr_dot_or_empty ::= expr:e DOT
+                      {: RESULT = e; :}
+                    
+                    | /* empty */
+                    ;
+                    
+actuals ::= /* empty */
+            {: RESULT = new LinkedList<Expression>(); :}
+          
+          | expr:e
+            {: List<Expression> le = new LinkedList<Expression>();
+               le.add(e);
+               RESULT = le; 
+            :}
+         
+          | actuals:le COMMA expr:e
+             {: le.add(e);
+                RESULT = le; 
+             :}
+          ;
+          
+binop ::= expr:e1 PLUS expr:e2
+          {: RESULT = new MathBinaryOp(e1, BinaryOps.PLUS, e2); :}
+        
+        | expr:e1 MINUS expr:e2
+          {: RESULT = new MathBinaryOp(e1, BinaryOps.MINUS, e2); :}
+        
+        | expr:e1 MULTIPLY expr:e2
+          {: RESULT = new MathBinaryOp(e1, BinaryOps.MULTIPLY, e2); :}
+        
+        | expr:e1 DIVIDE expr:e2
+          {: RESULT = new MathBinaryOp(e1, BinaryOps.DIVIDE, e2); :}
+        
+        | expr:e1 MOD expr:e2
+          {: RESULT = new MathBinaryOp(e1, BinaryOps.MOD, e2); :}
+        
+        | expr:e1 LAND expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.LAND, e2); :}
+        
+        | expr:e1 LOR expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.LOR, e2); :}
+        
+        | expr:e1 LT expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.LT, e2); :}
+        
+        | expr:e1 LTE expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.LTE, e2); :}
+        
+        | expr:e1 GT expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.GT, e2); :}
+        
+        | expr:e1 GTE expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.GTE, e2); :}
+        
+        | expr:e1 EQUAL expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.EQUAL, e2); :}
+        
+        | expr:e1 NEQUAL expr:e2
+          {: RESULT = new LogicalBinaryOp(e1, BinaryOps.NEQUAL, e2); :}
+        ;
+        
+unop ::= MINUS expr:e
+         {: RESULT = new MathUnaryOp(UnaryOps.UMINUS, e); :} %prec UMINUS
+       
+       | LNEG expr:e 
+         {: RESULT = new LogicalUnaryOp(UnaryOps.LNEG, e); :}
+       ;
+       
+literal ::= INTEGER:i
+            {: RESULT = new Literal(parser.cur_line, LiteralTypes.INTEGER, i); 
+            :}
+          
+          | QUOTE:s
+            {: RESULT = new Literal(parser.cur_line, LiteralTypes.STRING, s); 
+            :}
+          
+          | TRUE
+            {: RESULT = new Literal(parser.cur_line, LiteralTypes.TRUE); 
+            :}
+          
+          | FALSE
+            {: RESULT = new Literal(parser.cur_line, LiteralTypes.FALSE);
+            :}
+          
+          | NULL
+            {: RESULT = new Literal(parser.cur_line, LiteralTypes.NULL); 
+            :}
+          ;
+
+
+line ::= /* empty */
+         {: RESULT = parser.cur_line; :}
+       ;
+
+
