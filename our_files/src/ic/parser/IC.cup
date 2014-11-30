@@ -98,8 +98,8 @@ non terminal Formal formal;
 
 non terminal Type method_type, type;
 
-non terminal StaticCall staticCall;
-non terminal VirtualCall virtualCall;
+non terminal StaticCall static_call;
+non terminal VirtualCall virtual_call;
 
 non terminal Location location;
 
@@ -296,11 +296,11 @@ type  ::= 		INTEGER
 	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:} 
 	;
 
-staticCall ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN 
+static_call ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN 
 	|	   				CLASS_ID:ci DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	
 	;
 
-virtualCall ::= IDENTIFIER:id LPAREN RPAREN 
+virtual_call ::= IDENTIFIER:id LPAREN RPAREN 
 	|	    		  	  IDENTIFIER:id LPAREN expr_list:el RPAREN
 	|				 	 expr:e DOT IDENTIFIER:id LPAREN RPAREN 
 	|	    		 	 expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	

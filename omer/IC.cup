@@ -73,8 +73,7 @@ non terminal String class_extends;
 non terminal List<ASTNode> class_body;
 
 non terminal Method method;
-non terminal List<Field> field_list;
-non terminal Field field;
+non terminal List<Field> field_list, field_more;
 
 non terminal StaticMethod static_method;
 non terminal VirtualMethod virtual_method;
@@ -92,7 +91,7 @@ non terminal StatementsBlock stmt_block;
 
 non terminal Expression expr, expr_0, expr_1, expr_2, expr_3, expr_4, expr_5, expr_6, expr_7, expr_8;
 non terminal Call call_expr;
-non terminal List<Expression> expr_list;
+non terminal List<Expression> expr_list, expr_more;
 
 non terminal List<Formal> formal_list;
 non terminal Formal formal;
@@ -134,14 +133,12 @@ method ::= 	static_method
 	|					virtual_method
 	;
 
-field_list ::= 	field:f
-	| 					field_list:fl COMA field:f
+field_list ::= type:t IDENTIFIER:i field_more
 	;
-
-field ::= type:t IDENTIFIER:i
-	{: RESULT = new Field(t,i); System.out.println("added field t= "+t+" : i= "+i); :}
+	
+field_more ::= COMA IDENTIFIER:i  field_more
+	|
 	;
-
 	
 static_method ::= STATIC method_type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
 	|							 STATIC method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
@@ -266,52 +263,49 @@ call_expr ::= 	static_call
 	|						virtual_call
 	;
 
-expr_list ::= expr:e
-	|				   expr_list:el COMA expr:e
+expr_list ::= expr:e expr_more
+	|				   
 	;
+
+expr_more ::= COMA expr:e
+	|
+	;	
 
 formal_list ::= formal:f
 	| 					  formal_list:fl COMA formal:f
 	;
 
 formal  ::= type:t IDENTIFIER:i
-	{: RESULT = new Formal(t,i); System.out.println("added formal t= "+t+" : i= "+i); :}
 	;
 
 method_type ::=	type
 	|							VOID
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); :}
 	;
 
 type  ::= 		INTEGER
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); :}
 	|					BOOLEAN
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("added primitive boolean");:}
 	|					STRING
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("added primitive string");:}
 	|					CLASS_ID:ci
-	{: RESULT = new UserType(getLine(), ci); System.out.println("added TYPE User Defined type");:}
 	| 					type:ft LBRACKET RBRACKET
-	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:} 
 	;
 
 static_call ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN 
-		|	   			CLASS_ID:ci DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	
-		;
-		
+	|	   				CLASS_ID:ci DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	
+	;
+
 virtual_call ::= IDENTIFIER:id LPAREN RPAREN 
-		|	    		  IDENTIFIER:id LPAREN expr_list:el RPAREN
-		|				 expr:e DOT IDENTIFIER:id LPAREN RPAREN 
-		|	    		 expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	
-		;
-		
-location ::=	IDENTIFIER:id
-		|				expr_1:e DOT IDENTIFIER:id
-		|				expr_0:e LBRACE expr:e RBRACE
-		;
-		
+	|	    		  	  IDENTIFIER:id LPAREN expr_list:el RPAREN
+	|				 	 expr:e DOT IDENTIFIER:id LPAREN RPAREN 
+	|	    		 	 expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	
+	;
+	
+location ::=	 IDENTIFIER:id
+	|					 expr_1:e DOT IDENTIFIER:id
+	|					 expr_0:e LBRACE expr:e RBRACE
+	;
+	
 literal ::=	    STRING_LITERAL:st
-		|				INTEGER_LITERAL:int
-		|				BOOLEAN_LITERAL:bool
-		|				NULL_LITERAL:nullPtr
-		;
+	|					INTEGER_LITERAL:int
+	|					BOOLEAN_LITERAL:bool
+	|					NULL_LITERAL:nullPtr
+	;
