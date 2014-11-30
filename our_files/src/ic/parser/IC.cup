@@ -67,8 +67,8 @@ terminal NULL_LITERAL;
 /*********** Symbol list - non-terminals) ***********/
 
 non terminal Program program;
-non terminal ICClass icclass;
 non terminal List<ICClass> ICclass_list;
+non terminal ICClass icclass;
 non terminal String class_extends;
 non terminal List<ASTNode> class_body;
 
@@ -79,37 +79,31 @@ non terminal Field field;
 non terminal StaticMethod static_method;
 non terminal VirtualMethod virtual_method;
 
-
 non terminal List<Statement> stmt_list;
-non terminal Statement stmt;
-non terminal StatementsBlock stmt_block;
+non terminal List<Statement> stmt_list_for_block;
+non terminal Statement stmt, stmt_open, stmt_closed, stmt_simple;
 
 non terminal Assignment assignment_stmt;
 non terminal CallStatement call_stmt;
 non terminal Return return_stmt;
-non terminal If if_stmt;
-non terminal If if_else_stmt;
-non terminal While while_stmt;
-non terminal Break break_stmt;
-non terminal Continue continue_stmt;
+non terminal If if_stmt, if_else_open_stmt, if_else_closed_stmt;
+non terminal While while_open_stmt, while_closed_stmt;
+non terminal StatementsBlock stmt_block;
 
-
-non terminal StaticCall static_call;
-non terminal VirtualCall virtual_call;
+non terminal Expression expr, expr_0, expr_1, expr_2, expr_3, expr_4, expr_5, expr_6, expr_7, expr_8;
+non terminal Call call_expr;
+non terminal List<Expression> expr_list;
 
 non terminal List<Formal> formal_list;
 non terminal Formal formal;
-non terminal Type method_type;
-non terminal Type type;
+
+non terminal Type method_type, type;
 
 non terminal StaticCall staticCall;
 non terminal VirtualCall virtualCall;
-non terminal Expression expr;
-non terminal List<Expression> expr_list;
+
 non terminal Location location;
-non terminal Call call_expr;
-non terminal BinaryOp binop;
-non terminal UnaryOp unop;
+
 non terminal Literal literal;
 
 /*********** Precedence declarations ***********/
@@ -131,18 +125,17 @@ class_extends ::= 	EXTENDS CLASS_ID:ci
 	| 				/* return null as String */
 	;
 
-class_body ::= 	class_body:cb field_list:fl	 SEMI				/* return new List<ASTNode> after cb
-															list unified with field list */
-	|			class_body:cb method:m 
-	| 				/* return empty List<ASTNode> */
+class_body ::= 	class_body:cb field_list:fl	 SEMI	/* return new List<ASTNode> after cb list unified with field list */
+	|							class_body:cb method:m 
+	| 							/* return empty List<ASTNode> */
 	;
 
 method ::= 	static_method
-	|		virtual_method
+	|					virtual_method
 	;
 
 field_list ::= 	field:f
-	| 			field_list:fl COMA field:f
+	| 					field_list:fl COMA field:f
 	;
 
 field ::= type:t IDENTIFIER:i
@@ -151,22 +144,23 @@ field ::= type:t IDENTIFIER:i
 
 	
 static_method ::= STATIC method_type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
-	STATIC method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	|							 STATIC method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 	;
 
 virtual_method ::= 	method_type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
-	method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	|								method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 	;
 
 stmt_list ::=		stmt_list:sl stmt:st
-	| 				/* return empty List<Statement> */
+	| 						/* return empty List<Statement> */
 	;
 	
 stmt_list_for_block ::=		stmt_list_for_block:sl stmt:st
-	| 				/* return empty List<Statement> */
+	| 											/* return empty List<Statement> */
 	;	
 
-stmt  ::= stmt_open | stmt_closed
+stmt  ::= stmt_open 
+	| 			stmt_closed
 	;
 	
 stmt_open ::=	if_stmt
@@ -181,12 +175,12 @@ stmt_closed  ::= stmt_simple
 	
 stmt_simple ::= 	assignment_stmt:as SEMI
 	|						    call_stmt:cs
-	|		return_stmt:rs SEMI
-	|		BREAK SEMI
-	|		CONTINUE SEMI
-	|	    stmt_block:sb
-	|		type IDENTIFIER:i SEMI
-	|		type IDENTIFIER:i EQ expr:e SEMI
+	|							return_stmt:rs SEMI
+	|							BREAK SEMI
+	|							CONTINUE SEMI
+	|	    					stmt_block:sb
+	|							type IDENTIFIER:i SEMI
+	|							type IDENTIFIER:i EQ expr:e SEMI
 	;
 
 assignment_stmt ::= location:l EQ expr:e
@@ -196,7 +190,7 @@ call_stmt ::=  call_expr SEMI
 	;
 
 return_stmt ::= RETURN
-	|			RETURN expr:e
+	|						RETURN expr:e
 	;
 
 if_stmt ::= IF LPAREN expr:e RPAREN stmt:st
@@ -221,11 +215,11 @@ expr ::= expr_8
 	;
 	
 expr_8  ::= expr_8 OR expr_7
-	|				expr_7
+	|				 expr_7
 	;
 	
 expr_7  ::= expr_7 AND expr_6
-	|				  expr_6
+	|				 expr_6
 	;
 	
 expr_6  ::=  expr_6 EQEQ expr_5 
@@ -273,11 +267,11 @@ call_expr ::= 	static_call
 	;
 
 expr_list ::= expr:e
-	|	expr_list:el COMA expr:e
+	|				   expr_list:el COMA expr:e
 	;
 
 formal_list ::= formal:f
-	| 			formal_list:fl COMA formal:f
+	| 					  formal_list:fl COMA formal:f
 	;
 
 formal  ::= type:t IDENTIFIER:i
@@ -285,19 +279,19 @@ formal  ::= type:t IDENTIFIER:i
 	;
 
 method_type ::=	type
-	|			VOID
+	|							VOID
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); :}
 	;
 
 type  ::= 		INTEGER
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); :}
-		|		BOOLEAN
+	|					BOOLEAN
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("added primitive boolean");:}
-		|		STRING
+	|					STRING
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("added primitive string");:}
-		|		CLASS_ID:ci
+	|					CLASS_ID:ci
 	{: RESULT = new UserType(getLine(), ci); System.out.println("added TYPE User Defined type");:}
-		| 		type:ft LBRACKET RBRACKET
+	| 					type:ft LBRACKET RBRACKET
 	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:} 
 	;
 
@@ -306,9 +300,9 @@ staticCall ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN
 		;
 		
 virtualCall ::= IDENTIFIER:id LPAREN RPAREN 
-		|	    		 IDENTIFIER:id LPAREN expr_list:el RPAREN
-		|				expr:e DOT IDENTIFIER:id LPAREN RPAREN 
-		|	    		expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	
+		|	    		  IDENTIFIER:id LPAREN expr_list:el RPAREN
+		|				 expr:e DOT IDENTIFIER:id LPAREN RPAREN 
+		|	    		 expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	
 		;
 		
 location ::=	IDENTIFIER:id
