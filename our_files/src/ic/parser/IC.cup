@@ -117,8 +117,7 @@ non terminal Literal literal;
 
 /*********** The grammar ***********/
 
-program ::= icclass:icc
-	|		icclass_block:iccb icclass:icc
+program ::= icclass_block:iccb icclass:icc
 	| 		/* return new program with empty List<ICClass> */
 	;
 
