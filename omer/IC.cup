@@ -308,13 +308,10 @@ type  ::= 		INTEGER
 	| 					type:ft LBRACKET RBRACKET
 	;
 
-static_call ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN 
-	|	   				CLASS_ID:ci DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	
+static_call ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	
 	;
 
-virtual_call ::= IDENTIFIER:id LPAREN RPAREN 
-	|	    		  	  IDENTIFIER:id LPAREN expr_list:el RPAREN
-	|				 	 expr:e DOT IDENTIFIER:id LPAREN RPAREN 
+virtual_call ::= IDENTIFIER:id LPAREN expr_list:el RPAREN
 	|	    		 	 expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	
 	;
 	
