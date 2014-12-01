@@ -17,10 +17,14 @@ parser code  {:
 	 * This is useful for debugging.
 	 */
 	
+	
+
 	public boolean printTokens;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
+	int i = 0;
+	String exps = null;
 
 	public LibraryParser(Lexer lexer) {
 		super(lexer);
@@ -30,10 +34,23 @@ parser code  {:
 	public int getLine() {
 		return currentLine;
 	}
+	public String symbol_name_from_id(int id) {
+
+		return LibraryParserSym.terminalNames[id];
+	}
 	
 	public void syntax_error(Symbol s) {
+		
 		Token tok = (Token) s;
-		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+		List<Integer> validToken = expected_token_ids();
+		if(validToken.size() > 0) {
+			for(i=0;i<validToken.size();i++) {
+				exps = symbol_name_from_id(validToken.get(i));
+				System.out.println("Line " + tok.getLine()+": Syntax error; expected " + exps);
+			}
+		}
+		else
+			System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
 	}
 :}
 

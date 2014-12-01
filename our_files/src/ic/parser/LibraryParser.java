@@ -39,7 +39,7 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
     "\000\021\000\002\002\003\000\002\002\004\000\002\003" +
-    "\007\000\002\006\003\000\002\006\005\000\002\006\002" +
+    "\010\000\002\006\003\000\002\006\005\000\002\006\002" +
     "\000\002\005\010\000\002\011\003\000\002\011\003\000" +
     "\002\010\003\000\002\010\005\000\002\010\002\000\002" +
     "\007\004\000\002\012\003\000\002\012\003\000\002\012" +
@@ -53,22 +53,22 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
     unpackFromStrings(new String[] {
     "\000\036\000\004\004\005\001\002\000\004\002\040\001" +
     "\002\000\004\055\007\001\002\000\004\002\001\001\002" +
-    "\000\004\050\010\001\002\000\010\006\011\051\ufffc\052" +
-    "\ufffc\001\002\000\012\007\024\010\017\011\023\012\020" +
-    "\001\002\000\006\051\ufffe\052\ufffe\001\002\000\006\051" +
-    "\014\052\015\001\002\000\004\002\uffff\001\002\000\004" +
-    "\006\011\001\002\000\006\051\ufffd\052\ufffd\001\002\000" +
-    "\006\024\ufff4\054\ufff4\001\002\000\006\024\ufff2\054\ufff2" +
-    "\001\002\000\006\024\033\054\ufffa\001\002\000\004\054" +
-    "\025\001\002\000\006\024\ufff3\054\ufff3\001\002\000\004" +
-    "\054\ufff9\001\002\000\004\026\026\001\002\000\014\010" +
-    "\017\011\023\012\020\027\ufff6\053\ufff6\001\002\000\006" +
-    "\027\036\053\035\001\002\000\006\024\033\054\032\001" +
-    "\002\000\006\027\ufff8\053\ufff8\001\002\000\006\027\ufff5" +
-    "\053\ufff5\001\002\000\004\025\034\001\002\000\006\024" +
-    "\ufff1\054\ufff1\001\002\000\010\010\017\011\023\012\020" +
-    "\001\002\000\006\051\ufffb\052\ufffb\001\002\000\006\027" +
-    "\ufff7\053\ufff7\001\002\000\004\002\000\001\002" });
+    "\000\004\050\010\001\002\000\006\006\011\052\ufffc\001" +
+    "\002\000\012\007\024\010\017\011\023\012\020\001\002" +
+    "\000\004\052\ufffe\001\002\000\004\052\014\001\002\000" +
+    "\006\006\011\051\015\001\002\000\004\002\uffff\001\002" +
+    "\000\004\052\ufffd\001\002\000\006\024\ufff4\054\ufff4\001" +
+    "\002\000\006\024\ufff2\054\ufff2\001\002\000\006\024\033" +
+    "\054\ufffa\001\002\000\004\054\025\001\002\000\006\024" +
+    "\ufff3\054\ufff3\001\002\000\004\054\ufff9\001\002\000\004" +
+    "\026\026\001\002\000\014\010\017\011\023\012\020\027" +
+    "\ufff6\053\ufff6\001\002\000\006\027\036\053\035\001\002" +
+    "\000\006\024\033\054\032\001\002\000\006\027\ufff8\053" +
+    "\ufff8\001\002\000\006\027\ufff5\053\ufff5\001\002\000\004" +
+    "\025\034\001\002\000\006\024\ufff1\054\ufff1\001\002\000" +
+    "\010\010\017\011\023\012\020\001\002\000\004\052\ufffb" +
+    "\001\002\000\006\027\ufff7\053\ufff7\001\002\000\004\002" +
+    "\000\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -79,8 +79,8 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
     "\000\036\000\006\002\003\003\005\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\006\005\011\006\012\001\001\000\006\011\021\012" +
-    "\020\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\004\005\015\001\001\000\002\001\001\000" +
+    "\020\001\001\000\002\001\001\000\002\001\001\000\004" +
+    "\005\015\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\010\007\030\010\026\012\027\001\001\000\002" +
@@ -143,10 +143,14 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 	 * This is useful for debugging.
 	 */
 	
+	
+
 	public boolean printTokens;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
+	int i = 0;
+	String exps = null;
 
 	public LibraryParser(Lexer lexer) {
 		super(lexer);
@@ -156,10 +160,23 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 	public int getLine() {
 		return currentLine;
 	}
+	public String symbol_name_from_id(int id) {
+
+		return LibraryParserSym.terminalNames[id];
+	}
 	
 	public void syntax_error(Symbol s) {
+		
 		Token tok = (Token) s;
-		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+		List<Integer> validToken = expected_token_ids();
+		if(validToken.size() > 0) {
+			for(i=0;i<validToken.size();i++) {
+				exps = symbol_name_from_id(validToken.get(i));
+				System.out.println("Line " + tok.getLine()+": Syntax error; expected " + exps);
+			}
+		}
+		else
+			System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
 	}
 
 
@@ -214,17 +231,17 @@ class CUP$LibraryParser$actions {
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // icclass ::= CLASS CLASS_ID LBRACE method_block RBRACE 
+          case 2: // icclass ::= CLASS CLASS_ID LBRACE method_block SEMI RBRACE 
             {
               ICClass RESULT =null;
-		int cileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).left;
-		int ciright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).right;
-		java.lang.String ci = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).value;
-		int mbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).left;
-		int mbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).right;
-		List<Method> mb = (List<Method>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).value;
+		int cileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).left;
+		int ciright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).right;
+		java.lang.String ci = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).value;
+		int mbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
+		int mbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
+		List<Method> mb = (List<Method>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
 		 RESULT = new ICClass(getLine(), ci, null, mb); System.out.println("finish icclass "+ci+ " : " + mb); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("icclass",1, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("icclass",1, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
