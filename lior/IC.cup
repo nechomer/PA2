@@ -17,12 +17,13 @@ parser code  {:
 	 * This is useful for debugging.
 	 */
 	
-	public boolean printTokens;
+	public boolean printTokens = true;
+	public boolean printStates = true;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
 
-	public LibraryParser(Lexer lexer) {
+	public ProgramParser(Lexer lexer) {
 		super(lexer);
 		this.lexer = lexer;
 	}
@@ -41,6 +42,10 @@ parser code  {:
 		for (Field f: fieldsList) {
 			f.setType(t);
 		}
+	}
+
+	private void printGrammar(String str) {
+		if (printStates) { System.out.println(str); }
 	}
 :}
 
@@ -142,16 +147,16 @@ program ::= icclass_list:iccl
 
 	{: RESULT = new Program(iccl); :}
 
-	| 		{: RESULT = new Program(new ArrayList<ICClass>()); :}
+	| 		{: RESULT = new Program(new ArrayList<ICClass>()); printGrammar("made program"); :}
 
 	;
 icclass_list ::=  icclass:icc
 
-	{: List<ICClass> classList = new ArrayList<ICClass>(); classList.add(icc); RESULT = classList; :}
+	{: List<ICClass> classList = new ArrayList<ICClass>(); classList.add(icc); RESULT = classList; printGrammar("made class list with 1 class"); :}
 
 	|		icclass_list:iccl icclass:icc
 
-	{: iccl.add(icc); RESULT = iccl; :}
+	{: iccl.add(icc); RESULT = iccl; printGrammar("made new class, and added to class list "); :}
 
 	;
 
@@ -163,37 +168,38 @@ icclass ::= CLASS CLASS_ID:ci class_extends:ce LBRACE class_body:cb RBRACE
 		} else {
 		RESULT = new ICClass(getLine(), ci, ce,cb.getFields(), cb.getMethods()); 
 		}
+		printGrammar("made new class ");
 	:}
 
 	;
 
 class_extends ::= 	EXTENDS CLASS_ID:ci
 
-		{: RESULT = ci; :}
+		{: RESULT = ci; printGrammar("class extends "); :}
 
-	| 	{: RESULT = null; :}			/* return null as String */
+	| 	{: RESULT = null; printGrammar("class does not extends "); :}			/* return null as String */
 
 	;
 
 class_body ::= 	class_body:cb field_list:fl SEMI
 
-		{: cb.insertFields(fl); RESULT = cb; :}
+		{: cb.insertFields(fl); RESULT = cb; printGrammar("class body fields "); :}
 
 	|			class_body:cb method:m
 
-		{: cb.insertMethod(m); RESULT = cb; :}
+		{: cb.insertMethod(m); RESULT = cb; printGrammar("class body method "); :}
 
-	| 	{: RESULT = new FieldsAndMethodsList(); :}
+	| 	{: RESULT = new FieldsAndMethodsList(); printGrammar("class body finished "); :}
 
 	;
 
 method ::= 	static_method:sm
 		
-		{: RESULT = sm; :}
+		{: RESULT = sm; printGrammar("static method "); :}
 
 	|		virtual_method:vm
 
-		{: RESULT = vm; :}
+		{: RESULT = vm; printGrammar("virtual method "); :}
 
 	;
 
@@ -205,54 +211,55 @@ field_list ::= 	formal:f
 			makeFieldsOfType(fieldsList, f.getType()); 
 			Field field = new Field(f.getType(), f.getName()); 
 			fieldsList.add(field);
-			RESULT = new List<Field> 
+			RESULT = new ArrayList<Field>();
+			printGrammar("last field added  " + f.getType() + " : " + f.getName()); 
 		:}
 
 	| 			field_list:fl COMA field:f
 
-		{: fl.add(new Field(new PrimitiveType(1, DataTypes.INT), f)); RESULT = fl; :}
+		{: fl.add(new Field(new PrimitiveType(1, DataTypes.INT), f)); RESULT = fl; printGrammar("field added "); :}
 
 	;
 
 field ::= IDENTIFIER:id
 
-		{: RESULT = id; :}
+		{: RESULT = id; printGrammar("added field " + id); :}
 
 	;
 
 static_method ::= STATIC type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
 
-		{: RESULT = new StaticMethod(t, id, new ArrayList<Formal>(), sl); :}
+		{: RESULT = new StaticMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added static method no formals: " + id); :}
 
 	|	STATIC type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 
-		{: RESULT = new StaticMethod(t, id, fl, sl); :}
+		{: RESULT = new StaticMethod(t, id, fl, sl); printGrammar("added static method " + id); :}
 
 	|	STATIC VOID IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
 
-		{: RESULT = new StaticMethod(new PrimitiveType(getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); :}
+		{: RESULT = new StaticMethod(new PrimitiveType(getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); :}
 
 	|	STATIC VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 
-		{: RESULT = new StaticMethod(new PrimitiveType(getLine(), DataTypes.VOID) , id, fl, sl); :}
+		{: RESULT = new StaticMethod(new PrimitiveType(getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); :}
 
 	;
 
 virtual_method ::=  type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
 		
-		{: RESULT = new VirtualMethod(t, id, new ArrayList<Formal>(), sl); :}
+		{: RESULT = new VirtualMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added virtual method no formals: " + id); :}
 
 	| 	 type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 
-		{: RESULT = new VirtualMethod(t, id, fl, sl); :}
+		{: RESULT = new VirtualMethod(t, id, fl, sl); printGrammar("added virtual method " + id); :}
 
 	|	 VOID IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); :}
+		{: RESULT = new VirtualMethod(new PrimitiveType(getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); :}
 
 	|	 VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(getLine(), DataTypes.VOID) , id, fl, sl); :}
+		{: RESULT = new VirtualMethod(new PrimitiveType(getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); :}
 
 	;
 
@@ -449,45 +456,45 @@ formal  ::= type:t IDENTIFIER:i
 
 type  ::= 		INTEGER
 
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); :}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("int "); :}
 
 		|		BOOLEAN
 
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("added primitive boolean");:}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("boolean ");:}
 
 		|		STRING
 
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("added primitive string");:}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("string ");:}
 
 		|		CLASS_ID:ci
 
-	{: RESULT = new UserType(getLine(), ci); System.out.println("added TYPE User Defined type");:}
+	{: RESULT = new UserType(getLine(), ci); System.out.println("added TYPE User Defined type ");:}
 
 		| 		type:ft LBRACKET RBRACKET
 
-	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:} 
+	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ");:} 
 
 	;
 
 static_call ::= CLASS_ID:ci call_without_expr:cwe
 
-		{: RESULT = StaticCall(getLine(), ci, cwe.getMethodName(), cwe.getArguments()) :}
+		{: RESULT = new StaticCall(getLine(), ci, cwe.getMethodName(), cwe.getArguments()); :}
 
 	;
 		
 virtual_call ::= call_with_expr:cwe
 
-		{: RESULT = VirtualCall(cwe.getLine(), cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()) :}
+		{: RESULT = new VirtualCall(cwe.getLine(), cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()); :}
 
-	| call_without_expr
+	| call_without_expr:cwe
 
-		{: RESULT = VirtualCall(cwe.getLine(), cwe.getMethodName(), cwe.getArguments()) :}
+		{: RESULT = new VirtualCall(cwe.getLine(), cwe.getMethodName(), cwe.getArguments()); :}
 
 	;
 
 call_with_expr ::= expr:e call_without_expr:cwe	
 
-		{: cwe.stLine(getLine()); cwe.setLocation(e); RESULT = cwe; :}
+		{: cwe.setLine(getLine()); cwe.setLocation(e); RESULT = cwe; :}
 
 	;
 
@@ -537,65 +544,65 @@ location ::=	IDENTIFIER:id
 
 binop_expr	::=	expr:e1 PLUS expr:e2
 
-	{: RESULT = new BinaryOp(e1, BinaryOps.PLUS, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.PLUS, e2); :}
 		
 	|			expr:e1 MINUS expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.MINUS, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.MINUS, e2); :}
 		
 	|	    	expr:e1 MULT expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.MULTIPLY, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.MULTIPLY, e2); :}
 		
 	|			expr:e1 DIV expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.DIVIDE, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.DIVIDE, e2); :}
 		
 	|	    	expr:e1 MODULU expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.MOD, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.MOD, e2); :}
 		
 	|			expr:e1 AND expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.LAND, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.LAND, e2); :}
 		
 	|			expr:e1 OR expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.LOR, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.LOR, e2); :}
 		
 	|			expr:e1 LT expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.LT, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.LT, e2); :}
 		
 	|			expr:e1 LTEQ expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.LTE, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.LTE, e2); :}
 		
 	|			expr:e1 GT expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.GT, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.GT, e2); :}
 		
 	|			expr:e1 GTEQ expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.GTE, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.GTE, e2); :}
 		
 	|			expr:e1 EQEQ expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.EQUAL, e2); :}
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.EQUAL, e2); :}
 		
 	|			expr:e1 NEQ expr:e2
 	
-	{: RESULT = new BinaryOp(e1, BinaryOps.NEQUAL, e2); :}	
+	{: RESULT = new MathBinaryOp(e1, BinaryOps.NEQUAL, e2); :}	
 	
 	;	
 		
 unop_expr	::=	NOT expr:e
 
-	{: RESULT = new UnnaryOp(UnaryOps.LNEG, e); :}
+	{: RESULT = new MathUnaryOp(UnaryOps.LNEG, e); :}
 		
 	|			MINUS expr:e
 	
-	{: RESULT = new UnnaryOp(UnaryOps.UMINUS, e); :}
+	{: RESULT = new MathUnaryOp(UnaryOps.UMINUS, e); :}
 		
 	;
 		
