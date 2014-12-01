@@ -102,14 +102,12 @@ non terminal Formal formal;
 non terminal Type method_type;
 non terminal Type type;
 
-non terminal StaticCall staticCall;
-non terminal VirtualCall virtualCall;
 non terminal Expression expr;
 non terminal List<Expression> expr_list;
 non terminal Location location;
 non terminal Call call_expr;
-non terminal BinaryOp binop;
-non terminal UnaryOp unop;
+non terminal Expression binop_expr;
+non terminal Expression unop_expr;
 non terminal Literal literal;
 
 /*********** Precedence declarations ***********/
@@ -157,12 +155,16 @@ field ::= type:t IDENTIFIER:i
 	{: RESULT = new Field(t,i); System.out.println("added field t= "+t+" : i= "+i); :}
 	;
 
-static_method ::= STATIC method_type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
-	STATIC method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+static_method ::= STATIC type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	STATIC type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	STATIC VOID IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	STATIC VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 	;
 
-virtual_method ::= 	method_type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
-	method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+virtual_method ::=  type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	| 	 type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	 VOID IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	 VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
 	;
 
 
@@ -217,8 +219,8 @@ expr ::= location:l
 	|	NEW CLASS_ID LPAREN RPAREN
 	|	NEW type:t LBRACKET expr:e RBRACKET
 	|	expr:e DOT LENGTH
-	|	expr:e binop:b expr:e
-	|	unop:u expr:e
+	|	binop_expr:e
+	|	unop_expr:e
 	|	literal:l
 	|	LPAREN expr:e RPAREN
 	;
@@ -239,11 +241,6 @@ formal  ::= type:t IDENTIFIER:i
 	{: RESULT = new Formal(t,i); System.out.println("added formal t= "+t+" : i= "+i); :}
 	;
 
-method_type ::=	type
-	|			VOID
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); :}
-	;
-
 type  ::= 		INTEGER
 	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); :}
 		|		BOOLEAN
@@ -256,11 +253,11 @@ type  ::= 		INTEGER
 	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:} 
 	;
 
-staticCall ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN 
+static_call ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN RPAREN 
 		|	   CLASS_ID:ci DOT IDENTIFIER:id LPAREN expr:e expr_list:el RPAREN 	
 		;
 		
-virtualCall ::= DOT IDENTIFIER:id LPAREN RPAREN 
+virtual_call ::= DOT IDENTIFIER:id LPAREN RPAREN 
 		|	    DOT IDENTIFIER:id LPAREN expr_list:el RPAREN
 		|		expr:e DOT IDENTIFIER:id LPAREN RPAREN 
 		|	    expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	
@@ -271,24 +268,24 @@ location ::=	IDENTIFIER:id
 		|		expr:e LBRACE expr:e RBRACE
 		;
 
-binop	::=		PLUS:bop
-		|		MINUS:bop
-		|	    MULT:bop
-		|		DIV:bop
-		|	    MODULU:bop
-		|		AND:bop
-		|		OR:bop
-		|		LT:bop
-		|		LTEQ:bop
-		|		GT:bop
-		|		GTEQ:bop
-		|		EQEQ:bop
-		|		NEQ:bop
+binop_expr	::=		expr:e1 PLUS:bop expr:e2
+		|		expr:e1 MINUS:bop expr:e2
+		|	    expr:e1 MULT:bop expr:e2
+		|		expr:e1 DIV:bop expr:e2
+		|	    expr:e1 MODULU:bop expr:e2
+		|		expr:e1 AND:bop expr:e2
+		|		expr:e1 OR:bop expr:e2
+		|		expr:e1 LT:bop expr:e2
+		|		expr:e1 LTEQ:bop expr:e2
+		|		expr:e1 GT:bop expr:e2
+		|		expr:e1 GTEQ:bop expr:e2
+		|		expr:e1 EQEQ:bop expr:e2
+		|		expr:e1 NEQ:bop expr:e2
 		;
 		
 		
-unop	::=		MINUS:uop 			/* which is UMINUS actually */
-		|		NOT:uop
+unop_expr	::=		NOT:uop expr:e
+		|			MINUS:uop expr:e
 		;
 		
 literal ::=	    STRING_LITERAL:st

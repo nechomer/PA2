@@ -107,6 +107,15 @@ non terminal Literal literal;
 
 /*********** Precedence declarations ***********/
 
+precedence right EQ;
+precedence left  OR;
+precedence left  AND;
+precedence left  EQEQ, NEQ;
+precedence left  LT, LTEQ, GT, GTEQ;
+precedence left  MINUS, PLUS;
+precedence left  DIV, MULT, MODULU;
+precedence right NOT;
+precedence left  LPAREN, RPAREN, LBRACE, RBRACE, DOT;
 
 /*********** The grammar ***********/
 
