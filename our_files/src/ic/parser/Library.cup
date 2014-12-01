@@ -45,7 +45,7 @@ parser code  {:
 		List<Integer> validToken = expected_token_ids();
 		if(validToken.size() > 0) {
 			for(i=0;i<validToken.size();i++) {
-				exps = symbol_name_from_id(validToken.get(i));
+				int exps = symbol_name_from_id(validToken.get(i));
 				System.out.println("Line " + tok.getLine()+": Syntax error; expected " + exps);
 			}
 		}

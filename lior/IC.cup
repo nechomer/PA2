@@ -32,9 +32,23 @@ parser code  {:
 		return currentLine;
 	}
 	
+	public String symbol_name_from_id(int id) {
+
+		return LibraryParserSym.terminalNames[id];
+	}
+	
 	public void syntax_error(Symbol s) {
+		
 		Token tok = (Token) s;
-		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+		List<Integer> validToken = expected_token_ids();
+		if(validToken.size() > 0) {
+			for(int i=0;i<validToken.size();i++) {
+				String exps = symbol_name_from_id(validToken.get(i));
+				System.out.println("Line " + tok.getLine()+": Syntax error; expected " + exps);
+			}
+		}
+		else
+			System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
 	}
 
 	private void makeFieldsOfType(List<Field> fieldsList, Type t)
@@ -139,6 +153,7 @@ precedence left  LT, LTEQ, GT, GTEQ;
 precedence left  MINUS, PLUS;
 precedence left  DIV, MULT, MODULU;
 precedence right NOT;
+precedence right RPAREN, RBRACKET;
 precedence left  LPAREN, LBRACKET, DOT;
 
 /*********** The grammar ***********/
@@ -227,37 +242,37 @@ field ::= IDENTIFIER:id
 
 	;
 
-static_method ::= STATIC type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+static_method ::= STATIC type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new StaticMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added static method no formals: " + id); :}
 
-	|	STATIC type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	STATIC type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new StaticMethod(t, id, fl, sl); printGrammar("added static method " + id); :}
 
-	|	STATIC VOID IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	STATIC VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new StaticMethod(new PrimitiveType(getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); :}
 
-	|	STATIC VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	STATIC VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new StaticMethod(new PrimitiveType(getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); :}
 
 	;
 
-virtual_method ::=  type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+virtual_method ::=  type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 		
 		{: RESULT = new VirtualMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added virtual method no formals: " + id); :}
 
-	| 	 type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	| 	 type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new VirtualMethod(t, id, fl, sl); printGrammar("added virtual method " + id); :}
 
-	|	 VOID IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	 VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new VirtualMethod(new PrimitiveType(getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); :}
 
-	|	 VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	|	 VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new VirtualMethod(new PrimitiveType(getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); :}
 
@@ -274,7 +289,7 @@ stmt_list ::=		stmt_list:sl stmt:st
 
 stmt ::= 	assignment_stmt:as SEMI
 
-		{: RESULT = as; :}
+		{: RESULT = as; printGrammar("assignment_stmt under stmt "); :}
 
 	|		call_stmt:cs
 
@@ -284,9 +299,9 @@ stmt ::= 	assignment_stmt:as SEMI
 
 		{: RESULT = rs; :}
 
-	|		if_stmt:is SEMI
+	|		if_stmt:is
 
-		{: RESULT = is; :}
+		{: RESULT = is; printGrammar("if_stmt under stmt "); :}
 
 	|		if_else_stmt:ies
 
@@ -298,7 +313,7 @@ stmt ::= 	assignment_stmt:as SEMI
 
 	|		break_stmt:bs SEMI
 
-		{: RESULT = bs; :}
+		{: RESULT = bs; printGrammar("break_stmt under stmt "); :}
 
 	|		continue_stmt:cs SEMI
 
@@ -320,7 +335,7 @@ stmt ::= 	assignment_stmt:as SEMI
 
 assignment_stmt ::= location:l EQ expr:e
 
-		{: RESULT = new Assignment(l, e); :}
+		{: RESULT = new Assignment(l, e); printGrammar("location eq expr under assignment_stmt "); :}
 
 	;
 
@@ -342,7 +357,7 @@ return_stmt ::= RETURN
 
 if_stmt ::= IF LPAREN expr:e RPAREN stmt:s
 
-		{: RESULT = new If(e, s); :}
+		{: RESULT = new If(e, s); printGrammar("if_stmt if (expr) stmt "); :}
 
 	;
 
@@ -360,7 +375,7 @@ while_stmt ::= WHILE LPAREN expr:e RPAREN stmt:s
 
 break_stmt ::= BREAK
 
-		{: RESULT = new Break(getLine()); :}
+		{: RESULT = new Break(getLine()); printGrammar("break_stmt "); :}
 
 	;
 
@@ -370,7 +385,7 @@ continue_stmt ::= CONTINUE
 
 	;
 
-stmt_block ::=	LBRACKET stmt_list:sl RBRACKET
+stmt_block ::=	LBRACE stmt_list:sl RBRACE
 
 		{: RESULT = new StatementsBlock(getLine(), sl); :}
 
@@ -378,7 +393,7 @@ stmt_block ::=	LBRACKET stmt_list:sl RBRACKET
 
 expr ::= location:l
 
-		{: RESULT = l; :}
+		{: RESULT = l; printGrammar("location in expr "); :}
 
 	|	call_expr:c
 
@@ -529,15 +544,15 @@ dot_identifier ::= DOT IDENTIFIER:id
 
 location ::=	IDENTIFIER:id
 
-		{: RESULT = new VariableLocation(getLine(), id); :}
+		{: RESULT = new VariableLocation(getLine(), id); printGrammar("location identifier " + id); :}
 
 	|		expr:e dot_identifier:id
 
-		{: RESULT = new VariableLocation(getLine(), e, id); :}
+		{: RESULT = new VariableLocation(getLine(), e, id); printGrammar("location dot identifier " + id); :}
 
-	|		expr:e1 LBRACE expr:e2 RBRACE
+	|		expr:e1 LBRACKET expr:e2 RBRACKET
 
-		{: RESULT = new ArrayLocation(e1, e2); :}
+		{: RESULT = new ArrayLocation(e1, e2); printGrammar("location expr[expr] "); :}
 
 	;
 
