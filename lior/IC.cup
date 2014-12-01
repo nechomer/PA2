@@ -491,7 +491,7 @@ type  ::= 		INTEGER
 
 	;
 
-static_call ::= CLASS_ID:ci call_without_expr:cwe
+static_call ::= CLASS_ID:ci DOT call_without_expr:cwe
 
 		{: RESULT = new StaticCall(getLine(), ci, cwe.getMethodName(), cwe.getArguments()); :}
 
@@ -507,7 +507,7 @@ virtual_call ::= call_with_expr:cwe
 
 	;
 
-call_with_expr ::= expr:e call_without_expr:cwe	
+call_with_expr ::= expr:e DOT call_without_expr:cwe	
 
 		{: cwe.setLine(getLine()); cwe.setLocation(e); RESULT = cwe; :}
 
@@ -517,14 +517,14 @@ call_without_expr::= call_without_exprs:cwe
 
 		{: RESULT = cwe; :}
 
-	|	    dot_identifier:id call_with_exprs:cwe
+	|	    IDENTIFIER:id call_with_exprs:cwe
 
 		{: cwe.setClassName(id); RESULT = cwe; :}
 
 
 	;
 
-call_without_exprs ::= dot_identifier:id LPAREN RPAREN
+call_without_exprs ::= IDENTIFIER:id LPAREN RPAREN
 
 		{: CallParams cp = new CallParams(); cp.setClassName(id); cp.setArguments(new ArrayList<Expression>()); RESULT = cp; :}
 
