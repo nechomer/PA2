@@ -153,8 +153,7 @@ precedence left  LT, LTEQ, GT, GTEQ;
 precedence left  MINUS, PLUS;
 precedence left  DIV, MULT, MODULU;
 precedence right NOT;
-precedence right RPAREN, RBRACKET;
-precedence left  LPAREN, LBRACKET, DOT;
+precedence left  LPAREN, RPAREN, LBRACKET, RBRACKET, DOT;
 
 /*********** The grammar ***********/
 

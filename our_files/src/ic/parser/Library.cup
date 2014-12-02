@@ -77,7 +77,8 @@ terminal LBRACE, RBRACE,SEMI, COMA;
 terminal java.lang.String IDENTIFIER; /****var_name****/
 terminal java.lang.String CLASS_ID; /****class_name****/
 terminal java.lang.Number INTEGER_LITERAL;
-terminal java.lang.Boolean BOOLEAN_LITERAL;
+terminal java.lang.Boolean TRUE_LITERAL;
+terminal java.lang.Boolean FALSE_LITERAL;
 terminal java.lang.String STRING_LITERAL;
 terminal NULL_LITERAL;
 
