@@ -39,11 +39,11 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
     "\000\021\000\002\002\003\000\002\002\004\000\002\003" +
-    "\010\000\002\006\003\000\002\006\005\000\002\006\002" +
-    "\000\002\005\010\000\002\011\003\000\002\011\003\000" +
-    "\002\010\003\000\002\010\005\000\002\010\002\000\002" +
-    "\007\004\000\002\012\003\000\002\012\003\000\002\012" +
-    "\003\000\002\012\005" });
+    "\007\000\002\003\006\000\002\005\003\000\002\005\004" +
+    "\000\002\004\010\000\002\004\011\000\002\010\003\000" +
+    "\002\010\003\000\002\007\003\000\002\007\005\000\002" +
+    "\006\004\000\002\011\003\000\002\011\003\000\002\011" +
+    "\003\000\002\011\005" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -51,24 +51,26 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\036\000\004\004\005\001\002\000\004\002\040\001" +
+    "\000\041\000\004\004\005\001\002\000\004\002\043\001" +
     "\002\000\004\055\007\001\002\000\004\002\001\001\002" +
-    "\000\004\050\010\001\002\000\006\006\011\052\ufffc\001" +
+    "\000\004\050\010\001\002\000\006\006\011\051\012\001" +
     "\002\000\012\007\024\010\017\011\023\012\020\001\002" +
-    "\000\004\052\ufffe\001\002\000\004\052\014\001\002\000" +
-    "\006\006\011\051\015\001\002\000\004\002\uffff\001\002" +
-    "\000\004\052\ufffd\001\002\000\006\024\ufff4\054\ufff4\001" +
-    "\002\000\006\024\ufff2\054\ufff2\001\002\000\006\024\033" +
-    "\054\ufffa\001\002\000\004\054\025\001\002\000\006\024" +
-    "\ufff3\054\ufff3\001\002\000\004\054\ufff9\001\002\000\004" +
-    "\026\026\001\002\000\014\010\017\011\023\012\020\027" +
-    "\ufff6\053\ufff6\001\002\000\006\027\036\053\035\001\002" +
-    "\000\006\024\033\054\032\001\002\000\006\027\ufff8\053" +
-    "\ufff8\001\002\000\006\027\ufff5\053\ufff5\001\002\000\004" +
-    "\025\034\001\002\000\006\024\ufff1\054\ufff1\001\002\000" +
-    "\010\010\017\011\023\012\020\001\002\000\004\052\ufffb" +
-    "\001\002\000\006\027\ufff7\053\ufff7\001\002\000\004\002" +
-    "\000\001\002" });
+    "\000\004\002\ufffe\001\002\000\006\006\ufffd\051\ufffd\001" +
+    "\002\000\006\006\011\051\015\001\002\000\004\002\uffff" +
+    "\001\002\000\006\006\ufffc\051\ufffc\001\002\000\006\024" +
+    "\ufff4\054\ufff4\001\002\000\006\024\ufff2\054\ufff2\001\002" +
+    "\000\006\024\034\054\ufff9\001\002\000\004\054\025\001" +
+    "\002\000\006\024\ufff3\054\ufff3\001\002\000\004\054\ufff8" +
+    "\001\002\000\004\026\026\001\002\000\012\010\017\011" +
+    "\023\012\020\027\027\001\002\000\004\052\042\001\002" +
+    "\000\006\027\037\053\036\001\002\000\006\024\034\054" +
+    "\033\001\002\000\006\027\ufff7\053\ufff7\001\002\000\006" +
+    "\027\ufff5\053\ufff5\001\002\000\004\025\035\001\002\000" +
+    "\006\024\ufff1\054\ufff1\001\002\000\010\010\017\011\023" +
+    "\012\020\001\002\000\004\052\040\001\002\000\006\006" +
+    "\ufffa\051\ufffa\001\002\000\006\027\ufff6\053\ufff6\001\002" +
+    "\000\006\006\ufffb\051\ufffb\001\002\000\004\002\000\001" +
+    "\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -76,18 +78,19 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\036\000\006\002\003\003\005\001\001\000\002\001" +
+    "\000\041\000\006\002\003\003\005\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\006\005\011\006\012\001\001\000\006\011\021\012" +
+    "\000\006\004\012\005\013\001\001\000\006\010\021\011" +
     "\020\001\001\000\002\001\001\000\002\001\001\000\004" +
-    "\005\015\001\001\000\002\001\001\000\002\001\001\000" +
+    "\004\015\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\010\007\030\010\026\012\027\001\001\000\002" +
+    "\001\000\010\006\031\007\027\011\030\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\006\007\036" +
-    "\012\027\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001" });
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\006\006\040\011\030\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -132,6 +135,9 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 
 	Token t = lexer.next_token();
 	currentLine = t.getLine();
+
+	if(t.sym == LibraryParserSym.CLASS) currentClassLine = currentLine;
+
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + t);
 	return t; 
@@ -143,14 +149,13 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 	 * This is useful for debugging.
 	 */
 	
-	
-
-	public boolean printTokens;
+	public boolean printTokens = true;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
+	private int currentClassLine = 0;
 	int i = 0;
-	String exps = null;
+	String exps = "";
 
 	public LibraryParser(Lexer lexer) {
 		super(lexer);
@@ -160,6 +165,11 @@ public class LibraryParser extends java_cup.runtime.lr_parser {
 	public int getLine() {
 		return currentLine;
 	}
+
+	public int getClassLine() {
+		return currentClassLine;
+	}
+	
 	public String symbol_name_from_id(int id) {
 
 		return LibraryParserSym.terminalNames[id];
@@ -211,7 +221,7 @@ class CUP$LibraryParser$actions {
 		int iccleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
 		int iccright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
 		ICClass icc = (ICClass)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
-		 List<ICClass> iccb = new ArrayList<ICClass>(); iccb.add(icc); RESULT = new Program(iccb); System.out.println("finish Program with calss : " + iccb); 
+		 List<ICClass> iccb = new ArrayList<ICClass>(); if (null != icc) iccb.add(icc); RESULT = new Program(iccb); System.out.println("finish Program with calss : " + iccb); 
               CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("program",0, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
@@ -231,58 +241,61 @@ class CUP$LibraryParser$actions {
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // icclass ::= CLASS CLASS_ID LBRACE method_block SEMI RBRACE 
+          case 2: // icclass ::= CLASS CLASS_ID LBRACE method_block RBRACE 
             {
               ICClass RESULT =null;
-		int cileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).left;
-		int ciright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).right;
-		java.lang.String ci = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).value;
-		int mbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
-		int mbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
-		List<Method> mb = (List<Method>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
-		 RESULT = new ICClass(getLine(), ci, null, mb); System.out.println("finish icclass "+ci+ " : " + mb); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("icclass",1, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+		int cileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).left;
+		int ciright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).right;
+		java.lang.String ci = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).value;
+		int mbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).left;
+		int mbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).right;
+		List<Method> mb = (List<Method>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).value;
+		 RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), mb); System.out.println("finish icclass "+ci+ " : " + mb); 
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("icclass",1, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // method_block ::= stmethod 
+          case 3: // icclass ::= CLASS CLASS_ID LBRACE RBRACE 
+            {
+              ICClass RESULT =null;
+		int cileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
+		int ciright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
+		java.lang.String ci = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
+		 RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), new ArrayList<Method>()); System.out.println("finish icclass "+ci); 
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("icclass",1, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+            }
+          return CUP$LibraryParser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 4: // method_block ::= stmethod 
             {
               List<Method> RESULT =null;
 		int smleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
 		int smright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
 		StaticMethod sm = (StaticMethod)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
 		 List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; System.out.println("crate function block with methods mb= "+mb+" added function sm = "+sm);
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("method_block",4, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("method_block",3, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // method_block ::= method_block SEMI stmethod 
+          case 5: // method_block ::= method_block stmethod 
             {
               List<Method> RESULT =null;
-		int mbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
-		int mbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
-		List<Method> mb = (List<Method>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
+		int mbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).left;
+		int mbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).right;
+		List<Method> mb = (List<Method>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).value;
 		int smleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
 		int smright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
 		StaticMethod sm = (StaticMethod)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
 		 mb.add(sm); RESULT = mb; System.out.println("added function to function block with methods mb= "+mb+" added function sm = "+sm); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("method_block",4, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("method_block",3, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // method_block ::= 
-            {
-              List<Method> RESULT =null;
-		 List<Method> mb = new ArrayList<Method>(); RESULT = mb; 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("method_block",4, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
-            }
-          return CUP$LibraryParser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // stmethod ::= STATIC methodType IDENTIFIER LPAREN formal_block RPAREN 
+          case 6: // stmethod ::= STATIC methodType IDENTIFIER LPAREN RPAREN SEMI 
             {
               StaticMethod RESULT =null;
 		int tleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).left;
@@ -291,49 +304,64 @@ class CUP$LibraryParser$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).right;
 		java.lang.String id = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-3)).value;
-		int fbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).left;
-		int fbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).right;
-		List<Formal> fb = (List<Formal>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)).value;
-		RESULT = new StaticMethod(t,id,fb,null); System.out.println("finish function "+id+" : "+fb); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("stmethod",3, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+		RESULT = new StaticMethod(t,id,new ArrayList<Formal>() ,new ArrayList<Statement>()); System.out.println("finish function not args "+id); 
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("stmethod",2, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 7: // methodType ::= formalType 
+          case 7: // stmethod ::= STATIC methodType IDENTIFIER LPAREN formal_block RPAREN SEMI 
+            {
+              StaticMethod RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)).right;
+		PrimitiveType t = (PrimitiveType)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-5)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).right;
+		java.lang.String id = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-4)).value;
+		int fbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
+		int fbright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
+		List<Formal> fb = (List<Formal>)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
+		RESULT = new StaticMethod(t,id,fb,new ArrayList<Statement>()); System.out.println("finish function "+id+" : "+fb); 
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("stmethod",2, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-6)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+            }
+          return CUP$LibraryParser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 8: // methodType ::= formalType 
             {
               PrimitiveType RESULT =null;
 		int ftleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
 		int ftright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
 		PrimitiveType ft = (PrimitiveType)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
 		 RESULT = ft; 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("methodType",7, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("methodType",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // methodType ::= VOID 
+          case 9: // methodType ::= VOID 
             {
               PrimitiveType RESULT =null;
 		 RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("methodType",7, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("methodType",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // formal_block ::= formal 
+          case 10: // formal_block ::= formal 
             {
               List<Formal> RESULT =null;
 		int fleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
 		Formal f = (Formal)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
 		 List<Formal> fb = new ArrayList<Formal>(); fb.add(f); RESULT = fb; System.out.println("added formal block : fb= "+fb+" : f= "+f); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal_block",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal_block",5, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // formal_block ::= formal_block COMA formal 
+          case 11: // formal_block ::= formal_block COMA formal 
             {
               List<Formal> RESULT =null;
 		int fbleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).left;
@@ -342,17 +370,8 @@ class CUP$LibraryParser$actions {
 		int fleft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
 		Formal f = (Formal)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
-		 fb.add(f); RESULT = fb; System.out.println("added formal to block fb= "+fb+" : f= "+f); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal_block",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
-            }
-          return CUP$LibraryParser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // formal_block ::= 
-            {
-              List<Formal> RESULT =null;
-		 List<Formal> fb = new ArrayList<Formal>(); RESULT = fb; 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal_block",6, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+		 fb.add(f); RESULT = fb; System.out.println("added formal to block fb= "+fb+" : f= "+f);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal_block",5, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
@@ -366,8 +385,8 @@ class CUP$LibraryParser$actions {
 		int ileft = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()).right;
 		java.lang.String i = (java.lang.String)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.peek()).value;
-		 RESULT = new Formal(t,i); System.out.println("added formal t= "+t+" : i= "+i); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal",5, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+		 RESULT = new Formal(t,i); System.out.println("added formal t= "+t+" : i= "+i);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formal",4, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-1)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
@@ -376,7 +395,7 @@ class CUP$LibraryParser$actions {
             {
               PrimitiveType RESULT =null;
 		 RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); 
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",8, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",7, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
@@ -385,7 +404,7 @@ class CUP$LibraryParser$actions {
             {
               PrimitiveType RESULT =null;
 		 RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("added primitive boolean");
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",8, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",7, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
@@ -394,7 +413,7 @@ class CUP$LibraryParser$actions {
             {
               PrimitiveType RESULT =null;
 		 RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("added primitive string");
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",8, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",7, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 
@@ -406,7 +425,7 @@ class CUP$LibraryParser$actions {
 		int ftright = ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).right;
 		PrimitiveType ft = (PrimitiveType)((java_cup.runtime.Symbol) CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)).value;
 		 ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);
-              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",8, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
+              CUP$LibraryParser$result = parser.getSymbolFactory().newSymbol("formalType",7, ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.elementAt(CUP$LibraryParser$top-2)), ((java_cup.runtime.Symbol)CUP$LibraryParser$stack.peek()), RESULT);
             }
           return CUP$LibraryParser$result;
 

@@ -1557,7 +1557,7 @@ class CUP$ProgramParser$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		Expression e = (Expression)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new NewArray(t, e); 
+		 RESULT = new NewArray(t, e); printGrammar("new in expr "); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("expr",32, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-4)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1920,7 +1920,7 @@ class CUP$ProgramParser$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		Expression e2 = (Expression)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new ArrayLocation(e1, e2); printGrammar("location expr[expr] "); 
+		 RESULT = new ArrayLocation(e1, e2); printGrammar("location expr[expr] : expr: " + e1 + "[expr] :" + e2); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("location",34, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-3)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;

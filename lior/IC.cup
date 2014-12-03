@@ -450,7 +450,7 @@ expr ::= location:l
 
 	|	NEW type:t LBRACKET expr:e RBRACKET
 
-		{: RESULT = new NewArray(t, e); :}
+		{: RESULT = new NewArray(t, e); printGrammar("new in expr "); :}
 
 	|	expr:e DOT LENGTH
 
@@ -593,7 +593,7 @@ location ::=	IDENTIFIER:id
 
 	|		expr:e1 LBRACKET expr:e2 RBRACKET
 
-		{: RESULT = new ArrayLocation(e1, e2); printGrammar("location expr[expr] "); :}
+		{: RESULT = new ArrayLocation(e1, e2); printGrammar("location expr[expr] : expr: " + e1 + "[expr] :" + e2); :}
 
 	;
 

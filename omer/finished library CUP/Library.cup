@@ -22,6 +22,8 @@ parser code  {:
 	private Lexer lexer;
 	private int currentLine = 0;
 	private int currentClassLine = 0;
+	int i = 0;
+	String exps = "";
 
 	public LibraryParser(Lexer lexer) {
 		super(lexer);
@@ -36,9 +38,23 @@ parser code  {:
 		return currentClassLine;
 	}
 	
+	public String symbol_name_from_id(int id) {
+
+		return LibraryParserSym.terminalNames[id];
+	}
+	
 	public void syntax_error(Symbol s) {
+		
 		Token tok = (Token) s;
-		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+		List<Integer> validToken = expected_token_ids();
+		if(validToken.size() > 0) {
+			for(i=0;i<validToken.size();i++) {
+				exps = symbol_name_from_id(validToken.get(i));
+				System.out.println("Line " + tok.getLine()+": Syntax error; expected " + exps);
+			}
+		}
+		else
+			System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
 	}
 :}
 
@@ -75,7 +91,6 @@ terminal NULL_LITERAL;
 /*********** Symbol list - non-terminals) ***********/
 non terminal  Program program;
 non terminal  ICClass icclass;
-non terminal  List<ICClass> icclass_block;
 non terminal  StaticMethod stmethod;
 non terminal  List<Method> method_block;
 non terminal  Formal formal;
