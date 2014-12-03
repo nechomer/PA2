@@ -1,0 +1,833 @@
+finished part 1!
+15:class
+15:CLASS_ID(Quicksort)
+15:{
+class does not extends 
+16:int
+class body finished 
+16:[
+int 
+16:]
+16:Identifier(a)
+added array 
+16:;
+added field a
+18:int
+class body fields 
+18:Identifier(partition)
+int 
+18:(
+18:int
+18:Identifier(low)
+int 
+18:,
+18:int
+18:Identifier(high)
+int 
+18:)
+18:{
+19:int
+19:Identifier(pivot)
+int 
+19:=
+19:Identifier(a)
+19:[
+location identifier a
+location in expr 
+19:Identifier(low)
+19:]
+location identifier low
+location in expr 
+19:;
+location expr[expr] 
+location in expr 
+20:int
+20:Identifier(i)
+int 
+20:=
+20:Identifier(low)
+20:;
+location identifier low
+location in expr 
+21:int
+21:Identifier(j)
+int 
+21:=
+21:Identifier(high)
+21:;
+location identifier high
+location in expr 
+22:int
+22:Identifier(tmp)
+int 
+22:;
+24:while
+24:(
+24:true(true)
+24:)
+24:{
+25:while
+25:(
+25:Identifier(a)
+25:[
+location identifier a
+location in expr 
+25:Identifier(i)
+25:]
+location identifier i
+location in expr 
+25:<
+location expr[expr] 
+location in expr 
+25:Identifier(pivot)
+25:)
+location identifier pivot
+location in expr 
+25:Identifier(i)
+25:=
+location identifier i
+25:Identifier(i)
+25:+
+location identifier i
+location in expr 
+25:INTEGER(1)
+25:;
+location eq expr under assignment_stmt 
+26:while
+assignment_stmt under stmt 
+26:(
+26:Identifier(a)
+26:[
+location identifier a
+location in expr 
+26:Identifier(j)
+26:]
+location identifier j
+location in expr 
+26:>
+location expr[expr] 
+location in expr 
+26:Identifier(pivot)
+26:)
+location identifier pivot
+location in expr 
+26:Identifier(j)
+26:=
+location identifier j
+26:Identifier(j)
+26:-
+location identifier j
+location in expr 
+26:INTEGER(1)
+26:;
+location eq expr under assignment_stmt 
+28:if
+assignment_stmt under stmt 
+28:(
+28:Identifier(i)
+28:>=
+location identifier i
+location in expr 
+28:Identifier(j)
+28:)
+location identifier j
+location in expr 
+28:break
+28:;
+break_stmt 
+30:Identifier(tmp)
+break_stmt under stmt 
+if_stmt if (expr) stmt 
+if_stmt under stmt 
+30:=
+location identifier tmp
+30:Identifier(a)
+30:[
+location identifier a
+location in expr 
+30:Identifier(i)
+30:]
+location identifier i
+location in expr 
+30:;
+location expr[expr] 
+location in expr 
+location eq expr under assignment_stmt 
+31:Identifier(a)
+assignment_stmt under stmt 
+31:[
+location identifier a
+location in expr 
+31:Identifier(i)
+31:]
+location identifier i
+location in expr 
+31:=
+location expr[expr] 
+31:Identifier(a)
+31:[
+location identifier a
+location in expr 
+31:Identifier(j)
+31:]
+location identifier j
+location in expr 
+31:;
+location expr[expr] 
+location in expr 
+location eq expr under assignment_stmt 
+32:Identifier(a)
+assignment_stmt under stmt 
+32:[
+location identifier a
+location in expr 
+32:Identifier(j)
+32:]
+location identifier j
+location in expr 
+32:=
+location expr[expr] 
+32:Identifier(tmp)
+32:;
+location identifier tmp
+location in expr 
+location eq expr under assignment_stmt 
+33:Identifier(i)
+assignment_stmt under stmt 
+33:=
+location identifier i
+33:Identifier(i)
+33:+
+location identifier i
+location in expr 
+33:INTEGER(1)
+33:;
+location eq expr under assignment_stmt 
+34:Identifier(j)
+assignment_stmt under stmt 
+34:=
+location identifier j
+34:Identifier(j)
+34:-
+location identifier j
+location in expr 
+34:INTEGER(1)
+34:;
+location eq expr under assignment_stmt 
+35:}
+assignment_stmt under stmt 
+37:return
+37:Identifier(j)
+37:;
+location identifier j
+location in expr 
+38:}
+40:void
+added virtual method partition
+virtual method 
+class body method 
+40:Identifier(quicksort)
+40:(
+40:int
+40:Identifier(low)
+int 
+40:,
+40:int
+40:Identifier(high)
+int 
+40:)
+40:{
+41:if
+41:(
+41:Identifier(low)
+41:<
+location identifier low
+location in expr 
+41:Identifier(high)
+41:)
+location identifier high
+location in expr 
+41:{
+42:int
+42:Identifier(mid)
+int 
+42:=
+42:Identifier(partition)
+42:(
+42:Identifier(low)
+42:,
+location identifier low
+location in expr 
+42:Identifier(high)
+42:)
+location identifier high
+location in expr 
+42:;
+43:Identifier(quicksort)
+43:(
+43:Identifier(low)
+43:,
+location identifier low
+location in expr 
+43:Identifier(mid)
+43:)
+location identifier mid
+location in expr 
+43:;
+44:Identifier(quicksort)
+44:(
+44:Identifier(mid)
+44:+
+location identifier mid
+location in expr 
+44:INTEGER(1)
+44:,
+44:Identifier(high)
+44:)
+location identifier high
+location in expr 
+44:;
+45:}
+46:}
+if_stmt if (expr) stmt 
+if_stmt under stmt 
+48:void
+added void virtual method: quicksort
+virtual method 
+class body method 
+48:Identifier(initArray)
+48:(
+48:)
+48:{
+49:int
+49:Identifier(i)
+int 
+49:=
+49:INTEGER(0)
+49:;
+50:while
+50:(
+50:Identifier(i)
+50:<
+location identifier i
+location in expr 
+50:Identifier(a)
+50:.
+location identifier a
+location in expr 
+50:length
+50:)
+50:{
+51:Identifier(a)
+51:[
+location identifier a
+location in expr 
+51:Identifier(i)
+51:]
+location identifier i
+location in expr 
+51:=
+location expr[expr] 
+51:CLASS_ID(Library)
+51:.
+51:Identifier(random)
+51:(
+51:Identifier(a)
+51:.
+location identifier a
+location in expr 
+51:length
+51:*
+51:INTEGER(2)
+51:)
+51:;
+location eq expr under assignment_stmt 
+52:Identifier(i)
+assignment_stmt under stmt 
+52:=
+location identifier i
+52:Identifier(i)
+52:+
+location identifier i
+location in expr 
+52:INTEGER(1)
+52:;
+location eq expr under assignment_stmt 
+53:}
+assignment_stmt under stmt 
+54:}
+56:void
+added void virtual method no formal: initArray
+virtual method 
+class body method 
+56:Identifier(printArray)
+56:(
+56:)
+56:{
+57:int
+57:Identifier(i)
+int 
+57:=
+57:INTEGER(0)
+57:;
+59:CLASS_ID(Library)
+59:.
+59:Identifier(print)
+59:(
+59:STRING(Array elements: )
+59:)
+59:;
+60:while
+60:(
+60:Identifier(i)
+60:<
+location identifier i
+location in expr 
+60:Identifier(a)
+60:.
+location identifier a
+location in expr 
+60:length
+60:)
+60:{
+61:CLASS_ID(Library)
+61:.
+61:Identifier(printi)
+61:(
+61:Identifier(a)
+61:[
+location identifier a
+location in expr 
+61:Identifier(i)
+61:]
+location identifier i
+location in expr 
+61:)
+location expr[expr] 
+location in expr 
+61:;
+62:CLASS_ID(Library)
+62:.
+62:Identifier(print)
+62:(
+62:STRING( )
+62:)
+62:;
+63:Identifier(i)
+63:=
+location identifier i
+63:Identifier(i)
+63:+
+location identifier i
+location in expr 
+63:INTEGER(1)
+63:;
+location eq expr under assignment_stmt 
+64:}
+assignment_stmt under stmt 
+65:CLASS_ID(Library)
+65:.
+65:Identifier(print)
+65:(
+65:STRING(
+)
+65:)
+65:;
+66:}
+68:static
+added void virtual method no formal: printArray
+virtual method 
+class body method 
+68:void
+68:Identifier(main)
+68:(
+68:string
+68:[
+string 
+68:]
+68:Identifier(args)
+added array 
+68:)
+68:{
+69:int
+69:Identifier(n)
+int 
+69:;
+71:if
+71:(
+71:Identifier(args)
+71:.
+location identifier args
+location in expr 
+71:length
+71:!=
+71:INTEGER(1)
+71:)
+71:{
+72:CLASS_ID(Library)
+72:.
+72:Identifier(println)
+72:(
+72:STRING(Unspecified array length)
+72:)
+72:;
+73:CLASS_ID(Library)
+73:.
+73:Identifier(exit)
+73:(
+73:INTEGER(1)
+73:)
+73:;
+74:}
+76:Identifier(n)
+if_stmt if (expr) stmt 
+if_stmt under stmt 
+76:=
+location identifier n
+76:CLASS_ID(Library)
+76:.
+76:Identifier(stoi)
+76:(
+76:Identifier(args)
+76:[
+location identifier args
+location in expr 
+76:INTEGER(0)
+76:]
+76:,
+location expr[expr] 
+location in expr 
+76:INTEGER(0)
+76:)
+76:;
+location eq expr under assignment_stmt 
+77:if
+assignment_stmt under stmt 
+77:(
+77:Identifier(n)
+77:<=
+location identifier n
+location in expr 
+77:INTEGER(0)
+77:)
+77:{
+78:CLASS_ID(Library)
+78:.
+78:Identifier(println)
+78:(
+78:STRING(Invalid array length)
+78:)
+78:;
+79:CLASS_ID(Library)
+79:.
+79:Identifier(exit)
+79:(
+79:INTEGER(1)
+79:)
+79:;
+80:}
+81:CLASS_ID(Quicksort)
+if_stmt if (expr) stmt 
+if_stmt under stmt 
+81:Identifier(s)
+added TYPE User Defined type 
+81:=
+81:new
+81:CLASS_ID(Quicksort)
+81:(
+81:)
+81:;
+82:Identifier(s)
+82:.
+location identifier s
+location in expr 
+82:Identifier(a)
+82:=
+location dot identifier a
+82:new
+82:int
+82:[
+int 
+82:Identifier(n)
+82:]
+location identifier n
+location in expr 
+82:;
+location eq expr under assignment_stmt 
+84:Identifier(s)
+assignment_stmt under stmt 
+84:.
+location identifier s
+location in expr 
+84:Identifier(initArray)
+84:(
+84:)
+84:;
+85:Identifier(s)
+85:.
+location identifier s
+location in expr 
+85:Identifier(printArray)
+85:(
+85:)
+85:;
+86:Identifier(s)
+86:.
+location identifier s
+location in expr 
+86:Identifier(quicksort)
+86:(
+86:INTEGER(0)
+86:,
+86:Identifier(n)
+86:-
+location identifier n
+location in expr 
+86:INTEGER(1)
+86:)
+86:;
+87:Identifier(s)
+87:.
+location identifier s
+location in expr 
+87:Identifier(printArray)
+87:(
+87:)
+87:;
+88:}
+89:}
+added void static method main
+static method 
+class body method 
+90:
+made new class 
+made class list with 1 class
+90:
+finished part 2!
+finished part 3!
+
+Abstract Syntax Tree: /Users/nechomer/Documents/year 4/compilation/PA2/GitSVN_PA2/Exercise_Details/pa2/Quicksort.ic
+
+15: Declaration of class: Quicksort
+  16: Declaration of field: a
+   16: Primitive data type: 1-dimensional array of int
+  18: Declaration of virtual method: partition
+    18: Primitive data type: int
+    18: Parameter: low
+     18: Primitive data type: int
+    18: Parameter: high
+     18: Primitive data type: int
+    19: Declaration of local variable: pivot, with initial value
+      19: Primitive data type: int
+      19: Reference to array
+        19: Reference to variable: a
+        19: Reference to variable: low
+    20: Declaration of local variable: i, with initial value
+      20: Primitive data type: int
+      20: Reference to variable: low
+    21: Declaration of local variable: j, with initial value
+      21: Primitive data type: int
+      21: Reference to variable: high
+    22: Declaration of local variable: tmp
+     22: Primitive data type: int
+    24: While statement
+      24: Boolean literal: true
+      24: Block of statements
+        25: While statement
+          25: Logical binary operation: less than
+            25: Reference to array
+              25: Reference to variable: a
+              25: Reference to variable: i
+            25: Reference to variable: pivot
+          25: Assignment statement
+            25: Reference to variable: i
+            25: Mathematical binary operation: addition
+              25: Reference to variable: i
+              25: Integer literal: 1
+        26: While statement
+          26: Logical binary operation: greater than
+            26: Reference to array
+              26: Reference to variable: a
+              26: Reference to variable: j
+            26: Reference to variable: pivot
+          26: Assignment statement
+            26: Reference to variable: j
+            26: Mathematical binary operation: subtraction
+              26: Reference to variable: j
+              26: Integer literal: 1
+        28: If statement
+          28: Logical binary operation: greater than or equal to
+            28: Reference to variable: i
+            28: Reference to variable: j
+          28: Break statement
+        30: Assignment statement
+          30: Reference to variable: tmp
+          30: Reference to array
+            30: Reference to variable: a
+            30: Reference to variable: i
+        31: Assignment statement
+          31: Reference to array
+            31: Reference to variable: a
+            31: Reference to variable: i
+          31: Reference to array
+            31: Reference to variable: a
+            31: Reference to variable: j
+        32: Assignment statement
+          32: Reference to array
+            32: Reference to variable: a
+            32: Reference to variable: j
+          32: Reference to variable: tmp
+        33: Assignment statement
+          33: Reference to variable: i
+          33: Mathematical binary operation: addition
+            33: Reference to variable: i
+            33: Integer literal: 1
+        34: Assignment statement
+          34: Reference to variable: j
+          34: Mathematical binary operation: subtraction
+            34: Reference to variable: j
+            34: Integer literal: 1
+    37: Return statement, with return value
+     37: Reference to variable: j
+  40: Declaration of virtual method: quicksort
+    40: Primitive data type: void
+    40: Parameter: low
+     40: Primitive data type: int
+    40: Parameter: high
+     40: Primitive data type: int
+    41: If statement
+      41: Logical binary operation: less than
+        41: Reference to variable: low
+        41: Reference to variable: high
+      40: Block of statements
+        42: Declaration of local variable: mid, with initial value
+          42: Primitive data type: int
+          42: Call to virtual method: partition
+            42: Reference to variable: low
+            42: Reference to variable: high
+        43: Method call statement
+         43: Call to virtual method: quicksort
+           43: Reference to variable: low
+           43: Reference to variable: mid
+        44: Method call statement
+         44: Call to virtual method: quicksort
+           44: Mathematical binary operation: addition
+             44: Reference to variable: mid
+             44: Integer literal: 1
+           44: Reference to variable: high
+  48: Declaration of virtual method: initArray
+    48: Primitive data type: void
+    49: Declaration of local variable: i, with initial value
+      49: Primitive data type: int
+      49: Integer literal: 0
+    50: While statement
+      50: Logical binary operation: less than
+        50: Reference to variable: i
+        50: Reference to array length
+         50: Reference to variable: a
+      48: Block of statements
+        51: Assignment statement
+          51: Reference to array
+            51: Reference to variable: a
+            51: Reference to variable: i
+          51: Call to static method: random, in class Library
+            51: Mathematical binary operation: multiplication
+              51: Reference to array length
+               51: Reference to variable: a
+              51: Integer literal: 2
+        52: Assignment statement
+          52: Reference to variable: i
+          52: Mathematical binary operation: addition
+            52: Reference to variable: i
+            52: Integer literal: 1
+  56: Declaration of virtual method: printArray
+    56: Primitive data type: void
+    57: Declaration of local variable: i, with initial value
+      57: Primitive data type: int
+      57: Integer literal: 0
+    59: Method call statement
+     59: Call to static method: print, in class Library
+       59: String literal: "Array elements: "
+    60: While statement
+      60: Logical binary operation: less than
+        60: Reference to variable: i
+        60: Reference to array length
+         60: Reference to variable: a
+      60: Block of statements
+        61: Method call statement
+         61: Call to static method: printi, in class Library
+           61: Reference to array
+             61: Reference to variable: a
+             61: Reference to variable: i
+        62: Method call statement
+         62: Call to static method: print, in class Library
+           62: String literal: " "
+        63: Assignment statement
+          63: Reference to variable: i
+          63: Mathematical binary operation: addition
+            63: Reference to variable: i
+            63: Integer literal: 1
+    65: Method call statement
+     65: Call to static method: print, in class Library
+       65: String literal: "\n"
+  15: Declaration of static method: main
+    15: Primitive data type: void
+    68: Parameter: args
+     68: Primitive data type: 1-dimensional array of string
+    69: Declaration of local variable: n
+     69: Primitive data type: int
+    71: If statement
+      71: Logical binary operation: inequality
+        71: Reference to array length
+         71: Reference to variable: args
+        71: Integer literal: 1
+      71: Block of statements
+        72: Method call statement
+         72: Call to static method: println, in class Library
+           72: String literal: "Unspecified array length"
+        73: Method call statement
+         73: Call to static method: exit, in class Library
+           73: Integer literal: 1
+    76: Assignment statement
+      76: Reference to variable: n
+      76: Call to static method: stoi, in class Library
+        76: Reference to array
+          76: Reference to variable: args
+          76: Integer literal: 0
+        76: Integer literal: 0
+    77: If statement
+      77: Logical binary operation: less than or equal to
+        77: Reference to variable: n
+        77: Integer literal: 0
+      77: Block of statements
+        78: Method call statement
+         78: Call to static method: println, in class Library
+           78: String literal: "Invalid array length"
+        79: Method call statement
+         79: Call to static method: exit, in class Library
+           79: Integer literal: 1
+    81: Declaration of local variable: s, with initial value
+      81: User-defined data type: Quicksort
+      81: Instantiation of class: Quicksort
+    82: Assignment statement
+      82: Reference to variable: a, in external scope
+       82: Reference to variable: s
+      82: Array allocation
+        82: Primitive data type: int
+        82: Reference to variable: n
+    84: Method call statement
+     84: Call to virtual method: initArray, in external scope
+       84: Reference to variable: s
+    85: Method call statement
+     85: Call to virtual method: printArray, in external scope
+       85: Reference to variable: s
+    86: Method call statement
+     86: Call to virtual method: quicksort, in external scope
+       86: Reference to variable: s
+       86: Integer literal: 0
+       86: Mathematical binary operation: subtraction
+         86: Reference to variable: n
+         86: Integer literal: 1
+    87: Method call statement
+     87: Call to virtual method: printArray, in external scope
+       87: Reference to variable: s

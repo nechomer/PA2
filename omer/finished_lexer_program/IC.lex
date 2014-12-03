@@ -113,7 +113,7 @@ ororOperator = "||"
 eqOperator = "="
 
 // StringCharacter:  ASCII codes incl 32 - 126 + " and \ + escape sequence: \", \\, \t, \n
-StringCharacter = ([\040-\041\043-\133\135-\176] | "\\\"" | "\\\\" | "\\t" | "\\n")
+StringCharacter = ([\040-\041\043-\133\135-\176])
 
 //**************************** Stracture ***********************************
 leftBracesStracture = "{"
@@ -164,7 +164,7 @@ comaStracture = ","
 
 0+ {DecIntegerLiteral}         { Error(yytext(), false); }
 {DecIntegerLiteral}            { return token(ProgramParserSym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
-\"                             { lastPos(); string.setLength(0); string.append("\""); yybegin(STRING); }
+\"                             { lastPos(); string.setLength(0); yybegin(STRING); }
 
 
 /* operators */
@@ -212,8 +212,12 @@ comaStracture = ","
 
 
 <STRING> {
-\"                             	{ yybegin(YYINITIAL); string.append("\""); return token(ProgramParserSym.STRING_LITERAL, "STRING", string.toString(), true); }
+\"                             	{ yybegin(YYINITIAL); return token(ProgramParserSym.STRING_LITERAL, "STRING", string.toString(), true); }
 {StringCharacter}+             	{ string.append(yytext()); }
+"\\n"							{ string.append("\n"); }
+"\\t"							{ string.append("\t"); }
+"\\\""							{ string.append("\""); }
+"\\\\"							{ string.append("\\"); }
 <<EOF>>                        	{ Error(yytext(), true); }
 }
 
