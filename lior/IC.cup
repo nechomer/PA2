@@ -24,10 +24,13 @@ parser code  {:
 	public boolean printStates = true;
 
 	private Stack<Integer> parenthesisStack = new Stack<Integer>();
+	private boolean firstRBRACE = false;
+	private boolean twoRBRACE = false;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
 	private int lastparenthesisStackLine = 0;
+	private int lastparenthesisStackLine2 = 0;
 
 	public ProgramParser(Lexer lexer) {
 		super(lexer);
@@ -36,6 +39,17 @@ parser code  {:
 	
 	public int getLine() {
 		return currentLine;
+	}
+
+	public int getParenLine()
+	{
+		if (twoRBRACE) {
+			firstRBRACE = false;
+			twoRBRACE = flase;
+			return lastparenthesisStackLine2;
+		} else {
+			return lastparenthesisStackLine;
+		}
 	}
 	
 	public String symbol_name_from_id(int id) {
@@ -76,11 +90,24 @@ scan with {:
 	if (t.sym == ProgramParserSym.LPAREN || t.sym == ProgramParserSym.LBRACE)
 	{
 		parenthesisStack.push(currentLine);
-	} 
+	}
+
+	if (t.sym == ProgramParserSym.RBRACE) {
+		if(firstRBRACE == true) {
+			lastparenthesisStackLine2 = lastparenthesisStackLine;
+			twoRBRACE = true;
+		} else {
+			firstRBRACE = true;
+		}
+	} else {
+		firstRBRACE = false;
+	}
+	
 	if (t.sym == ProgramParserSym.RPAREN | t.sym == ProgramParserSym.RBRACE)
 	{
 		lastparenthesisStackLine = parenthesisStack.pop();
 	}
+
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + t);
 	return t; 
@@ -193,9 +220,9 @@ icclass ::= CLASS CLASS_ID:ci class_extends:ce LBRACE class_body:cb RBRACE
 
 	{: 
 		if (ce == null) {		/* there is no extention to the class */
-		RESULT = new ICClass(lastparenthesisStackLine, ci, cb.getFields(), cb.getMethods()); 
+		RESULT = new ICClass(getParenLine(), ci, cb.getFields(), cb.getMethods()); 
 		} else {
-		RESULT = new ICClass(lastparenthesisStackLine, ci, ce,cb.getFields(), cb.getMethods()); 
+		RESULT = new ICClass(getParenLine(), ci, ce,cb.getFields(), cb.getMethods()); 
 		}
 		printGrammar("made new class ");
 	:}
@@ -271,11 +298,11 @@ static_method ::= STATIC type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl 
 
 	|	STATIC VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(new PrimitiveType(lastparenthesisStackLine, DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); :}
+		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); :}
 
 	|	STATIC VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(new PrimitiveType(lastparenthesisStackLine, DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); :}
+		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); :}
 
 	;
 
@@ -289,11 +316,11 @@ virtual_method ::=  type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRAC
 
 	|	 VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(lastparenthesisStackLine, DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); :}
+		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); :}
 
 	|	 VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(lastparenthesisStackLine, DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); :}
+		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); :}
 
 	;
 
@@ -406,7 +433,7 @@ continue_stmt ::= CONTINUE
 
 stmt_block ::=	LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StatementsBlock(lastparenthesisStackLine, sl); :}
+		{: RESULT = new StatementsBlock(getParenLine(), sl); :}
 
 	;
 
@@ -512,17 +539,17 @@ type  ::= 		INTEGER
 
 static_call ::= CLASS_ID:ci DOT call_without_expr:cwe
 
-		{: RESULT = new StaticCall(lastparenthesisStackLine, ci, cwe.getMethodName(), cwe.getArguments()); :}
+		{: RESULT = new StaticCall(getParenLine(), ci, cwe.getMethodName(), cwe.getArguments()); :}
 
 	;
 		
 virtual_call ::= call_with_expr:cwe
 
-		{: RESULT = new VirtualCall(lastparenthesisStackLine, cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()); :}
+		{: RESULT = new VirtualCall(getParenLine(), cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()); :}
 
 	| call_without_expr:cwe
 
-		{: RESULT = new VirtualCall(lastparenthesisStackLine, cwe.getMethodName(), cwe.getArguments()); :}
+		{: RESULT = new VirtualCall(getParenLine(), cwe.getMethodName(), cwe.getArguments()); :}
 
 	;
 
