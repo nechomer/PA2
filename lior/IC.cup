@@ -45,7 +45,7 @@ parser code  {:
 	{
 		if (twoRBRACE) {
 			firstRBRACE = false;
-			twoRBRACE = flase;
+			twoRBRACE = false;
 			return lastparenthesisStackLine2;
 		} else {
 			return lastparenthesisStackLine;
@@ -69,13 +69,6 @@ parser code  {:
 		}
 		else
 			System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
-	}
-
-	private void makeFieldsOfType(List<Field> fieldsList, Type t)
-	{
-		for (Field f: fieldsList) {
-			f.setType(t);
-		}
 	}
 
 	private void printGrammar(String str) {

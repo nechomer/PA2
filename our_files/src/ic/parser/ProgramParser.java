@@ -810,13 +810,6 @@ public class ProgramParser extends java_cup.runtime.lr_parser {
 			System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
 	}
 
-	private void makeFieldsOfType(List<Field> fieldsList, Type t)
-	{
-		for (Field f: fieldsList) {
-			f.setType(t);
-		}
-	}
-
 	private void printGrammar(String str) {
 		if (printStates) { System.out.println(str); }
 	}
