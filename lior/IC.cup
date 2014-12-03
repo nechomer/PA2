@@ -20,8 +20,8 @@ parser code  {:
 	 * This is useful for debugging.
 	 */
 	
-	public boolean printTokens = true;
-	public boolean printStates = true;
+	public boolean printTokens = false;
+	public boolean printStates = false;
 
 	private Stack<Integer> parenthesisStack = new Stack<Integer>();
 	private boolean firstRBRACE = false;
@@ -196,16 +196,16 @@ program ::= icclass_list:iccl
 
 	{: RESULT = new Program(iccl); :}
 
-	| 		{: RESULT = new Program(new ArrayList<ICClass>()); printGrammar("made program"); :}
+	| 		{: RESULT = new Program(new ArrayList<ICClass>()); :}
 
 	;
 icclass_list ::=  icclass:icc
 
-	{: List<ICClass> classList = new ArrayList<ICClass>(); classList.add(icc); RESULT = classList; printGrammar("made class list with 1 class"); :}
+	{: List<ICClass> classList = new ArrayList<ICClass>(); classList.add(icc); RESULT = classList; :}
 
 	|		icclass_list:iccl icclass:icc
 
-	{: iccl.add(icc); RESULT = iccl; printGrammar("made new class, and added to class list "); :}
+	{: iccl.add(icc); RESULT = iccl; :}
 
 	;
 
@@ -217,38 +217,37 @@ icclass ::= CLASS CLASS_ID:ci class_extends:ce LBRACE class_body:cb RBRACE
 		} else {
 		RESULT = new ICClass(getParenLine(), ci, ce,cb.getFields(), cb.getMethods()); 
 		}
-		printGrammar("made new class ");
 	:}
 
 	;
 
 class_extends ::= 	EXTENDS CLASS_ID:ci
 
-		{: RESULT = ci; printGrammar("class extends "); :}
+		{: RESULT = ci; :}
 
-	| 	{: RESULT = null; printGrammar("class does not extends "); :}			/* return null as String */
+	| 	{: RESULT = null; :}			/* return null as String */
 
 	;
 
 class_body ::= 	class_body:cb field_list:fl SEMI
 
-		{: cb.insertFields(fl); RESULT = cb; printGrammar("class body fields "); :}
+		{: cb.insertFields(fl); RESULT = cb; :}
 
 	|			class_body:cb method:m
 
-		{: cb.insertMethod(m); RESULT = cb; printGrammar("class body method "); :}
+		{: cb.insertMethod(m); RESULT = cb; :}
 
-	| 	{: RESULT = new FieldsAndMethodsList(); printGrammar("class body finished "); :}
+	| 	{: RESULT = new FieldsAndMethodsList(); :}
 
 	;
 
 method ::= 	static_method:sm
 		
-		{: RESULT = sm; printGrammar("static method "); :}
+		{: RESULT = sm; :}
 
 	|		virtual_method:vm
 
-		{: RESULT = vm; printGrammar("virtual method "); :}
+		{: RESULT = vm; :}
 
 	;
 
@@ -277,43 +276,43 @@ more_field_ids ::= COMA IDENTIFIER:id more_field_ids:mfi
 
 field ::= type:t IDENTIFIER:id
 
-		{: RESULT = new Field(t, id); printGrammar("added field " + id); :}
+		{: RESULT = new Field(t, id); :}
 
 	;
 
 static_method ::= STATIC type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added static method no formals: " + id); :}
+		{: RESULT = new StaticMethod(t, id, new ArrayList<Formal>(), sl); :}
 
 	|	STATIC type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(t, id, fl, sl); printGrammar("added static method " + id); :}
+		{: RESULT = new StaticMethod(t, id, fl, sl); :}
 
 	|	STATIC VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); :}
+		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); :}
 
 	|	STATIC VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); :}
+		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); :}
 
 	;
 
 virtual_method ::=  type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 		
-		{: RESULT = new VirtualMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added virtual method no formals: " + id); :}
+		{: RESULT = new VirtualMethod(t, id, new ArrayList<Formal>(), sl); :}
 
 	| 	 type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new VirtualMethod(t, id, fl, sl); printGrammar("added virtual method " + id); :}
+		{: RESULT = new VirtualMethod(t, id, fl, sl); :}
 
 	|	 VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); :}
+		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); :}
 
 	|	 VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); :}
+		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); :}
 
 	;
 
@@ -328,7 +327,7 @@ stmt_list ::=		stmt_list:sl stmt:st
 
 stmt ::= 	assignment_stmt:as SEMI
 
-		{: RESULT = as; printGrammar("assignment_stmt under stmt "); :}
+		{: RESULT = as; :}
 
 	|		call_stmt:cs
 
@@ -340,7 +339,7 @@ stmt ::= 	assignment_stmt:as SEMI
 
 	|		if_stmt:is
 
-		{: RESULT = is; printGrammar("if_stmt under stmt "); :}
+		{: RESULT = is; :}
 
 	|		if_else_stmt:ies
 
@@ -352,7 +351,7 @@ stmt ::= 	assignment_stmt:as SEMI
 
 	|		break_stmt:bs SEMI
 
-		{: RESULT = bs; printGrammar("break_stmt under stmt "); :}
+		{: RESULT = bs; :}
 
 	|		continue_stmt:cs SEMI
 
@@ -374,7 +373,7 @@ stmt ::= 	assignment_stmt:as SEMI
 
 assignment_stmt ::= location:l EQ expr:e
 
-		{: RESULT = new Assignment(l, e); printGrammar("location eq expr under assignment_stmt "); :}
+		{: RESULT = new Assignment(l, e); :}
 
 	;
 
@@ -396,7 +395,7 @@ return_stmt ::= RETURN
 
 if_stmt ::= IF LPAREN expr:e RPAREN stmt:s
 
-		{: RESULT = new If(e, s); printGrammar("if_stmt if (expr) stmt "); :}
+		{: RESULT = new If(e, s); :}
 
 	;
 
@@ -414,7 +413,7 @@ while_stmt ::= WHILE LPAREN expr:e RPAREN stmt:s
 
 break_stmt ::= BREAK
 
-		{: RESULT = new Break(getLine()); printGrammar("break_stmt "); :}
+		{: RESULT = new Break(getLine()); :}
 
 	;
 
@@ -432,7 +431,7 @@ stmt_block ::=	LBRACE stmt_list:sl RBRACE
 
 expr ::= location:l
 
-		{: RESULT = l; printGrammar("location in expr "); :}
+		{: RESULT = l; :}
 
 	|	call_expr:c
 
@@ -510,23 +509,23 @@ formal  ::= type:t IDENTIFIER:i
 
 type  ::= 		INTEGER
 
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("int "); :}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); :}
 
 		|		BOOLEAN
 
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("boolean ");:}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); :}
 
 		|		STRING
 
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("string ");:}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); :}
 
 		|		CLASS_ID:ci
 
-	{: RESULT = new UserType(getLine(), ci); System.out.println("added TYPE User Defined type ");:}
+	{: RESULT = new UserType(getLine(), ci); :}
 
 		| 		type:ft LBRACKET RBRACKET
 
-	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ");:} 
+	{: ft.incrementDimension(); RESULT = ft; :} 
 
 	;
 
@@ -583,15 +582,15 @@ dot_identifier ::= DOT IDENTIFIER:id
 
 location ::=	IDENTIFIER:id
 
-		{: RESULT = new VariableLocation(getLine(), id); printGrammar("location identifier " + id); :}
+		{: RESULT = new VariableLocation(getLine(), id); :}
 
 	|		expr:e dot_identifier:id
 
-		{: RESULT = new VariableLocation(getLine(), e, id); printGrammar("location dot identifier " + id); :}
+		{: RESULT = new VariableLocation(getLine(), e, id); :}
 
 	|		expr:e1 LBRACKET expr:e2 RBRACKET
 
-		{: RESULT = new ArrayLocation(e1, e2); printGrammar("location expr[expr] "); :}
+		{: RESULT = new ArrayLocation(e1, e2); :}
 
 	;
 

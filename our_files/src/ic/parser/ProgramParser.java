@@ -759,8 +759,8 @@ public class ProgramParser extends java_cup.runtime.lr_parser {
 	 * This is useful for debugging.
 	 */
 	
-	public boolean printTokens = true;
-	public boolean printStates = true;
+	public boolean printTokens = false;
+	public boolean printStates = false;
 
 	private Stack<Integer> parenthesisStack = new Stack<Integer>();
 	private boolean firstRBRACE = false;
@@ -869,7 +869,7 @@ class CUP$ProgramParser$actions {
           case 2: // program ::= 
             {
               Program RESULT =null;
-		 RESULT = new Program(new ArrayList<ICClass>()); printGrammar("made program"); 
+		 RESULT = new Program(new ArrayList<ICClass>()); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("program",0, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -881,7 +881,7 @@ class CUP$ProgramParser$actions {
 		int iccleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int iccright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		ICClass icc = (ICClass)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 List<ICClass> classList = new ArrayList<ICClass>(); classList.add(icc); RESULT = classList; printGrammar("made class list with 1 class"); 
+		 List<ICClass> classList = new ArrayList<ICClass>(); classList.add(icc); RESULT = classList; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("icclass_list",2, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -896,7 +896,7 @@ class CUP$ProgramParser$actions {
 		int iccleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int iccright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		ICClass icc = (ICClass)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 iccl.add(icc); RESULT = iccl; printGrammar("made new class, and added to class list "); 
+		 iccl.add(icc); RESULT = iccl; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("icclass_list",2, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -920,7 +920,6 @@ class CUP$ProgramParser$actions {
 		} else {
 		RESULT = new ICClass(getParenLine(), ci, ce,cb.getFields(), cb.getMethods()); 
 		}
-		printGrammar("made new class ");
 	
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("icclass",1, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-5)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
@@ -933,7 +932,7 @@ class CUP$ProgramParser$actions {
 		int cileft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int ciright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		java.lang.String ci = (java.lang.String)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = ci; printGrammar("class extends "); 
+		 RESULT = ci; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("class_extends",3, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -942,7 +941,7 @@ class CUP$ProgramParser$actions {
           case 7: // class_extends ::= 
             {
               String RESULT =null;
-		 RESULT = null; printGrammar("class does not extends "); 
+		 RESULT = null; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("class_extends",3, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -957,7 +956,7 @@ class CUP$ProgramParser$actions {
 		int flleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int flright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Field> fl = (List<Field>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 cb.insertFields(fl); RESULT = cb; printGrammar("class body fields "); 
+		 cb.insertFields(fl); RESULT = cb; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("class_body",4, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-2)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -972,7 +971,7 @@ class CUP$ProgramParser$actions {
 		int mleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int mright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		Method m = (Method)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 cb.insertMethod(m); RESULT = cb; printGrammar("class body method "); 
+		 cb.insertMethod(m); RESULT = cb; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("class_body",4, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -981,7 +980,7 @@ class CUP$ProgramParser$actions {
           case 10: // class_body ::= 
             {
               FieldsAndMethodsList RESULT =null;
-		 RESULT = new FieldsAndMethodsList(); printGrammar("class body finished "); 
+		 RESULT = new FieldsAndMethodsList(); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("class_body",4, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -993,7 +992,7 @@ class CUP$ProgramParser$actions {
 		int smleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int smright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		StaticMethod sm = (StaticMethod)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = sm; printGrammar("static method "); 
+		 RESULT = sm; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("method",5, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1005,7 +1004,7 @@ class CUP$ProgramParser$actions {
 		int vmleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int vmright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		VirtualMethod vm = (VirtualMethod)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = vm; printGrammar("virtual method "); 
+		 RESULT = vm; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("method",5, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1062,7 +1061,7 @@ class CUP$ProgramParser$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		java.lang.String id = (java.lang.String)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = new Field(t, id); printGrammar("added field " + id); 
+		 RESULT = new Field(t, id); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("field",8, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1080,7 +1079,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new StaticMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added static method no formals: " + id); 
+		 RESULT = new StaticMethod(t, id, new ArrayList<Formal>(), sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("static_method",9, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-7)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1101,7 +1100,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new StaticMethod(t, id, fl, sl); printGrammar("added static method " + id); 
+		 RESULT = new StaticMethod(t, id, fl, sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("static_method",9, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-8)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1116,7 +1115,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); 
+		 RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("static_method",9, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-7)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1134,7 +1133,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); 
+		 RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("static_method",9, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-8)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1152,7 +1151,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new VirtualMethod(t, id, new ArrayList<Formal>(), sl); printGrammar("added virtual method no formals: " + id); 
+		 RESULT = new VirtualMethod(t, id, new ArrayList<Formal>(), sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("virtual_method",10, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-6)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1173,7 +1172,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new VirtualMethod(t, id, fl, sl); printGrammar("added virtual method " + id); 
+		 RESULT = new VirtualMethod(t, id, fl, sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("virtual_method",10, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-7)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1188,7 +1187,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); 
+		 RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("virtual_method",10, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-6)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1206,7 +1205,7 @@ class CUP$ProgramParser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); 
+		 RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("virtual_method",10, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-7)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1242,7 +1241,7 @@ class CUP$ProgramParser$actions {
 		int asleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int asright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		Assignment as = (Assignment)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = as; printGrammar("assignment_stmt under stmt "); 
+		 RESULT = as; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("stmt",12, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1278,7 +1277,7 @@ class CUP$ProgramParser$actions {
 		int isleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int isright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		If is = (If)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = is; printGrammar("if_stmt under stmt "); 
+		 RESULT = is; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("stmt",12, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1314,7 +1313,7 @@ class CUP$ProgramParser$actions {
 		int bsleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int bsright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		Break bs = (Break)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = bs; printGrammar("break_stmt under stmt "); 
+		 RESULT = bs; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("stmt",12, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1386,7 +1385,7 @@ class CUP$ProgramParser$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		Expression e = (Expression)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = new Assignment(l, e); printGrammar("location eq expr under assignment_stmt "); 
+		 RESULT = new Assignment(l, e); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("assignment_stmt",14, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-2)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1434,7 +1433,7 @@ class CUP$ProgramParser$actions {
 		int sleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		Statement s = (Statement)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = new If(e, s); printGrammar("if_stmt if (expr) stmt "); 
+		 RESULT = new If(e, s); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("if_stmt",17, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-4)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1476,7 +1475,7 @@ class CUP$ProgramParser$actions {
           case 45: // break_stmt ::= BREAK 
             {
               Break RESULT =null;
-		 RESULT = new Break(getLine()); printGrammar("break_stmt "); 
+		 RESULT = new Break(getLine()); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("break_stmt",20, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1509,7 +1508,7 @@ class CUP$ProgramParser$actions {
 		int lleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		Location l = (Location)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = l; printGrammar("location in expr "); 
+		 RESULT = l; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("expr",32, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1719,7 +1718,7 @@ class CUP$ProgramParser$actions {
           case 65: // type ::= INTEGER 
             {
               Type RESULT =null;
-		 RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("int "); 
+		 RESULT = new PrimitiveType(getLine(), DataTypes.INT); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("type",31, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1728,7 +1727,7 @@ class CUP$ProgramParser$actions {
           case 66: // type ::= BOOLEAN 
             {
               Type RESULT =null;
-		 RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("boolean ");
+		 RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("type",31, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1737,7 +1736,7 @@ class CUP$ProgramParser$actions {
           case 67: // type ::= STRING 
             {
               Type RESULT =null;
-		 RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("string ");
+		 RESULT = new PrimitiveType(getLine(), DataTypes.STRING); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("type",31, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1749,7 +1748,7 @@ class CUP$ProgramParser$actions {
 		int cileft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int ciright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		java.lang.String ci = (java.lang.String)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = new UserType(getLine(), ci); System.out.println("added TYPE User Defined type ");
+		 RESULT = new UserType(getLine(), ci); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("type",31, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1761,7 +1760,7 @@ class CUP$ProgramParser$actions {
 		int ftleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-2)).left;
 		int ftright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-2)).right;
 		Type ft = (Type)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-2)).value;
-		 ft.incrementDimension(); RESULT = ft; System.out.println("added array ");
+		 ft.incrementDimension(); RESULT = ft; 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("type",31, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-2)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1890,7 +1889,7 @@ class CUP$ProgramParser$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		java.lang.String id = (java.lang.String)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = new VariableLocation(getLine(), id); printGrammar("location identifier " + id); 
+		 RESULT = new VariableLocation(getLine(), id); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("location",34, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1905,7 +1904,7 @@ class CUP$ProgramParser$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()).right;
 		java.lang.String id = (java.lang.String)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.peek()).value;
-		 RESULT = new VariableLocation(getLine(), e, id); printGrammar("location dot identifier " + id); 
+		 RESULT = new VariableLocation(getLine(), e, id); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("location",34, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
@@ -1920,7 +1919,7 @@ class CUP$ProgramParser$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).right;
 		Expression e2 = (Expression)((java_cup.runtime.Symbol) CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-1)).value;
-		 RESULT = new ArrayLocation(e1, e2); printGrammar("location expr[expr] "); 
+		 RESULT = new ArrayLocation(e1, e2); 
               CUP$ProgramParser$result = parser.getSymbolFactory().newSymbol("location",34, ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.elementAt(CUP$ProgramParser$top-3)), ((java_cup.runtime.Symbol)CUP$ProgramParser$stack.peek()), RESULT);
             }
           return CUP$ProgramParser$result;
