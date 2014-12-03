@@ -113,7 +113,7 @@ terminal RETURN, IF, ELSE, WHILE, BREAK, CONTINUE;
 terminal THIS, NEW, LENGTH;
 terminal LBRACKET, RBRACKET; /****array_type****/
 terminal LPAREN, RPAREN;
-terminal DOT, MINUS, NOT, MULT, DIV, MODULU, PLUS, LT, LTEQ, GT, GTEQ, EQEQ, NEQ, AND, OR, EQ;
+terminal DOT, MINUS, NOT, UMINUS, MULT, DIV, MODULU, PLUS, LT, LTEQ, GT, GTEQ, EQEQ, NEQ, AND, OR, EQ;
 terminal LBRACE, RBRACE, SEMI, COMA;
 
 
@@ -189,7 +189,7 @@ precedence left  EQEQ, NEQ;
 precedence left  LT, LTEQ, GT, GTEQ;
 precedence left  MINUS, PLUS;
 precedence left  DIV, MULT, MODULU;
-precedence right NOT;
+precedence right NOT, UMINUS;
 precedence left  LPAREN, RPAREN, LBRACKET, RBRACKET, DOT;
 
 /*********** The grammar ***********/
@@ -658,7 +658,7 @@ unop_expr	::=	NOT expr:e
 		
 	|			MINUS expr:e
 	
-	{: RESULT = new MathUnaryOp(UnaryOps.UMINUS, e); :}
+	{: RESULT = new MathUnaryOp(UnaryOps.UMINUS, e); :} %prec UMINUS
 		
 	;
 		
