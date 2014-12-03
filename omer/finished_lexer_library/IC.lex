@@ -1,6 +1,6 @@
 package ic.parser;
 import ic.parser.LexicalError;
-import ic.parser.LibraryParserSym;
+import ic.parser.ProgramParserSym;
 /*********** Definitions ***********/
 %%
 %cup
@@ -113,7 +113,7 @@ ororOperator = "||"
 eqOperator = "="
 
 // StringCharacter:  ASCII codes incl 32 - 126 + " and \ + escape sequence: \", \\, \t, \n
-StringCharacter = ([\040-\041\043-\133\135-\176] | "\\\"" | "\\\\" | "\\t" | "\\n")
+StringCharacter = ([\040-\041\043-\133\135-\176])
 
 //**************************** Stracture ***********************************
 leftBracesStracture = "{"
@@ -132,71 +132,71 @@ comaStracture = ","
 
 /* keywords */
 
-{classKeyword}					{ return token(LibraryParserSym.CLASS, yytext(), false); }
-{extendsKeyword}				{ return token(LibraryParserSym.EXTENDS, yytext(), false); }
-{staticKeyword}					{ return token(LibraryParserSym.STATIC, yytext(), false); } 
-{voidKeyword}					{ return token(LibraryParserSym.VOID, yytext(), false); }
-{intKeyword}					{ return token(LibraryParserSym.INTEGER, yytext(), false); }
-{booleanKeyword}				{ return token(LibraryParserSym.BOOLEAN, yytext(), false); }
-{stringKeyword}					{ return token(LibraryParserSym.STRING, yytext(), false); }
-{returnKeyword}					{ return token(LibraryParserSym.RETURN, yytext(), false); }
-{ifKeyword}						{ return token(LibraryParserSym.IF, yytext(), false); }
-{elseKeyword}					{ return token(LibraryParserSym.ELSE, yytext(), false); }
-{whileKeyword}					{ return token(LibraryParserSym.WHILE, yytext(), false); }
-{breakKeyword}					{ return token(LibraryParserSym.BREAK, yytext(), false); }
-{continueKeyword}				{ return token(LibraryParserSym.CONTINUE, yytext(), false); }
-{thisKeyword}					{ return token(LibraryParserSym.THIS, yytext(), false); }
-{newKeyword}					{ return token(LibraryParserSym.NEW, yytext(), false); }
-{lengthKeyword}					{ return token(LibraryParserSym.LENGTH, yytext(), false); }
-{trueKeyword}					{ return token(LibraryParserSym.BOOLEAN_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
-{falseKeyword}					{ return token(LibraryParserSym.BOOLEAN_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
-{nullKeyword}					{ return token(LibraryParserSym.NULL_LITERAL, yytext(), false); }
+{classKeyword}					{ return token(ProgramParserSym.CLASS, yytext(), false); }
+{extendsKeyword}				{ return token(ProgramParserSym.EXTENDS, yytext(), false); }
+{staticKeyword}					{ return token(ProgramParserSym.STATIC, yytext(), false); } 
+{voidKeyword}					{ return token(ProgramParserSym.VOID, yytext(), false); }
+{intKeyword}					{ return token(ProgramParserSym.INTEGER, yytext(), false); }
+{booleanKeyword}				{ return token(ProgramParserSym.BOOLEAN, yytext(), false); }
+{stringKeyword}					{ return token(ProgramParserSym.STRING, yytext(), false); }
+{returnKeyword}					{ return token(ProgramParserSym.RETURN, yytext(), false); }
+{ifKeyword}						{ return token(ProgramParserSym.IF, yytext(), false); }
+{elseKeyword}					{ return token(ProgramParserSym.ELSE, yytext(), false); }
+{whileKeyword}					{ return token(ProgramParserSym.WHILE, yytext(), false); }
+{breakKeyword}					{ return token(ProgramParserSym.BREAK, yytext(), false); }
+{continueKeyword}				{ return token(ProgramParserSym.CONTINUE, yytext(), false); }
+{thisKeyword}					{ return token(ProgramParserSym.THIS, yytext(), false); }
+{newKeyword}					{ return token(ProgramParserSym.NEW, yytext(), false); }
+{lengthKeyword}					{ return token(ProgramParserSym.LENGTH, yytext(), false); }
+{trueKeyword}					{ return token(ProgramParserSym.TRUE_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
+{falseKeyword}					{ return token(ProgramParserSym.FALSE_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
+{nullKeyword}					{ return token(ProgramParserSym.NULL_LITERAL, yytext(), false); }
 
 
 /* identifiers */
 
 "_" {IdentifierCharacter}*     { Error(yytext(), false);}
-{RegularIdentifier}            { return token(LibraryParserSym.IDENTIFIER, "Identifier", yytext(), false); }
-{ClassIdentifier}              { return token(LibraryParserSym.CLASS_ID, "CLASS_ID", yytext(), false); }
+{RegularIdentifier}            { return token(ProgramParserSym.IDENTIFIER, "Identifier", yytext(), false); }
+{ClassIdentifier}              { return token(ProgramParserSym.CLASS_ID, "CLASS_ID", yytext(), false); }
 
 
 /* literals */
 
 0+ {DecIntegerLiteral}         { Error(yytext(), false); }
-{DecIntegerLiteral}            { return token(LibraryParserSym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
+{DecIntegerLiteral}            { return token(ProgramParserSym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
 \"                             { lastPos(); string.setLength(0); yybegin(STRING); }
 
 
 /* operators */
 
-{leftBracketOperator}			{ return token(LibraryParserSym.LBRACKET, yytext(), false); }
-{rightBracketOperator}			{ return token(LibraryParserSym.RBRACKET, yytext(), false); }
-{leftparenOperator}				{ return token(LibraryParserSym.LPAREN, yytext(), false); }
-{rightparenOperator}			{ return token(LibraryParserSym.RPAREN, yytext(), false); }
-{dotOperator}					{ return token(LibraryParserSym.DOT, yytext(), false); }
-{minusOperator}					{ return token(LibraryParserSym.MINUS, yytext(), false); }
-{notOperator}					{ return token(LibraryParserSym.NOT, yytext(), false); }
-{multOperator}					{ return token(LibraryParserSym.MULT, yytext(), false); }
-{divOperator}					{ return token(LibraryParserSym.DIV, yytext(), false); }
-{moduluOperator}				{ return token(LibraryParserSym.MODULU, yytext(), false); }
-{plusOperator}					{ return token(LibraryParserSym.PLUS, yytext(), false); }
-{ltOperator}					{ return token(LibraryParserSym.LT, yytext(), false); }
-{lteqOperator}					{ return token(LibraryParserSym.LTEQ, yytext(), false); }
-{gtOperator}					{ return token(LibraryParserSym.GT, yytext(), false); }
-{gteqOperator} 					{ return token(LibraryParserSym.GTEQ, yytext(), false); }
-{eqeqOperator} 					{ return token(LibraryParserSym.EQEQ, yytext(), false); }
-{neqOperator} 					{ return token(LibraryParserSym.NEQ, yytext(), false); }
-{andandOperator} 				{ return token(LibraryParserSym.AND, yytext(), false); }
-{ororOperator} 					{ return token(LibraryParserSym.OR, yytext(), false); }
-{eqOperator} 					{ return token(LibraryParserSym.EQ, yytext(), false); }
+{leftBracketOperator}			{ return token(ProgramParserSym.LBRACKET, yytext(), false); }
+{rightBracketOperator}			{ return token(ProgramParserSym.RBRACKET, yytext(), false); }
+{leftparenOperator}				{ return token(ProgramParserSym.LPAREN, yytext(), false); }
+{rightparenOperator}			{ return token(ProgramParserSym.RPAREN, yytext(), false); }
+{dotOperator}					{ return token(ProgramParserSym.DOT, yytext(), false); }
+{minusOperator}					{ return token(ProgramParserSym.MINUS, yytext(), false); }
+{notOperator}					{ return token(ProgramParserSym.NOT, yytext(), false); }
+{multOperator}					{ return token(ProgramParserSym.MULT, yytext(), false); }
+{divOperator}					{ return token(ProgramParserSym.DIV, yytext(), false); }
+{moduluOperator}				{ return token(ProgramParserSym.MODULU, yytext(), false); }
+{plusOperator}					{ return token(ProgramParserSym.PLUS, yytext(), false); }
+{ltOperator}					{ return token(ProgramParserSym.LT, yytext(), false); }
+{lteqOperator}					{ return token(ProgramParserSym.LTEQ, yytext(), false); }
+{gtOperator}					{ return token(ProgramParserSym.GT, yytext(), false); }
+{gteqOperator} 					{ return token(ProgramParserSym.GTEQ, yytext(), false); }
+{eqeqOperator} 					{ return token(ProgramParserSym.EQEQ, yytext(), false); }
+{neqOperator} 					{ return token(ProgramParserSym.NEQ, yytext(), false); }
+{andandOperator} 				{ return token(ProgramParserSym.AND, yytext(), false); }
+{ororOperator} 					{ return token(ProgramParserSym.OR, yytext(), false); }
+{eqOperator} 					{ return token(ProgramParserSym.EQ, yytext(), false); }
 
                                                            
 /* structure */  
 
-{leftBracesStracture}			{ return token(LibraryParserSym.LBRACE, yytext(), false); }
-{rightBracesStracture}			{ return token(LibraryParserSym.RBRACE, yytext(), false); }
-{semiStracture}					{ return token(LibraryParserSym.SEMI, yytext(), false); }
-{comaStracture}					{ return token(LibraryParserSym.COMA, yytext(), false); }
+{leftBracesStracture}			{ return token(ProgramParserSym.LBRACE, yytext(), false); }
+{rightBracesStracture}			{ return token(ProgramParserSym.RBRACE, yytext(), false); }
+{semiStracture}					{ return token(ProgramParserSym.SEMI, yytext(), false); }
+{comaStracture}					{ return token(ProgramParserSym.COMA, yytext(), false); }
 
 
 /* comments */
@@ -212,8 +212,12 @@ comaStracture = ","
 
 
 <STRING> {
-\"                             	{ yybegin(YYINITIAL); return token(LibraryParserSym.STRING_LITERAL, "STRING", string.toString(), true); }
+\"                             	{ yybegin(YYINITIAL); return token(ProgramParserSym.STRING_LITERAL, "STRING", string.toString(), true); }
 {StringCharacter}+             	{ string.append(yytext()); }
+"\\n"							{ string.append("\n"); }
+"\\t"							{ string.append("\t"); }
+"\\\""							{ string.append("\""); }
+"\\\\"							{ string.append("\\"); }
 <<EOF>>                        	{ Error(yytext(), true); }
 }
 
@@ -230,4 +234,4 @@ comaStracture = ","
 [^]                           	{ Error(yytext(), false); }
 
 /*regular EOF*/
-<<EOF>>							{ return token(LibraryParserSym.EOF, yytext(), false); }
+<<EOF>>							{ return token(ProgramParserSym.EOF, yytext(), false); }
