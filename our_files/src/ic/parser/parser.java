@@ -735,12 +735,11 @@ public class parser extends java_cup.runtime.lr_parser {
     }
 
 
-	/** Causes the parsr to print every token it reads.
-	 * This is useful for debugging.
-	 */
-	
-	public boolean printTokens = true;
+
+	//**********************DEBUG*************************
+	public boolean printTokens = false;
 	public boolean printStates = false;
+	//**********************DEBUG*************************
 	
 	private Lexer lexer;
 	private int currentLine = 0;
@@ -777,6 +776,7 @@ public class parser extends java_cup.runtime.lr_parser {
 		if (printStates) { System.out.println(str); }
 	}
 
+	//**********************BONUS*************************
 	private boolean isFaultyDecl(Statement s) {
 		if(s instanceof ic.ast.stmt.LocalVariable) return true;
 		return false;

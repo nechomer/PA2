@@ -1,5 +1,7 @@
-class Arith {
-	void computeSomething(){
+class Arith 
+{
+	void computeSomething()
+	{
 		int a;
 		a = (5+8) * 11;   /* should be 143 */
 		a = 5 + 8 * 11;

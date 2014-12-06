@@ -13,12 +13,11 @@ import java.util.List;
 import java.util.Stack;
 
 parser code  {:
-	/** Causes the parsr to print every token it reads.
-	 * This is useful for debugging.
-	 */
-	
-	public boolean printTokens = true;
+
+	//**********************DEBUG*************************
+	public boolean printTokens = false;
 	public boolean printStates = false;
+	//**********************DEBUG*************************
 	
 	private Lexer lexer;
 	private int currentLine = 0;
@@ -55,13 +54,14 @@ parser code  {:
 		if (printStates) { System.out.println(str); }
 	}
 
+	//**********************BONUS*************************
 	private boolean isFaultyDecl(Statement s) {
 		if(s instanceof ic.ast.stmt.LocalVariable) return true;
 		return false;
 	}
 :}
 
-// This is just for debugging
+
 scan with {:
 	Token t = lexer.next_token();
 	currentLine = t.getLine();
@@ -71,7 +71,10 @@ scan with {:
 	return t; 
 :};
 
+
+
 /*********** Symbol list - terminals ***********/
+
 terminal CLASS, EXTENDS, STATIC;
 terminal VOID, INTEGER, BOOLEAN, STRING;
 terminal RETURN, IF, ELSE, WHILE, BREAK, CONTINUE;
@@ -81,7 +84,6 @@ terminal LPAREN, RPAREN;
 terminal DOT, MINUS, NOT, UMINUS, MULT, DIV, MODULU, PLUS, LT, LTEQ, GT, GTEQ, EQEQ, NEQ, AND, OR, EQ;
 terminal LBRACE, RBRACE, SEMI, COMA;
 
-
 terminal java.lang.String IDENTIFIER; /****var_name****/
 terminal java.lang.String CLASS_ID; /****class_name****/
 terminal java.lang.Number INTEGER_LITERAL;
@@ -89,6 +91,8 @@ terminal java.lang.Boolean TRUE_LITERAL;
 terminal java.lang.Boolean FALSE_LITERAL;
 terminal java.lang.String STRING_LITERAL;
 terminal NULL_LITERAL;
+
+
 
 /*********** Symbol list - non-terminals) ***********/
 
@@ -106,7 +110,6 @@ non terminal Field field;
 non terminal StaticMethod static_method;
 non terminal VirtualMethod virtual_method;
 
-
 non terminal List<Statement> stmt_list;
 non terminal Statement stmt;
 non terminal StatementsBlock stmt_block;
@@ -119,7 +122,6 @@ non terminal If if_else_stmt;
 non terminal While while_stmt;
 non terminal Break break_stmt;
 non terminal Continue continue_stmt;
-
 
 non terminal StaticCall static_call;
 non terminal VirtualCall virtual_call;
@@ -142,6 +144,8 @@ non terminal Expression binop_expr;
 non terminal Expression unop_expr;
 non terminal Literal literal;
 
+
+
 /*********** Precedence declarations ***********/
 
 precedence nonassoc IF;
@@ -156,6 +160,8 @@ precedence left  MINUS, PLUS;
 precedence left  DIV, MULT, MODULU;
 precedence right NOT, UMINUS;
 precedence left  LPAREN, RPAREN, LBRACKET, RBRACKET, DOT;
+
+
 
 /*********** The grammar ***********/
 
