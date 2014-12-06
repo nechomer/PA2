@@ -19,15 +19,9 @@ parser code  {:
 	
 	public boolean printTokens = true;
 	public boolean printStates = false;
-
-	private Stack<Integer> parenthesisStack = new Stack<Integer>();
-	private boolean firstRBRACE = false;
-	private boolean twoRBRACE = false;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
-	private int lastparenthesisStackLine = 0;
-	private int lastparenthesisStackLine2 = 0;
 
 	public parser(Lexer lexer) {
 		super(lexer);
@@ -36,17 +30,6 @@ parser code  {:
 	
 	public int getLine() {
 		return currentLine;
-	}
-
-	public int getParenLine()
-	{
-		if (twoRBRACE) {
-			firstRBRACE = false;
-			twoRBRACE = false;
-			return lastparenthesisStackLine;
-		} else {
-			return lastparenthesisStackLine;
-		}
 	}
 	
 	public String symbol_name_from_id(int id) {
@@ -82,26 +65,6 @@ parser code  {:
 scan with {:
 	Token t = lexer.next_token();
 	currentLine = t.getLine();
-	if (t.sym == sym.LPAREN || t.sym == sym.LBRACE)
-	{
-		parenthesisStack.push(currentLine);
-	}
-
-	if (t.sym == sym.RBRACE) {
-		if(firstRBRACE == true) {
-			lastparenthesisStackLine2 = lastparenthesisStackLine;
-			twoRBRACE = true;
-		} else {
-			firstRBRACE = true;
-		}
-	} else {
-		firstRBRACE = false;
-	}
-	
-	if (t.sym == sym.RPAREN || t.sym == sym.RBRACE)
-	{
-		lastparenthesisStackLine = parenthesisStack.pop();
-	}
 
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + t);
@@ -435,7 +398,7 @@ continue_stmt ::= CONTINUE
 
 stmt_block ::=	LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StatementsBlock(getParenLine(), sl); :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-2)); RESULT = new StatementsBlock(c.getLine(), sl); :}
 
 	;
 
@@ -541,23 +504,23 @@ type  ::= 		INTEGER
 
 static_call ::= CLASS_ID:ci DOT call_without_expr:cwe
 
-		{: RESULT = new StaticCall(getParenLine(), ci, cwe.getMethodName(), cwe.getArguments()); :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-2)); RESULT = new StaticCall(c.getLine(), ci, cwe.getMethodName(), cwe.getArguments()); :}
 
 	;
 		
 virtual_call ::= call_with_expr:cwe
 
-		{: RESULT = new VirtualCall(getParenLine(), cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()); :}
+		{: RESULT = new VirtualCall(cwe.getLine(), cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()); :}
 
 	| call_without_expr:cwe
 
-		{: RESULT = new VirtualCall(getParenLine(), cwe.getMethodName(), cwe.getArguments()); :}
+		{: RESULT = new VirtualCall(cwe.getLine(), cwe.getMethodName(), cwe.getArguments()); :}
 
 	;
 
 call_with_expr ::= expr:e DOT call_without_expr:cwe	
 
-		{: cwe.setLine(getLine()); cwe.setLocation(e); RESULT = cwe; :}
+		{: cwe.setLocation(e); RESULT = cwe; :}
 
 	;
 
@@ -567,14 +530,14 @@ call_without_expr ::= call_without_exprs:cwe
 
 	|	    IDENTIFIER:id call_with_exprs:cwe
 
-		{: cwe.setMethodName(id); RESULT = cwe; :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-1)); cwe.setLine(c.getLine()); cwe.setMethodName(id); RESULT = cwe; :}
 
 
 	;
 
 call_without_exprs ::= IDENTIFIER:id LPAREN RPAREN
 
-		{: CallParams cp = new CallParams(); cp.setMethodName(id); cp.setArguments(new ArrayList<Expression>()); RESULT = cp; :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-2)); CallParams cp = new CallParams(); cp.setMethodName(id); cp.setArguments(new ArrayList<Expression>());  cp.setLine(c.getLine()); RESULT = cp; :}
 
 	;
 		

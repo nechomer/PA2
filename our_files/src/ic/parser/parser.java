@@ -727,26 +727,6 @@ public class parser extends java_cup.runtime.lr_parser {
 
 	Token t = lexer.next_token();
 	currentLine = t.getLine();
-	if (t.sym == sym.LPAREN || t.sym == sym.LBRACE)
-	{
-		parenthesisStack.push(currentLine);
-	}
-
-	if (t.sym == sym.RBRACE) {
-		if(firstRBRACE == true) {
-			lastparenthesisStackLine2 = lastparenthesisStackLine;
-			twoRBRACE = true;
-		} else {
-			firstRBRACE = true;
-		}
-	} else {
-		firstRBRACE = false;
-	}
-	
-	if (t.sym == sym.RPAREN || t.sym == sym.RBRACE)
-	{
-		lastparenthesisStackLine = parenthesisStack.pop();
-	}
 
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + t);
@@ -761,15 +741,9 @@ public class parser extends java_cup.runtime.lr_parser {
 	
 	public boolean printTokens = true;
 	public boolean printStates = false;
-
-	private Stack<Integer> parenthesisStack = new Stack<Integer>();
-	private boolean firstRBRACE = false;
-	private boolean twoRBRACE = false;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
-	private int lastparenthesisStackLine = 0;
-	private int lastparenthesisStackLine2 = 0;
 
 	public parser(Lexer lexer) {
 		super(lexer);
@@ -778,17 +752,6 @@ public class parser extends java_cup.runtime.lr_parser {
 	
 	public int getLine() {
 		return currentLine;
-	}
-
-	public int getParenLine()
-	{
-		if (twoRBRACE) {
-			firstRBRACE = false;
-			twoRBRACE = false;
-			return lastparenthesisStackLine;
-		} else {
-			return lastparenthesisStackLine;
-		}
 	}
 	
 	public String symbol_name_from_id(int id) {
@@ -1507,7 +1470,7 @@ class CUP$parser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new StatementsBlock(getParenLine(), sl); 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-2)); RESULT = new StatementsBlock(c.getLine(), sl); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("stmt_block",13, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1786,7 +1749,7 @@ class CUP$parser$actions {
 		int cweleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cweright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		CallParams cwe = (CallParams)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = new StaticCall(getParenLine(), ci, cwe.getMethodName(), cwe.getArguments()); 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-2)); RESULT = new StaticCall(c.getLine(), ci, cwe.getMethodName(), cwe.getArguments()); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("static_call",22, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1798,7 +1761,7 @@ class CUP$parser$actions {
 		int cweleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cweright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		CallParams cwe = (CallParams)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = new VirtualCall(getParenLine(), cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()); 
+		 RESULT = new VirtualCall(cwe.getLine(), cwe.getLocation(), cwe.getMethodName(), cwe.getArguments()); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("virtual_call",23, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1810,7 +1773,7 @@ class CUP$parser$actions {
 		int cweleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cweright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		CallParams cwe = (CallParams)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = new VirtualCall(getParenLine(), cwe.getMethodName(), cwe.getArguments()); 
+		 RESULT = new VirtualCall(cwe.getLine(), cwe.getMethodName(), cwe.getArguments()); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("virtual_call",23, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1825,7 +1788,7 @@ class CUP$parser$actions {
 		int cweleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cweright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		CallParams cwe = (CallParams)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 cwe.setLine(getLine()); cwe.setLocation(e); RESULT = cwe; 
+		 cwe.setLocation(e); RESULT = cwe; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("call_with_expr",26, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1852,7 +1815,7 @@ class CUP$parser$actions {
 		int cweleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cweright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		CallParams cwe = (CallParams)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 cwe.setMethodName(id); RESULT = cwe; 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-1)); cwe.setLine(c.getLine()); cwe.setMethodName(id); RESULT = cwe; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("call_without_expr",27, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1864,7 +1827,7 @@ class CUP$parser$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		java.lang.String id = (java.lang.String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-		 CallParams cp = new CallParams(); cp.setMethodName(id); cp.setArguments(new ArrayList<Expression>()); RESULT = cp; 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-2)); CallParams cp = new CallParams(); cp.setMethodName(id); cp.setArguments(new ArrayList<Expression>());  cp.setLine(c.getLine()); RESULT = cp; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("call_without_exprs",24, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
