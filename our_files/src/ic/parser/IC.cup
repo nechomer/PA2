@@ -17,7 +17,7 @@ parser code  {:
 	 * This is useful for debugging.
 	 */
 	
-	public boolean printTokens = false;
+	public boolean printTokens = true;
 	public boolean printStates = false;
 
 	private Stack<Integer> parenthesisStack = new Stack<Integer>();
@@ -43,7 +43,7 @@ parser code  {:
 		if (twoRBRACE) {
 			firstRBRACE = false;
 			twoRBRACE = false;
-			return lastparenthesisStackLine2;
+			return lastparenthesisStackLine;
 		} else {
 			return lastparenthesisStackLine;
 		}
@@ -98,7 +98,7 @@ scan with {:
 		firstRBRACE = false;
 	}
 	
-	if (t.sym == sym.RPAREN | t.sym == sym.RBRACE)
+	if (t.sym == sym.RPAREN || t.sym == sym.RBRACE)
 	{
 		lastparenthesisStackLine = parenthesisStack.pop();
 	}

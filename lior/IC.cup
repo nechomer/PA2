@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Stack;
 
 
-class ProgramParser;
-
 parser code  {:
 	/** Causes the parsr to print every token it reads.
 	 * This is useful for debugging.
@@ -32,7 +30,7 @@ parser code  {:
 	private int lastparenthesisStackLine = 0;
 	private int lastparenthesisStackLine2 = 0;
 
-	public ProgramParser(Lexer lexer) {
+	public parser(Lexer lexer) {
 		super(lexer);
 		this.lexer = lexer;
 	}
@@ -54,7 +52,7 @@ parser code  {:
 	
 	public String symbol_name_from_id(int id) {
 
-		return LibraryParserSym.terminalNames[id];
+		return sym.terminalNames[id];
 	}
 	
 	public void syntax_error(Symbol s) {
@@ -80,12 +78,12 @@ parser code  {:
 scan with {:
 	Token t = lexer.next_token();
 	currentLine = t.getLine();
-	if (t.sym == ProgramParserSym.LPAREN || t.sym == ProgramParserSym.LBRACE)
+	if (t.sym == sym.LPAREN || t.sym == sym.LBRACE)
 	{
 		parenthesisStack.push(currentLine);
 	}
 
-	if (t.sym == ProgramParserSym.RBRACE) {
+	if (t.sym == sym.RBRACE) {
 		if(firstRBRACE == true) {
 			lastparenthesisStackLine2 = lastparenthesisStackLine;
 			twoRBRACE = true;
@@ -96,7 +94,7 @@ scan with {:
 		firstRBRACE = false;
 	}
 	
-	if (t.sym == ProgramParserSym.RPAREN | t.sym == ProgramParserSym.RBRACE)
+	if (t.sym == sym.RPAREN || t.sym == sym.RBRACE)
 	{
 		lastparenthesisStackLine = parenthesisStack.pop();
 	}
