@@ -20,6 +20,7 @@ public class Compiler {
     	LibParser lp;
     	Symbol result;
     	ASTNode programNode, libraryProgramNode;
+    	String LibraryFile;
     	try {
     		
     		pp = new parser(new Lexer(new FileReader(args[0])));
@@ -30,12 +31,17 @@ public class Compiler {
     			System.out.println(programNode.accept(new PrettyPrinter(args[0])));
 
     		if (args.length > 1) { // Library file is also supplied
-              lp = new LibParser(new Lexer(new FileReader(args[1])));
+    			if (!args[1].substring(0,2).equals("-L")) {
+    				System.out.println("\n ERROR: Library file must be supplied with preceding -L ");
+    				return;
+    			}
+    			LibraryFile = args[1].substring(2);
+              lp = new LibParser(new Lexer(new FileReader(LibraryFile)));
               result = lp.parse();
               libraryProgramNode = (ASTNode) result.value;
               
               if (libraryProgramNode != null) 
-                  System.out.println(libraryProgramNode.accept(new PrettyPrinter(args[1])));
+                  System.out.println(libraryProgramNode.accept(new PrettyPrinter(LibraryFile)));
     		}
     		
     	} catch (ParserException  | LexicalError e) {
