@@ -216,10 +216,11 @@ icclass_list ::=  icclass:icc
 icclass ::= CLASS CLASS_ID:ci class_extends:ce LBRACE class_body:cb RBRACE
 
 	{: 
+		Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-5));
 		if (ce == null) {		/* there is no extention to the class */
-		RESULT = new ICClass(getParenLine(), ci, cb.getFields(), cb.getMethods()); 
+		RESULT = new ICClass(c.getLine(), ci, cb.getFields(), cb.getMethods()); 
 		} else {
-		RESULT = new ICClass(getParenLine(), ci, ce,cb.getFields(), cb.getMethods()); 
+		RESULT = new ICClass(c.getLine(), ci, ce,cb.getFields(), cb.getMethods()); 
 		}
 		printGrammar("made new class ");
 	:}
@@ -295,11 +296,11 @@ static_method ::= STATIC type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl 
 
 	|	STATIC VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-5)); RESULT = new StaticMethod(new PrimitiveType(c.getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); :}
 
 	|	STATIC VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-6)); RESULT = new StaticMethod(new PrimitiveType(c.getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); :}
 
 	;
 
@@ -313,11 +314,11 @@ virtual_method ::=  type:t IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRAC
 
 	|	 VOID IDENTIFIER:id LPAREN RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-5)); RESULT = new VirtualMethod(new PrimitiveType(c.getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); :}
 
 	|	 VOID IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACE stmt_list:sl RBRACE
 
-		{: RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); :}
+		{: Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-6)); RESULT = new VirtualMethod(new PrimitiveType(c.getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); :}
 
 	;
 
