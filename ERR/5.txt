@@ -1,0 +1,9 @@
+ERROR NOT THE SAME SYNTAX
+5: line number
+
+6: line number (first line)
+   miss line number 6
+
+7: line number (first line) 
+   line number 5 " intead of ''
+   line number 5 marker!
