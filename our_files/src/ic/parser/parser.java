@@ -743,7 +743,7 @@ public class parser extends java_cup.runtime.lr_parser {
 		firstRBRACE = false;
 	}
 	
-	if (t.sym == sym.RPAREN | t.sym == sym.RBRACE)
+	if (t.sym == sym.RPAREN || t.sym == sym.RBRACE)
 	{
 		lastparenthesisStackLine = parenthesisStack.pop();
 	}
@@ -759,7 +759,7 @@ public class parser extends java_cup.runtime.lr_parser {
 	 * This is useful for debugging.
 	 */
 	
-	public boolean printTokens = false;
+	public boolean printTokens = true;
 	public boolean printStates = false;
 
 	private Stack<Integer> parenthesisStack = new Stack<Integer>();
@@ -785,7 +785,7 @@ public class parser extends java_cup.runtime.lr_parser {
 		if (twoRBRACE) {
 			firstRBRACE = false;
 			twoRBRACE = false;
-			return lastparenthesisStackLine2;
+			return lastparenthesisStackLine;
 		} else {
 			return lastparenthesisStackLine;
 		}
@@ -920,10 +920,11 @@ class CUP$parser$actions {
 		int cbright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		FieldsAndMethodsList cb = (FieldsAndMethodsList)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
+		Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-5));
 		if (ce == null) {		/* there is no extention to the class */
-		RESULT = new ICClass(getParenLine(), ci, cb.getFields(), cb.getMethods()); 
+		RESULT = new ICClass(c.getLine(), ci, cb.getFields(), cb.getMethods()); 
 		} else {
-		RESULT = new ICClass(getParenLine(), ci, ce,cb.getFields(), cb.getMethods()); 
+		RESULT = new ICClass(c.getLine(), ci, ce,cb.getFields(), cb.getMethods()); 
 		}
 		printGrammar("made new class ");
 	
@@ -1121,7 +1122,7 @@ class CUP$parser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-5)); RESULT = new StaticMethod(new PrimitiveType(c.getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void static method no formals " + id); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("static_method",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1139,7 +1140,7 @@ class CUP$parser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new StaticMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-6)); RESULT = new StaticMethod(new PrimitiveType(c.getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void static method " + id); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("static_method",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-8)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1193,7 +1194,7 @@ class CUP$parser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-5)); RESULT = new VirtualMethod(new PrimitiveType(c.getLine(), DataTypes.VOID), id, new ArrayList<Formal>(), sl); printGrammar("added void virtual method no formal: " + id); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("virtual_method",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1211,7 +1212,7 @@ class CUP$parser$actions {
 		int slleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int slright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		List<Statement> sl = (List<Statement>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new VirtualMethod(new PrimitiveType(getParenLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); 
+		 Token c = ((Token)CUP$parser$stack.elementAt(CUP$parser$top-6)); RESULT = new VirtualMethod(new PrimitiveType(c.getLine(), DataTypes.VOID) , id, fl, sl); printGrammar("added void virtual method: " + id); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("virtual_method",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
