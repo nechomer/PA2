@@ -7,3 +7,6 @@ ERROR NOT THE SAME SYNTAX
 7: line number (first line) 
    line number 5 " intead of ''
    line number 5 marker!
+
+30: int[1][2][3] - ok but not for them.
+33: not get error from lexer or parser. number too big.
