@@ -1,7 +1,7 @@
 package ic.ast.expr;
 
-import ic.LiteralTypes;
 import ic.ast.Visitor;
+import ic.ast.types.LiteralTypes;
 
 /**
  * Literal value AST node.

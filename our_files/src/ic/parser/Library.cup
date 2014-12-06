@@ -10,14 +10,14 @@ import ic.ast.types.*;
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.List;
-class LibraryParser;
+class LibParser;
 
 parser code  {:
 	/** Causes the parsr to print every token it reads.
 	 * This is useful for debugging.
 	 */
 	
-	public boolean printTokens = true;
+	public boolean printTokens = false;
 	
 	private Lexer lexer;
 	private int currentLine = 0;
@@ -25,7 +25,7 @@ parser code  {:
 	int i = 0;
 	String exps = "";
 
-	public LibraryParser(Lexer lexer) {
+	public LibParser(Lexer lexer) {
 		super(lexer);
 		this.lexer = lexer;
 	}
@@ -40,7 +40,7 @@ parser code  {:
 	
 	public String symbol_name_from_id(int id) {
 
-		return LibraryParserSym.terminalNames[id];
+		return LibParserSym.terminalNames[id];
 	}
 	
 	public void syntax_error(Symbol s) {
@@ -63,7 +63,7 @@ scan with {:
 	Token t = lexer.next_token();
 	currentLine = t.getLine();
 
-	if(t.sym == LibraryParserSym.CLASS) currentClassLine = currentLine;
+	if(t.sym == LibParserSym.CLASS) currentClassLine = currentLine;
 
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + t);
@@ -77,14 +77,15 @@ terminal RETURN, IF, ELSE, WHILE, BREAK, CONTINUE;
 terminal THIS, NEW, LENGTH;
 terminal LBRACKET, RBRACKET; /****array_type****/
 terminal LPAREN, RPAREN;
-terminal DOT, MINUS, NOT, MULT, DIV, MODULU, PLUS, LT, LTEQ, GT, GTEQ, EQEQ, NEQ, AND, OR, EQ;
-terminal LBRACE, RBRACE,SEMI, COMA;
+terminal DOT, MINUS, NOT, UMINUS, MULT, DIV, MODULU, PLUS, LT, LTEQ, GT, GTEQ, EQEQ, NEQ, AND, OR, EQ;
+terminal LBRACE, RBRACE, SEMI, COMA;
 
 
 terminal java.lang.String IDENTIFIER; /****var_name****/
 terminal java.lang.String CLASS_ID; /****class_name****/
 terminal java.lang.Number INTEGER_LITERAL;
-terminal java.lang.Boolean BOOLEAN_LITERAL;
+terminal java.lang.Boolean TRUE_LITERAL;
+terminal java.lang.Boolean FALSE_LITERAL;
 terminal java.lang.String STRING_LITERAL;
 terminal NULL_LITERAL;
 
@@ -105,44 +106,44 @@ non terminal  PrimitiveType formalType;
 /*********** The grammar ***********/
 
 program ::=  icclass:icc
-	{: List<ICClass> iccb = new ArrayList<ICClass>(); if (null != icc) iccb.add(icc); RESULT = new Program(iccb); System.out.println("finish Program with calss : " + iccb); :};
+	{: List<ICClass> iccb = new ArrayList<ICClass>(); if (null != icc) iccb.add(icc); RESULT = new Program(iccb); :};
 
 icclass ::= CLASS CLASS_ID:ci LBRACE method_block:mb RBRACE
-	{: RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), mb); System.out.println("finish icclass "+ci+ " : " + mb); :}
+	{: RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), mb); :}
 	| 		CLASS CLASS_ID:ci LBRACE RBRACE
-	{: RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), new ArrayList<Method>()); System.out.println("finish icclass "+ci); :};
+	{: RESULT = new ICClass(getClassLine(), ci, new ArrayList<Field>(), new ArrayList<Method>()); :};
 
 method_block ::= stmethod:sm
-	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; System.out.println("crate function block with methods mb= "+mb+" added function sm = "+sm);:}
+	{: List<Method> mb = new ArrayList<Method>(); mb.add(sm); RESULT = mb; :}
 	| 			 method_block:mb stmethod:sm
-	{: mb.add(sm); RESULT = mb; System.out.println("added function to function block with methods mb= "+mb+" added function sm = "+sm); :};
+	{: mb.add(sm); RESULT = mb; :};
 
 stmethod ::= STATIC methodType:t IDENTIFIER:id LPAREN RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,new ArrayList<Formal>() ,new ArrayList<Statement>()); System.out.println("finish function not args "+id); :}
+{:RESULT = new StaticMethod(t,id,new ArrayList<Formal>() ,new ArrayList<Statement>()); :}
 	|		 STATIC methodType:t IDENTIFIER:id LPAREN formal_block:fb RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,fb,new ArrayList<Statement>()); System.out.println("finish function "+id+" : "+fb); :};
+{:RESULT = new StaticMethod(t,id,fb,new ArrayList<Statement>()); :};
 
 methodType ::=	formalType:ft
 	{: RESULT = ft; :}
 	|			VOID
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); System.out.println("type void"); :};
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.VOID); :};
 		
 
 formal_block ::= formal:f
-	{: List<Formal> fb = new ArrayList<Formal>(); fb.add(f); RESULT = fb; System.out.println("added formal block : fb= "+fb+" : f= "+f); :}
+	{: List<Formal> fb = new ArrayList<Formal>(); fb.add(f); RESULT = fb; :}
 	| formal_block:fb COMA formal:f
-	{: fb.add(f); RESULT = fb; System.out.println("added formal to block fb= "+fb+" : f= "+f);:};
+	{: fb.add(f); RESULT = fb; :};
 
 formal  ::= formalType:t IDENTIFIER:i
-	{: RESULT = new Formal(t,i); System.out.println("added formal t= "+t+" : i= "+i);:};
+	{: RESULT = new Formal(t,i); :};
 
 formalType  ::= INTEGER
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); System.out.println("added primitive integer"); :}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.INT); :}
 		|		BOOLEAN
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); System.out.println("added primitive boolean");:}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.BOOLEAN); :}
 		|		STRING
-	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); System.out.println("added primitive string");:}
+	{: RESULT = new PrimitiveType(getLine(), DataTypes.STRING); :}
 		| 		formalType:ft LBRACKET RBRACKET
-	{: ft.incrementDimension(); RESULT = ft; System.out.println("added array ft=" + ft);:}  
+	{: ft.incrementDimension(); RESULT = ft; :}  
 	;
 

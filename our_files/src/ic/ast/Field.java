@@ -1,7 +1,5 @@
 package ic.ast;
 
-import java.util.List;
-
 import ic.ast.types.Type;
 
 /**
@@ -41,7 +39,4 @@ public class Field extends ASTNode {
 		return name;
 	}
 	
-	public void setType(Type t) {
-		this.type = t;
-	}
 }

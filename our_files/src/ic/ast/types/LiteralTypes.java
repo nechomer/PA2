@@ -1,4 +1,6 @@
-package ic;
+package ic.ast.types;
+
+import ic.DataTypes;
 
 /**
  * Enum of the IC language's literal value types. Includes methods for creating

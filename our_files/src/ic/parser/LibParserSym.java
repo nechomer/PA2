@@ -6,7 +6,7 @@
 package ic.parser;
 
 /** CUP generated class containing symbol constants. */
-public class ProgramParserSym {
+public class LibParserSym {
   /* terminals */
   public static final int FALSE_LITERAL = 47;
   public static final int STRING_LITERAL = 48;

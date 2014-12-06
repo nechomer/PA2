@@ -19,6 +19,7 @@ public class Token extends Symbol {
         this.line = line;
         this.column = column;
         this.tag = tag;
+        this.value = null;
     }
 
     public String toString() {

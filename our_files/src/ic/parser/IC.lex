@@ -1,6 +1,6 @@
 package ic.parser;
 import ic.parser.LexicalError;
-import ic.parser.ProgramParserSym;
+import ic.parser.sym;
 /*********** Definitions ***********/
 %%
 %cup
@@ -132,71 +132,71 @@ comaStracture = ","
 
 /* keywords */
 
-{classKeyword}					{ return token(ProgramParserSym.CLASS, yytext(), false); }
-{extendsKeyword}				{ return token(ProgramParserSym.EXTENDS, yytext(), false); }
-{staticKeyword}					{ return token(ProgramParserSym.STATIC, yytext(), false); } 
-{voidKeyword}					{ return token(ProgramParserSym.VOID, yytext(), false); }
-{intKeyword}					{ return token(ProgramParserSym.INTEGER, yytext(), false); }
-{booleanKeyword}				{ return token(ProgramParserSym.BOOLEAN, yytext(), false); }
-{stringKeyword}					{ return token(ProgramParserSym.STRING, yytext(), false); }
-{returnKeyword}					{ return token(ProgramParserSym.RETURN, yytext(), false); }
-{ifKeyword}						{ return token(ProgramParserSym.IF, yytext(), false); }
-{elseKeyword}					{ return token(ProgramParserSym.ELSE, yytext(), false); }
-{whileKeyword}					{ return token(ProgramParserSym.WHILE, yytext(), false); }
-{breakKeyword}					{ return token(ProgramParserSym.BREAK, yytext(), false); }
-{continueKeyword}				{ return token(ProgramParserSym.CONTINUE, yytext(), false); }
-{thisKeyword}					{ return token(ProgramParserSym.THIS, yytext(), false); }
-{newKeyword}					{ return token(ProgramParserSym.NEW, yytext(), false); }
-{lengthKeyword}					{ return token(ProgramParserSym.LENGTH, yytext(), false); }
-{trueKeyword}					{ return token(ProgramParserSym.TRUE_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
-{falseKeyword}					{ return token(ProgramParserSym.FALSE_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
-{nullKeyword}					{ return token(ProgramParserSym.NULL_LITERAL, yytext(), false); }
+{classKeyword}					{ return token(sym.CLASS, yytext(), false); }
+{extendsKeyword}				{ return token(sym.EXTENDS, yytext(), false); }
+{staticKeyword}					{ return token(sym.STATIC, yytext(), false); } 
+{voidKeyword}					{ return token(sym.VOID, yytext(), false); }
+{intKeyword}					{ return token(sym.INTEGER, yytext(), false); }
+{booleanKeyword}				{ return token(sym.BOOLEAN, yytext(), false); }
+{stringKeyword}					{ return token(sym.STRING, yytext(), false); }
+{returnKeyword}					{ return token(sym.RETURN, yytext(), false); }
+{ifKeyword}						{ return token(sym.IF, yytext(), false); }
+{elseKeyword}					{ return token(sym.ELSE, yytext(), false); }
+{whileKeyword}					{ return token(sym.WHILE, yytext(), false); }
+{breakKeyword}					{ return token(sym.BREAK, yytext(), false); }
+{continueKeyword}				{ return token(sym.CONTINUE, yytext(), false); }
+{thisKeyword}					{ return token(sym.THIS, yytext(), false); }
+{newKeyword}					{ return token(sym.NEW, yytext(), false); }
+{lengthKeyword}					{ return token(sym.LENGTH, yytext(), false); }
+{trueKeyword}					{ return token(sym.TRUE_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
+{falseKeyword}					{ return token(sym.FALSE_LITERAL, yytext(), Boolean.valueOf(yytext()), false); }
+{nullKeyword}					{ return token(sym.NULL_LITERAL, yytext(), false); }
 
 
 /* identifiers */
 
 "_" {IdentifierCharacter}*     { Error(yytext(), false);}
-{RegularIdentifier}            { return token(ProgramParserSym.IDENTIFIER, "Identifier", yytext(), false); }
-{ClassIdentifier}              { return token(ProgramParserSym.CLASS_ID, "CLASS_ID", yytext(), false); }
+{RegularIdentifier}            { return token(sym.IDENTIFIER, "Identifier", yytext(), false); }
+{ClassIdentifier}              { return token(sym.CLASS_ID, "CLASS_ID", yytext(), false); }
 
 
 /* literals */
 
 0+ {DecIntegerLiteral}         { Error(yytext(), false); }
-{DecIntegerLiteral}            { return token(ProgramParserSym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
+{DecIntegerLiteral}            { return token(sym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
 \"                             { lastPos(); string.setLength(0); yybegin(STRING); }
 
 
 /* operators */
 
-{leftBracketOperator}			{ return token(ProgramParserSym.LBRACKET, yytext(), false); }
-{rightBracketOperator}			{ return token(ProgramParserSym.RBRACKET, yytext(), false); }
-{leftparenOperator}				{ return token(ProgramParserSym.LPAREN, yytext(), false); }
-{rightparenOperator}			{ return token(ProgramParserSym.RPAREN, yytext(), false); }
-{dotOperator}					{ return token(ProgramParserSym.DOT, yytext(), false); }
-{minusOperator}					{ return token(ProgramParserSym.MINUS, yytext(), false); }
-{notOperator}					{ return token(ProgramParserSym.NOT, yytext(), false); }
-{multOperator}					{ return token(ProgramParserSym.MULT, yytext(), false); }
-{divOperator}					{ return token(ProgramParserSym.DIV, yytext(), false); }
-{moduluOperator}				{ return token(ProgramParserSym.MODULU, yytext(), false); }
-{plusOperator}					{ return token(ProgramParserSym.PLUS, yytext(), false); }
-{ltOperator}					{ return token(ProgramParserSym.LT, yytext(), false); }
-{lteqOperator}					{ return token(ProgramParserSym.LTEQ, yytext(), false); }
-{gtOperator}					{ return token(ProgramParserSym.GT, yytext(), false); }
-{gteqOperator} 					{ return token(ProgramParserSym.GTEQ, yytext(), false); }
-{eqeqOperator} 					{ return token(ProgramParserSym.EQEQ, yytext(), false); }
-{neqOperator} 					{ return token(ProgramParserSym.NEQ, yytext(), false); }
-{andandOperator} 				{ return token(ProgramParserSym.AND, yytext(), false); }
-{ororOperator} 					{ return token(ProgramParserSym.OR, yytext(), false); }
-{eqOperator} 					{ return token(ProgramParserSym.EQ, yytext(), false); }
+{leftBracketOperator}			{ return token(sym.LBRACKET, yytext(), false); }
+{rightBracketOperator}			{ return token(sym.RBRACKET, yytext(), false); }
+{leftparenOperator}				{ return token(sym.LPAREN, yytext(), false); }
+{rightparenOperator}			{ return token(sym.RPAREN, yytext(), false); }
+{dotOperator}					{ return token(sym.DOT, yytext(), false); }
+{minusOperator}					{ return token(sym.MINUS, yytext(), false); }
+{notOperator}					{ return token(sym.NOT, yytext(), false); }
+{multOperator}					{ return token(sym.MULT, yytext(), false); }
+{divOperator}					{ return token(sym.DIV, yytext(), false); }
+{moduluOperator}				{ return token(sym.MODULU, yytext(), false); }
+{plusOperator}					{ return token(sym.PLUS, yytext(), false); }
+{ltOperator}					{ return token(sym.LT, yytext(), false); }
+{lteqOperator}					{ return token(sym.LTEQ, yytext(), false); }
+{gtOperator}					{ return token(sym.GT, yytext(), false); }
+{gteqOperator} 					{ return token(sym.GTEQ, yytext(), false); }
+{eqeqOperator} 					{ return token(sym.EQEQ, yytext(), false); }
+{neqOperator} 					{ return token(sym.NEQ, yytext(), false); }
+{andandOperator} 				{ return token(sym.AND, yytext(), false); }
+{ororOperator} 					{ return token(sym.OR, yytext(), false); }
+{eqOperator} 					{ return token(sym.EQ, yytext(), false); }
 
                                                            
 /* structure */  
 
-{leftBracesStracture}			{ return token(ProgramParserSym.LBRACE, yytext(), false); }
-{rightBracesStracture}			{ return token(ProgramParserSym.RBRACE, yytext(), false); }
-{semiStracture}					{ return token(ProgramParserSym.SEMI, yytext(), false); }
-{comaStracture}					{ return token(ProgramParserSym.COMA, yytext(), false); }
+{leftBracesStracture}			{ return token(sym.LBRACE, yytext(), false); }
+{rightBracesStracture}			{ return token(sym.RBRACE, yytext(), false); }
+{semiStracture}					{ return token(sym.SEMI, yytext(), false); }
+{comaStracture}					{ return token(sym.COMA, yytext(), false); }
 
 
 /* comments */
@@ -212,7 +212,7 @@ comaStracture = ","
 
 
 <STRING> {
-\"                             	{ yybegin(YYINITIAL); return token(ProgramParserSym.STRING_LITERAL, "STRING", string.toString(), true); }
+\"                             	{ yybegin(YYINITIAL); return token(sym.STRING_LITERAL, "STRING", string.toString(), true); }
 {StringCharacter}+             	{ string.append(yytext()); }
 "\\n"							{ string.append("\n"); }
 "\\t"							{ string.append("\t"); }
@@ -234,4 +234,4 @@ comaStracture = ","
 [^]                           	{ Error(yytext(), false); }
 
 /*regular EOF*/
-<<EOF>>							{ return token(ProgramParserSym.EOF, yytext(), false); }
+<<EOF>>							{ return token(sym.EOF, yytext(), false); }

@@ -14,10 +14,10 @@ import ic.ast.ASTNode;
 import ic.ast.PrettyPrinter;
 import ic.parser.Lexer;
 import ic.parser.LexicalError;
-import ic.parser.LibraryParser;
-import ic.parser.LibraryParserSym;
+import ic.parser.LibParser;
+import ic.parser.LibParserSym;
 import ic.parser.ParserException;
-import ic.parser.ProgramParser;
+import ic.parser.parser;
 import ic.parser.Scanner;
 import ic.parser.Token;
 
@@ -49,7 +49,7 @@ public class Main
 //        	}
         	
         	
-//            LibraryParser lp = new LibraryParser(new Lexer(new FileReader(args[0])));
+//            LibParser lp = new LibParser(new Lexer(new FileReader(args[0])));
 //            System.out.println("finished part 1!");
 //            Symbol result = lp.parse();
 //            System.out.println("finished part 2!");
@@ -59,7 +59,7 @@ public class Main
 //            if (libraryProgramNode != null) 
 //                System.out.println(libraryProgramNode.accept(new PrettyPrinter(args[0])));
             
-            ProgramParser pp = new ProgramParser(new Lexer(new FileReader(args[0])));
+            parser pp = new parser(new Lexer(new FileReader(args[0])));
             System.out.println("finished part 1!");
             Symbol result = pp.parse();
             System.out.println("finished part 2!");
@@ -160,7 +160,7 @@ public class Main
 	        	Lexer lexer = new Lexer(new FileReader(tempFile));
 	        	while ((token = lexer.next_token()) != null) {
 	            	objValue = token.value;
-	            	if (token.sym == LibraryParserSym.EOF) break;
+	            	if (token.sym == LibParserSym.EOF) break;
 	            	System.out.println((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
 	            	fw.write((objValue != null ? objValue.toString(): token.tag)+"\t"+token.tag+"\t"+token.line+":"+token.column+"\n");
 	            }
@@ -168,7 +168,7 @@ public class Main
 	        	
 	        	System.out.println("finished lexing file " + tempFile);
 	            if (!onlyLexer){
-	            	LibraryParser lp = new LibraryParser(new Lexer(new FileReader(tempFile)));
+	            	LibParser lp = new LibParser(new Lexer(new FileReader(tempFile)));
 	                System.out.println("finished constructing parser for" + tempFile);
 	                Symbol result = lp.parse();
 	                System.out.println("finished parsing!");

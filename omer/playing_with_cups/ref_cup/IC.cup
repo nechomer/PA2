@@ -1,0 +1,336 @@
+package ic.parser;
+
+import ic.*;
+import ic.parser.*;
+import ic.ast.*;
+import ic.ast.expr.*;
+import ic.ast.methods.*;
+import ic.ast.stmt.*;
+import ic.ast.types.*;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.util.List;
+class LibraryParser;
+
+parser code  {:
+	/** Causes the parsr to print every token it reads.
+	 * This is useful for debugging.
+	 */
+	
+	public boolean printTokens;
+	
+	private Lexer lexer;
+	private int currentLine = 0;
+
+	public LibraryParser(Lexer lexer) {
+		super(lexer);
+		this.lexer = lexer;
+	}
+	
+	public int getLine() {
+		return currentLine;
+	}
+	
+	public void syntax_error(Symbol s) {
+		Token tok = (Token) s;
+		System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
+	}
+:}
+
+// This is just for debugging
+scan with {:
+	Token t = lexer.next_token();
+	currentLine = t.getLine();
+	if (printTokens)
+		System.out.println(t.getLine() + ":" + t);
+	return t; 
+:};
+
+/*********** Symbol list - terminals ***********/
+terminal CLASS, EXTENDS, STATIC;
+terminal VOID, INTEGER, BOOLEAN, STRING;
+terminal RETURN, IF, ELSE, WHILE, BREAK, CONTINUE;
+terminal THIS, NEW, LENGTH;
+terminal LBRACKET, RBRACKET; /****array_type****/
+terminal LPAREN, RPAREN;
+terminal DOT, MINUS, NOT, MULT, DIV, MODULU, PLUS, LT, LTEQ, GT, GTEQ, EQEQ, NEQ, AND, OR, EQ;
+terminal LBRACE, RBRACE, SEMI, COMA;
+
+
+terminal java.lang.String IDENTIFIER; /****var_name****/
+terminal java.lang.String CLASS_ID; /****class_name****/
+terminal java.lang.Number INTEGER_LITERAL;
+terminal java.lang.Boolean BOOLEAN_LITERAL;
+terminal java.lang.String STRING_LITERAL;
+terminal NULL_LITERAL;
+
+/*********** Symbol list - non-terminals) ***********/
+
+non terminal Program program;
+non terminal List<ICClass> ICclass_list;
+non terminal ICClass icclass;
+non terminal String class_extends;
+non terminal List<ASTNode> class_body;
+
+non terminal Method method;
+non terminal List<Field> field_list, field_more;
+
+non terminal StaticMethod static_method;
+non terminal VirtualMethod virtual_method;
+
+non terminal List<Statement> stmt_list;
+non terminal List<Statement> stmt_list_for_block;
+non terminal Statement stmt, stmt_open, stmt_closed, stmt_simple;
+
+non terminal Assignment assignment_stmt;
+non terminal CallStatement call_stmt;
+non terminal Return return_stmt;
+non terminal If if_stmt, if_else_open_stmt, if_else_closed_stmt;
+non terminal While while_open_stmt, while_closed_stmt;
+non terminal StatementsBlock stmt_block;
+
+non terminal Expression expr, expr_0, expr_1, expr_2, expr_3, expr_4, expr_5, expr_6, expr_7, expr_8;
+non terminal Call call_expr;
+non terminal List<Expression> expr_list, expr_more;
+
+non terminal List<Formal> formal_list;
+non terminal Formal formal;
+
+non terminal Type method_type, type;
+
+non terminal StaticCall static_call;
+non terminal VirtualCall virtual_call;
+
+non terminal Location location;
+
+non terminal Literal literal;
+
+/*********** Precedence declarations ***********/
+
+precedence right EQ;
+precedence left  OR;
+precedence left  AND;
+precedence left  EQEQ, NEQ;
+precedence left  LT, LTEQ, GT, GTEQ;
+precedence left  MINUS, PLUS;
+precedence left  DIV, MULT, MODULU;
+precedence right NOT;
+precedence left  LPAREN, RPAREN, LBRACE, RBRACE, DOT;
+
+/*********** The grammar ***********/
+
+program ::= ICclass_list:cl
+	;
+
+ICclass_list ::= ICclass_list:cl icclass:c						
+	|
+	;
+	
+icclass ::= CLASS CLASS_ID:ci class_extends:ce LBRACE class_body:cb RBRACE
+	;
+
+class_extends ::= 	EXTENDS CLASS_ID:ci
+	| 				/* return null as String */
+	;
+
+class_body ::= 	class_body:cb field_list:fl	 SEMI	/* return new List<ASTNode> after cb list unified with field list */
+	|							class_body:cb method:m 
+	| 							/* return empty List<ASTNode> */
+	;
+
+method ::= 	static_method
+	|					virtual_method
+	;
+
+field_list ::= type:t IDENTIFIER:i field_more
+	;
+	
+field_more ::= COMA IDENTIFIER:i  field_more
+	|
+	;
+	
+static_method ::= STATIC method_type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	|							 STATIC method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	;
+
+virtual_method ::= 	method_type:t IDENTIFIER:id LPAREN RPAREN LBRACKET stmt_list:sl RBRACKET
+	|								method_type:t IDENTIFIER:id LPAREN formal_list:fl RPAREN LBRACKET stmt_list:sl RBRACKET
+	;
+
+stmt_list ::=		stmt_list:sl stmt:st
+	| 						/* return empty List<Statement> */
+	;
+	
+stmt_list_for_block ::=		stmt_list_for_block:sl stmt:st
+	| 											/* return empty List<Statement> */
+	;	
+
+stmt  ::= stmt_open 
+	| 			stmt_closed
+	;
+	
+stmt_open ::=	if_stmt
+	| 						if_else_open_stmt
+	|						while_open_stmt
+	;
+	
+stmt_closed  ::= stmt_simple
+	|	 						if_else_closed_stmt
+	|							while_closed_stmt
+	;
+	
+stmt_simple ::= 	assignment_stmt:as SEMI
+	|						    call_stmt:cs
+	|							return_stmt:rs SEMI
+	|							BREAK SEMI
+	|							CONTINUE SEMI
+	|	    					stmt_block:sb
+	|							type IDENTIFIER:i SEMI
+	|							type IDENTIFIER:i EQ expr:e SEMI
+	;
+
+assignment_stmt ::= location:l EQ expr:e
+	;
+
+call_stmt ::=  call_expr SEMI
+	;
+
+return_stmt ::= RETURN
+	|						RETURN expr:e
+	;
+
+if_stmt ::= IF LPAREN expr:e RPAREN stmt:st
+	;
+
+if_else_open_stmt ::= IF LPAREN expr:e RPAREN stmt_closed:stclosed ELSE stmt_open:stopen
+	;
+	
+if_else_closed_stmt ::= IF LPAREN expr:e RPAREN stmt_closed:stclosed ELSE stmt_closed:stclosedelse
+	;
+
+while_open_stmt ::= WHILE LPAREN expr:e RPAREN stmt_open:st
+	;
+	
+while_closed_stmt ::= WHILE LPAREN expr:e RPAREN stmt_closed:st
+	;
+	
+stmt_block ::=	LBRACKET stmt_list_for_block:sl RBRACKET
+	;
+
+expr ::= expr_8
+	;
+	
+expr_8  ::=  expr_8 OR expr_7
+	;
+	
+expr_8  ::=  expr_7
+	;
+	
+expr_7  ::= expr_7 AND expr_6
+	;
+	
+expr_7  ::= expr_6
+	;
+	
+expr_6  ::=  expr_6 EQEQ expr_5 
+	|				  expr_6 NEQ expr_5
+	;
+	
+expr_6  ::=  expr_5
+	;
+	
+expr_5  ::= expr_5 LT expr_4 
+	| 				 expr_5 LTEQ expr_4
+	;
+	
+expr_5  ::= expr_5 GT expr_4
+	| 				 expr_5 GTEQ expr_4
+	;
+	
+expr_5 ::=	 expr_4
+	;
+	
+expr_4 ::=  expr_4 PLUS expr_3
+	| 				 expr_4 MINUS expr_3
+    ;
+	
+expr_4 ::=	expr_3
+	;
+	
+expr_3 ::=  expr_3 MULT expr_2
+    | 				 expr_3 DIV expr_2
+	| 				 expr_3 MODULU expr_2
+	;
+	
+expr_3 ::=	 expr_2
+	;
+	
+expr_2 ::=  MINUS expr_2 
+	|				 NOT expr_2
+	;
+	
+expr_2 ::=	 expr_1
+	;
+	
+expr_1 ::=  NEW CLASS_ID:ci LPAREN RPAREN
+   | 				 NEW type LBRACE expr:e  RBRACE
+   ;
+ 
+expr_1 ::= expr_0
+  ;
+   
+expr_0  ::= location:l 
+   | 				call_expr:c 
+   | 				THIS 
+   |				expr_1:e DOT LENGTH 
+   | 				literal:lt 
+   | 				LPAREN expr:e RPAREN
+   ;
+
+call_expr ::= 	static_call
+	|						virtual_call
+	;
+
+expr_list ::= expr:e expr_more
+	|				   
+	;
+
+expr_more ::= COMA expr:e
+	|
+	;	
+
+formal_list ::= formal:f
+	| 					  formal_list:fl COMA formal:f
+	;
+
+formal  ::= type:t IDENTIFIER:i
+	;
+
+method_type ::=	type
+	|							VOID
+	;
+
+type  ::= 		INTEGER
+	|					BOOLEAN
+	|					STRING
+	|					CLASS_ID:ci
+	| 					type:ft LBRACKET RBRACKET
+	;
+
+static_call ::= CLASS_ID:ci DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	
+	;
+
+virtual_call ::= IDENTIFIER:id LPAREN expr_list:el RPAREN
+	|	    		 	 expr:e DOT IDENTIFIER:id LPAREN expr_list:el RPAREN 	 	
+	;
+	
+location ::=	 IDENTIFIER:id
+	|					 expr_1:e DOT IDENTIFIER:id
+	|					 expr_0:e LBRACE expr:e RBRACE
+	;
+	
+literal ::=	    STRING_LITERAL:st
+	|					INTEGER_LITERAL:int
+	|					BOOLEAN_LITERAL:bool
+	|					NULL_LITERAL:nullPtr
+	;

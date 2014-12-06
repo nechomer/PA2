@@ -1,10 +1,7 @@
 package ic.ast.methods;
 
 import ic.ast.ASTNode;
-import ic.ast.Formal;
 import ic.ast.Visitor;
-import ic.ast.stmt.Statement;
-import ic.ast.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
