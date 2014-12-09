@@ -52,7 +52,7 @@ parser code  {:
 
 	//**********************BONUS*************************
 	private boolean isFaultyDecl(Statement s) {
-		if(s instanceof ic.ast.stmt.LocalVariable) return true;
+		if(s instanceof LocalVariable) return true;
 		return false;
 	}
 :}
