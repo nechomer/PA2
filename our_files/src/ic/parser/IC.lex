@@ -115,6 +115,30 @@ eqOperator = "="
 // StringCharacter:  ASCII codes incl 32 - 126 + " and \ + escape sequence: \", \\, \t, \n
 StringCharacter = ([\040-\041\043-\133\135-\176])
 
+IntegerOutOfRange=
+
+        [1-9][0-9]{10}[0-9]*|
+
+        [3-9][0-9]{9}[0-9]*|
+
+        2[2-9][0-9]{8}[0-9]*|
+
+        21[5-9][0-9]{7}[0-9]*|
+
+        214[8-9][0-9]{6}[0-9]*|
+
+        2147[5-9][0-9]{5}[0-9]*|
+
+        21474[9-9][0-9]{4}[0-9]*|
+
+        214748[4-9][0-9]{3}[0-9]*|
+
+        2147483[7-9][0-9]{2}[0-9]*|
+
+        21474836[5-9][0-9]{1}[0-9]*|
+
+        214748364[8-9][0-9]*
+
 //**************************** Stracture ***********************************
 leftBracesStracture = "{"
 rightBracesStracture = "}"
@@ -163,6 +187,7 @@ comaStracture = ","
 /* literals */
 
 0+ {DecIntegerLiteral}         { Error(yytext(), false); }
+{IntegerOutOfRange}			   { Error("Integer out Of Range: " + yytext(), false); }
 {DecIntegerLiteral}            { return token(sym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
 \"                             { lastPos(); string.setLength(0); yybegin(STRING); }
 
