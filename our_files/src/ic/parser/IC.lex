@@ -66,7 +66,7 @@ IdentifierCharacter = [a-zA-Z0-9_]
 ClassIdentifier = [A-Z]{IdentifierCharacter}*
 RegularIdentifier = [a-z]{IdentifierCharacter}*
 
-DecIntegerLiteral = (0 | [1-9][0-9]*)
+DecIntegerLiteral = ([0-9]+)
 
 //**************************** keywords ***********************************
 classKeyword = "class"
@@ -186,7 +186,8 @@ comaStracture = ","
 
 /* literals */
 
-0+ {DecIntegerLiteral}         { Error(yytext(), false); }
+/* leading zero check, have been eliminated 0+ {DecIntegerLiteral}         { Error(yytext(), false); } */
+
 {IntegerOutOfRange}			   { Error("Integer out Of Range: " + yytext(), false); }
 {DecIntegerLiteral}            { return token(sym.INTEGER_LITERAL, "INTEGER", new Integer(yytext()), false); }
 \"                             { lastPos(); string.setLength(0); yybegin(STRING); }

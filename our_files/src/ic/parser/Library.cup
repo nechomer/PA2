@@ -43,12 +43,17 @@ parser code  {:
 	public void syntax_error(Symbol s) {
 		
 		Token tok = (Token) s;
+		StringBuilder sb;
 		List<Integer> validToken = expected_token_ids();
 		if(validToken.size() > 0) {
+			sb = new StringBuilder();
+			sb.append("Line " + tok.getLine()+": Syntax error; expected ");
 			for(i=0;i<validToken.size();i++) {
 				exps = symbol_name_from_id(validToken.get(i));
-				System.out.println("Line " + tok.getLine()+": Syntax error; expected " + exps);
+				sb.append(exps + " , ");
 			}
+			sb.append("but found " + tok);
+			System.out.println(sb);
 		}
 		else
 			System.out.println("Line " + tok.getLine()+": Syntax error; unexpected " + tok);
@@ -89,7 +94,7 @@ terminal NULL_LITERAL;
 /*********** Symbol list - non-terminals) ***********/
 non terminal  Program program;
 non terminal  ICClass icclass;
-non terminal  StaticMethod stmethod;
+non terminal  LibraryMethod stmethod;
 non terminal  List<Method> method_block;
 non terminal  Formal formal;
 non terminal  List<Formal> formal_block;
@@ -116,9 +121,9 @@ method_block ::= stmethod:sm
 	{: mb.add(sm); RESULT = mb; :};
 
 stmethod ::= STATIC methodType:t IDENTIFIER:id LPAREN RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,new ArrayList<Formal>() ,new ArrayList<Statement>()); :}
+{:RESULT = new LibraryMethod(t,id,new ArrayList<Formal>()); :}
 	|		 STATIC methodType:t IDENTIFIER:id LPAREN formal_block:fb RPAREN SEMI
-{:RESULT = new StaticMethod(t,id,fb,new ArrayList<Statement>()); :};
+{:RESULT = new LibraryMethod(t,id,fb); :};
 
 methodType ::=	formalType:ft
 	{: RESULT = ft; :}
