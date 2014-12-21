@@ -1,12 +1,13 @@
-package ic.parser;
+package IC.Parser;
 
-import ic.*;
-import ic.parser.*;
-import ic.ast.*;
+import IC.*;
+import IC.Parser.*;
+import IC.AST.*;
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
 
 parser code  {:
 
@@ -433,7 +434,7 @@ expr ::= location:l
 
 	|	NEW type:t LBRACKET expr:e RBRACKET
 
-		{: RESULT = new NewArray(t, e); printGrammar("new in expr "); :}
+		{: t.incrementDimension(); RESULT = new NewArray(t, e); printGrammar("new in expr "); :}
 
 	|	expr:e DOT LENGTH
 

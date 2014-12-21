@@ -1,8 +1,8 @@
-package ic.parser;
+package IC.Parser;
 
-import ic.*;
-import ic.parser.*;
-import ic.ast.*;
+import IC.*;
+import IC.Parser.*;
+import IC.AST.*;
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.List;

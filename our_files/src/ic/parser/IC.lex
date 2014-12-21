@@ -1,6 +1,6 @@
-package ic.parser;
-import ic.parser.LexicalError;
-import ic.parser.sym;
+package IC.Parser;
+import IC.Parser.LexicalError;
+import IC.Parser.sym;
 /*********** Definitions ***********/
 %%
 %cup
